@@ -59,7 +59,7 @@ export default {
     return {
       menuAnim: null,
       heroGreet: 'WE ARE REDIAN',
-      heroTitle: 'The only Agency you\'ll ever need.'
+      heroTitle: 'The only digital agency you\'ll ever need.'
     }
   },
   mounted() {
@@ -286,7 +286,7 @@ export default {
         h2.greet {
           position: relative;
           font-family: 'Raleway';
-          font-size: 0.85rem;
+          font-size: 0.75rem;
           font-weight: 400;
           color: $primary-color;
           letter-spacing: 0.2rem;
