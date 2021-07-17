@@ -1,5 +1,5 @@
 <template>
-  <div class="container" @mouseenter="init">
+  <div class="container">
     <div class="background">
       <div class="text-container">
         <div ref="text" class="text"></div>
@@ -61,6 +61,9 @@ export default {
       heroGreet: 'WE ARE REDIAN',
       heroTitle: 'The only Agency you\'ll ever need.'
     }
+  },
+  mounted() {
+    this.init()
   },
   methods: {
     init() {
@@ -297,7 +300,7 @@ export default {
           position: relative;
           left: 2rem;
           font-family: 'Manrope';
-          font-size: 2.5rem;
+          font-size: 2.75rem;
           font-weight: 800;
           opacity: 0;
           margin: 1rem 0;
