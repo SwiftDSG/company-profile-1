@@ -8,9 +8,9 @@
       <div ref="overlay" class="overlay"></div>
     </div>
     <div class="content">
-      <div class="header">
+      <div ref="header" class="header">
         <div class="title"></div>
-        <div  class="menu-btn" @click="menuHandler">
+        <div class="menu-btn" @click="menuHandler">
           <div ref="menuBtnBg" class="background">
             <div class="bar bar-1"></div>
             <div class="bar bar-2"></div>
@@ -41,10 +41,11 @@
               <span ref="titleOverlay" class="overlay"></span>
             </span>
           </h1>
+          <p ref="description" class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum enim omnis qui perferendis autem repellendus sapiente officiis?</p>
         </div>
       </div>
     </div>
-    <div class="menu">
+    <div ref="menu" class="menu">
       <div ref="menuBg" class="menu-bg"></div>
       <div class="content"></div>
     </div>
@@ -59,61 +60,120 @@ export default {
     return {
       menuAnim: null,
       heroGreet: 'WE ARE REDIAN',
-      heroTitle: 'The only digital agency you\'ll ever need.'
+      heroTitle: 'The digital agency you\'ll need.',
+      mediaQuery: null
+    }
+  },
+  computed: {
+    mode() {
+      return this.$store.getters.mode
     }
   },
   mounted() {
+    // CSS 1vh var
+    const vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
+    window.addEventListener('resize', () => {
+      const vh = window.innerHeight * 0.01
+      document.documentElement.style.setProperty('--vh', `${vh}px`)
+    })
+    // Media Query
+    this.mediaQuery = window.matchMedia('(max-width: 1024px)')
+    this.mediaQuery.addListener(this.resizeHandler)
+    this.resizeHandler(this.mediaQuery)
     this.init()
   },
   methods: {
     init() {
       const {
+        mode,
         $refs: {
+          header,
           text,
           overlay,
           textOverlay,
           greet,
           title,
-          titleOverlay
+          titleOverlay,
+          description,
+          menu
         }
       } = this
-      const tl = gsap.timeline({})
-
-      tl.to(text, {
-        x: 0,
-        duration: 1,
-        ease: 'power2.inOut'
-      }).to(overlay, {
-        x: 0,
-        duration: 1,
-        ease: 'power2.inOut',
+      const tl = gsap.timeline({
         onComplete() {
-          gsap.to(title, {
-            opacity: 1,
+          gsap.to(menu, {
+            display: 'block',
             duration: 0
           })
         }
-      }).to(textOverlay, {
-        x: 0,
-        duration: 1,
-        ease: 'power2.inOut'
-      }, '<0').to([...greet.children].reverse(), {
+      })
+
+      if (mode === 'desktop') {
+        tl.to(text, {
+          x: 0,
+          duration: 1,
+          ease: 'power2.inOut'
+        }).to(overlay, {
+          x: 0,
+          duration: 1,
+          ease: 'power2.inOut',
+          onComplete() {
+            gsap.to(title, {
+              opacity: 1,
+              duration: 0
+            })
+          }
+        }).to(textOverlay, {
+          x: 0,
+          duration: 1,
+          ease: 'power2.inOut'
+        }, '<0')
+      } else {
+        tl.to(text, {
+          x: 0,
+          duration: 0,
+        }).to(overlay, {
+          x: 0,
+          duration: 0
+        }).to(textOverlay, {
+          x: 0,
+          duration: 0,
+        }).to(title, {
+          opacity: 1,
+          duration: 0
+        })
+      }
+
+      tl.to(header, {
+        y: 0,
+        duration: 0.5,
+        ease: 'power2.out'
+      }, mode === 'mobile' ? '>0.5' : null).to([...greet.children].reverse(), {
         x: 0,
         opacity: 1,
-        duration: 0.75,
+        duration: 0.5,
         stagger: 0.05,
         ease: 'power2.out'
-      }).to(title.children, {
+      }, '<0').to(title.children, {
         y: 0,
         duration: 0.75,
         stagger: 0.1,
-        ease: 'power2.out'
-      }, '<0').to(titleOverlay, {
+        ease: 'power2.inOut'
+      }, '<0.25').to(titleOverlay, {
         y: '-100%',
         duration: 0.75,
         stagger: 0.1,
-        ease: 'power2.out'
-      }, '<0')
+        ease: 'power2.inOut'
+      }, '<0').to(description, {
+        y: 0,
+        opacity: 1,
+        duration: 0.75,
+        ease: 'power2.inOut'
+      }, '<0.5')
+    },
+    resizeHandler(e) {
+      if (e.matches) this.$store.dispatch('changeMode', 'mobile')
+      else this.$store.dispatch('changeMode', 'desktop')
     },
     menuHandler() {
       if (!this.menuAnim) {
@@ -164,6 +224,7 @@ export default {
   justify-content: flex-start;
   align-items: flex-start;
   > .background {
+    z-index: -1;
     position: absolute;
     top: 0;
     left: 0;
@@ -214,15 +275,16 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     .header {
+      z-index: 5;
       position: relative;
       width: 100%;
       padding: 2rem;
+      transform: translateY(-100%);
       box-sizing: border-box;
       display: flex;
       justify-content: space-between;
       align-items: center;
       .menu-btn {
-        z-index: 3;
         cursor: pointer;
         position: relative;
         width: 2rem;
@@ -308,7 +370,7 @@ export default {
           color: #fff;
           span.word-container {
             position: relative;
-            margin: 0 0.25rem;
+            margin-right: 0.65rem;
             transform: translateY(1.5rem);
             padding: 0.125rem 0;
             overflow: hidden;
@@ -329,12 +391,25 @@ export default {
             }
           }
         }
+        p.description {
+          position: relative;
+          left: 2rem;
+          font-family: 'Raleway';
+          font-size: 0.75rem;
+          margin-right: 2rem;
+          transform: translateY(1rem);
+          opacity: 0;
+          font-weight: 450;
+          color: #fefdfc;
+          line-height: 1.75;
+        }
       }
     }
   }
   .menu {
+    display: none;
     pointer-events: none;
-    z-index: 2;
+    z-index: 4;
     position: fixed;
     top: 0;
     right: 0;
@@ -348,6 +423,42 @@ export default {
       height: 2rem;
       background: #fff;
       border-radius: 50%;
+    }
+  }
+  @media screen and (max-width: 1024px) {
+    .content {
+      .header {
+        padding: 1rem;
+      }
+      .hero-wrapper {
+        height: calc(100vh - 4rem);
+        padding: 0 1rem 4rem 1rem;
+        .hero {
+          width: 100%;
+          overflow: hidden;
+          h2.greet {
+            font-size: 0.55rem;
+          }
+          h1.title {
+            left: 0;
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+            span.word-container {
+              margin-right: 0.25rem;
+            }
+          }
+          p.description {
+            left: 0;
+            font-size: 0.55rem;
+          }
+        }
+      }
+    }
+    .menu {
+      .menu-bg {
+        top: 1rem;
+        right: 1rem;
+      }
     }
   }
 }
