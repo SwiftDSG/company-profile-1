@@ -7,9 +7,9 @@
       </div>
       <div ref="overlay" class="overlay"></div>
     </div>
-    <div class="content">
+    <div ref="mainContent" class="content">
       <div ref="header" class="header">
-        <div class="title"></div>
+        <div class="title">REDIAN</div>
         <div class="menu-btn" @click="menuHandler">
           <div ref="menuBtnBg" class="background">
             <div class="bar bar-1"></div>
@@ -45,10 +45,43 @@
         </div>
       </div>
     </div>
-    <div ref="menu" class="menu">
-      <div ref="menuBg" class="menu-bg"></div>
-      <div class="content"></div>
+  <div ref="menu" class="menu">
+    <div ref="menuBg" class="menu-bg"></div>
+    <div ref="menucontent" class="content">
+      <div class="header-menu">
+        <div class="button-exit">^</div>
+        <div class="desc">LET'S TALK</div>
+      </div>
+      <div class="body-menu">
+        <div class="sub-menu">MENU</div>
+        <div class="menu-list">
+          <div ref="work" class="menu-word">
+            Work
+          </div>
+          <div ref="services" class="menu-word">
+            Services
+          </div>
+          <div ref="about" class="menu-word">
+            About
+          </div>
+          <div ref="insights" class="menu-word">
+            Insights
+          </div>
+          <div ref="contact" class="menu-word">
+            Contact
+          </div>
+        </div>
+        <div class="company-info">
+          <div class="company email">hello@radian.com</div>
+          <div class="company telephone">08953960988012</div>
+          <div class="address">Jalan Mutiara Regency 34b,buduran, Gigatan Sidoarjo </div>
+          <div class="social-media">
+  
+          </div>
+        </div>
+       </div>
     </div>
+   </div>
   </div>
 </template>
 
@@ -175,12 +208,28 @@ export default {
       if (e.matches) this.$store.dispatch('changeMode', 'mobile')
       else this.$store.dispatch('changeMode', 'desktop')
     },
+
+    // menuList(){
+    //   const {
+    //     $refs: {
+    //       work,
+    //       services,
+    //       about,
+    //       insights,
+    //       contact,
+    //     }
+    //   } = this 
+    // },
+
     menuHandler() {
       if (!this.menuAnim) {
         const {
           $refs: {
             menuBg,
-            menuBtnBg
+            menuBtnBg,
+            menucontent,
+            mainContent,
+            menu
           }
         } = this
         const screenHeight = window.innerHeight
@@ -205,6 +254,13 @@ export default {
           rotate: 45,
           duration: 0.5,
           ease: 'power2.inOut'
+        }, '<0').to(menucontent,{
+          opacity: 1,
+          display: 'flex',
+        }, '<0.5').to(mainContent,{
+          pointerEvents: 'none'
+        }, '<0').to(menu,{
+          pointerEvents: 'auto'
         }, '<0')
       } else {
         this.menuAnim.reverse()
@@ -284,6 +340,15 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      .title{
+        z-index: 2;
+        position: relative;
+        display: fixed;
+        color:white;
+        font-family: 'Manrope';
+        font-size: 1.2rem;
+        font-weight: 800;
+      }
       .menu-btn {
         cursor: pointer;
         position: relative;
@@ -343,6 +408,7 @@ export default {
         width: 50%;
         display: flex;
         flex-direction: column;
+        margin-top: 2rem;
         justify-content: flex-start;
         align-items: flex-start;
         h2.greet {
@@ -415,14 +481,126 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-    .menu-bg {
-      position: absolute;
-      top: 2rem;
-      right: 2rem;
-      width: 2rem;
-      height: 2rem;
-      background: #fff;
-      border-radius: 50%;
+      .menu-bg {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        width: 2rem;
+        height: 2rem;
+        background: #fff;
+        border-radius: 50%;
+      }
+    .content{
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      position: fixed;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      .header-menu{
+        position: relative;
+        display: flex;
+        width: 100vw;
+        padding: 2rem;
+        box-sizing: border-box;
+        justify-content: space-between;
+        align-items: center;
+        .button-exit{
+          display: flex;
+          position: relative;
+          width: 1.5rem;
+          height: 1.5rem;
+          background: white;
+          border: 3px black solid;
+          border-radius: 1.5rem; 
+          align-items: center;
+          justify-content: center;
+          font-weight: 800;
+          flex-shrink: 0;
+          // flex-shrink: 0 biar ga gepeng 
+        }
+        .desc{
+          position: relative;
+          right: 3rem;
+          display: flex;
+          font-family: 'Manrope';
+          font-size: 0.5rem;
+          font-weight: 900;
+          color: black;
+          flex-shrink: 0;
+          letter-spacing: 0.15rem;
+        }
+      }
+      .body-menu{
+        display: flex;
+        position: relative;
+        width: 100vw;
+        height: 80vh;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-left: 5rem;
+        align-items: flex-start;
+        .sub-menu{
+          display: flex;
+          position: relative;
+          padding-right: 2rem;
+          transform: rotate(270deg);
+          font-size: 0.5rem;
+          font-family: 'Manrope';
+          letter-spacing: 0.2rem;
+          font-weight: bold;
+        }
+        .menu-list{
+          display: flex;
+          position: relative;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          .menu-word{
+              display: flex; 
+              position: relative;
+              width: 12rem;
+              height: 100%;
+              padding-bottom: 0.5rem;
+              font-size: 3rem;
+              line-height: 1;
+              font-weight: 900;
+              font-family: 'Mulish';
+              justify-content: flex-start;
+              align-items: flex-start;
+          } 
+        }
+        .company-info{
+          display: flex;
+          position: relative;
+          flex-direction: column;
+          left: 17rem;
+          top: 12.5rem;
+          width: 15rem;
+          .company {
+            display: flex;
+            position: relative;
+            color: $primary-color;
+            padding-bottom: 0.5rem;
+            font-family: 'Mulish';
+            font-size: 0.7rem;
+          }
+          .address{
+            display: flex;
+            position: relative;
+            font-family: 'Mulish';
+            font-size: 0.7rem;
+            line-height: 2;
+          }
+          .social-media{
+
+          }
+        }
+      }
     }
   }
   @media screen and (max-width: 1024px) {
