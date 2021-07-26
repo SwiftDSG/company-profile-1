@@ -9,7 +9,7 @@
     </div>
     <div ref="mainContent" class="content">
       <div ref="header" class="header">
-        <div class="title">REDIAN</div>
+        <div ref="companyName" class="title">REDIAN</div>
         <div class="menu-btn" @click="menuHandler">
           <div ref="menuBtnBg" class="background">
             <div class="bar bar-1"></div>
@@ -49,26 +49,31 @@
     <div ref="menuBg" class="menu-bg"></div>
     <div ref="menucontent" class="content">
       <div class="header-menu">
-        <div class="button-exit">^</div>
+        <div class="button-exit" @click="menuHandler">^</div>
         <div class="desc">LET'S TALK</div>
       </div>
       <div class="body-menu">
         <div class="sub-menu">MENU</div>
-        <div class="menu-list">
-          <div ref="work" class="menu-word">
-            Work
+        <div ref="menulist" class="menu-list">
+          <div class="menu-word">
+            <span class="number">01</span>
+            <span class="name">Work</span>
           </div>
-          <div ref="services" class="menu-word">
-            Services
+          <div class="menu-word">
+            <span class="number">02</span>
+            <span class="name" >Services</span>
           </div>
-          <div ref="about" class="menu-word">
-            About
+          <div class="menu-word">
+            <span class="number">03</span>
+            <span class="name">About</span>
           </div>
-          <div ref="insights" class="menu-word">
-            Insights
+          <div class="menu-word">
+            <span class="number">04</span>
+            <span class="name">Insights</span>
           </div>
-          <div ref="contact" class="menu-word">
-            Contact
+          <div class="menu-word">
+            <span class="number">05</span>
+            <span class="name">Contact</span>
           </div>
         </div>
         <div class="company-info">
@@ -219,6 +224,8 @@ export default {
     //       contact,
     //     }
     //   } = this 
+    //   const tl = gsap.timeline({})
+    //   tl.to()
     // },
 
     menuHandler() {
@@ -229,7 +236,9 @@ export default {
             menuBtnBg,
             menucontent,
             mainContent,
-            menu
+            menu,
+            menulist,
+            companyName
           }
         } = this
         const screenHeight = window.innerHeight
@@ -257,11 +266,19 @@ export default {
         }, '<0').to(menucontent,{
           opacity: 1,
           display: 'flex',
-        }, '<0.5').to(mainContent,{
+        }, '<0.5').to(menulist.children,{
+          x: 0,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: 'power2.out'
+        },'<0').to([...mainContent.children].slice(1),{
           pointerEvents: 'none'
         }, '<0').to(menu,{
           pointerEvents: 'auto'
-        }, '<0')
+        }, '<0').to(companyName,{
+          opacity:0,
+        },'<0')
       } else {
         this.menuAnim.reverse()
       }
@@ -560,18 +577,51 @@ export default {
           flex-direction: column;
           justify-content: flex-start;
           align-items: flex-start;
-          .menu-word{
-              display: flex; 
+          .menu-word {
+            display: flex; 
+            position: relative;
+            width: 12rem;
+            height: 100%;
+            opacity: 0; 
+            transform: translateX(-2rem);
+            padding-bottom: 0.5rem;
+            justify-content: flex-start;
+            align-items: flex-start;
+            .name{
+              display: flex;
               position: relative;
-              width: 12rem;
-              height: 100%;
-              padding-bottom: 0.5rem;
               font-size: 3rem;
               line-height: 1;
               font-weight: 900;
               font-family: 'Mulish';
+              transform: translateX(-0.5rem);
+              transition: 0.5s transform;
+            }
+            .number {
+              display: flex;
+              position: relative;
               justify-content: flex-start;
               align-items: flex-start;
+              font-size: 0.5rem;
+              opacity: 0;
+              font-family: 'Raleway';
+              transform: translateX(1rem);
+              letter-spacing: 0.125rem;
+              font-weight: 700;
+              top: 0.5rem;
+              right: 0.5rem;
+              transition: 0.5s transform, 0.5s opacity;
+            }
+            &:hover {
+              .name{
+                transform: translateX(0)
+              }
+              .number{
+                transform: translateX(0);
+                opacity: 1;
+              }
+              
+            }
           } 
         }
         .company-info{
@@ -580,7 +630,7 @@ export default {
           flex-direction: column;
           left: 17rem;
           top: 12.5rem;
-          width: 15rem;
+          width: 13rem;
           .company {
             display: flex;
             position: relative;
