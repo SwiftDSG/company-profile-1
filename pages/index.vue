@@ -9,7 +9,7 @@
     </div>
     <div ref="mainContent" class="content">
       <div ref="header" class="header">
-        <div ref="companyName" class="title">REDIAN</div>
+        <div ref="companyName" class="title" @click="menuHandler">REDIAN</div>
         <div class="menu-btn" @click="menuHandler">
           <div ref="menuBtnBg" class="background">
             <div class="bar bar-1"></div>
@@ -49,7 +49,7 @@
     <div ref="menuBg" class="menu-bg"></div>
     <div ref="menucontent" class="content">
       <div class="header-menu">
-        <div class="button-exit" @click="menuHandler">^</div>
+        <div class="button-exit" >^</div>
         <div class="desc">LET'S TALK</div>
       </div>
       <div class="body-menu">
