@@ -9,7 +9,7 @@
     </div>
     <div ref="mainContent" class="content">
       <div ref="header" class="header">
-        <div ref="companyName" class="title" @click="menuHandler">REDIAN</div>
+        <div ref="companyName" class="title" @click="menuHandler">Redian</div>
         <div class="menu-btn" @click="menuHandler">
           <div ref="menuBtnBg" class="background">
             <div class="bar bar-1"></div>
@@ -49,11 +49,13 @@
     <div ref="menuBg" class="menu-bg"></div>
     <div ref="menucontent" class="content">
       <div class="header-menu">
-        <div class="button-exit" >^</div>
+        <div class="button-exit"></div>
         <div class="desc">LET'S TALK</div>
       </div>
       <div class="body-menu">
-        <div class="sub-menu">MENU</div>
+        <div class="sub-menu">
+          <span class="text">MENU</span>
+        </div>
         <div ref="menulist" class="menu-list">
           <div class="menu-word">
             <span class="number">01</span>
@@ -98,7 +100,7 @@ export default {
     return {
       menuAnim: null,
       heroGreet: 'WE ARE REDIAN',
-      heroTitle: 'The digital agency you\'ll need.',
+      heroTitle: 'The only digital agency you\'ll need.',
       mediaQuery: null
     }
   },
@@ -360,9 +362,8 @@ export default {
       .title{
         z-index: 2;
         position: relative;
-        display: fixed;
         color:white;
-        font-family: 'Manrope';
+        font-family: 'Raleway';
         font-size: 1.2rem;
         font-weight: 800;
       }
@@ -516,10 +517,12 @@ export default {
       opacity: 0;
       position: fixed;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: flex-start;
       .header-menu{
-        position: relative;
+        position: absolute;
+        top: 0;
+        left: 0;
         display: flex;
         width: 100vw;
         padding: 2rem;
@@ -553,23 +556,26 @@ export default {
         }
       }
       .body-menu{
-        display: flex;
         position: relative;
         width: 100vw;
-        height: 80vh;
-        flex-direction: row;
+        padding: 0 20vw;
+        display: flex;
         justify-content: flex-start;
-        margin-left: 5rem;
-        align-items: flex-start;
+        align-items: center;
         .sub-menu{
-          display: flex;
           position: relative;
-          padding-right: 2rem;
-          transform: rotate(270deg);
-          font-size: 0.5rem;
-          font-family: 'Manrope';
-          letter-spacing: 0.2rem;
-          font-weight: bold;
+          height: 100%;
+          margin-right: 3rem;
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+          span.text {
+            font-size: 0.5rem;
+            transform: rotate(270deg) translateX(-50%);
+            font-family: 'Manrope';
+            letter-spacing: 0.125rem;
+            font-weight: 800;
+          }
         }
         .menu-list{
           display: flex;
@@ -578,16 +584,17 @@ export default {
           justify-content: flex-start;
           align-items: flex-start;
           .menu-word {
-            display: flex; 
+            cursor: pointer;
+            user-select: none;
             position: relative;
-            width: 12rem;
             height: 100%;
-            opacity: 0; 
-            transform: translateX(-2rem);
-            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: flex; 
             justify-content: flex-start;
             align-items: flex-start;
-            .name{
+            opacity: 0; 
+            transform: translateX(-2rem);
+            span.name{
               display: flex;
               position: relative;
               font-size: 3rem;
@@ -597,7 +604,7 @@ export default {
               transform: translateX(-0.5rem);
               transition: 0.5s transform;
             }
-            .number {
+            span.number {
               display: flex;
               position: relative;
               justify-content: flex-start;
@@ -622,15 +629,20 @@ export default {
               }
               
             }
-          } 
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
         }
         .company-info{
-          display: flex;
           position: relative;
+          width: 15vw;
+          height: 100%;
+          margin-left: 10vw;
+          display: flex;
           flex-direction: column;
-          left: 17rem;
-          top: 12.5rem;
-          width: 13rem;
+          justify-content: flex-end;
+          align-items: flex-start;
           .company {
             display: flex;
             position: relative;
@@ -638,6 +650,7 @@ export default {
             padding-bottom: 0.5rem;
             font-family: 'Mulish';
             font-size: 0.7rem;
+            font-weight: 600;
           }
           .address{
             display: flex;
@@ -645,9 +658,6 @@ export default {
             font-family: 'Mulish';
             font-size: 0.7rem;
             line-height: 2;
-          }
-          .social-media{
-
           }
         }
       }
