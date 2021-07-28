@@ -81,10 +81,7 @@
         <div class="company-info">
           <div class="company email">hello@radian.com</div>
           <div class="company telephone">08953960988012</div>
-          <div class="address">Jalan Mutiara Regency 34b,buduran, Gigatan Sidoarjo </div>
-          <div class="social-media">
-  
-          </div>
+          <div class="address">Jalan Mutiara Regency 34b,buduran, Gigatan, Sidoarjo</div>
         </div>
        </div>
     </div>
