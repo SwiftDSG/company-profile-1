@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 351.86 494.13">
+  <defs>
+    <style>
+      .cls-1{
+        fill: none;
+        stroke: red;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 100px;
+      }
+      .cls-2 {
+        fill: none;
+        stroke: red;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 80px;
+      }
+    </style>
+    <clipPath id="svgPath1">
+      <path d="M199.73,199.47,57.16,342.05a33.49,33.49,0,0,1-47.35,0h0a33.47,33.47,0,0,1,0-47.35L152.38,152.12a33.47,33.47,0,0,1,47.35,0h0A33.47,33.47,0,0,1,199.73,199.47Z"/>
+    </clipPath>
+    <clipPath id="svgPath2">
+      <path d="M342.05,437,199.73,294.43a33.48,33.48,0,0,0-47.36,0L9.81,437a33.47,33.47,0,0,0,0,47.35h0a33.49,33.49,0,0,0,47.35,0L163,378.49a18.29,18.29,0,0,1,25.86,0L294.69,484.33a33.49,33.49,0,0,0,47.35,0l0,0A33.49,33.49,0,0,0,342.07,437Z"/>
+    </clipPath>
+    <clipPath id="svgPath3">
+      <path d="M342.05,152.34,199.73,9.82a33.47,33.47,0,0,0-47.36,0L9.81,152.37a33.47,33.47,0,0,0,0,47.35h0a33.49,33.49,0,0,0,47.35,0L163,93.88a18.29,18.29,0,0,1,25.86,0L258,163a18.28,18.28,0,0,1,0,25.85L216.79,230a33.49,33.49,0,0,0,0,47.35l0,0a33.47,33.47,0,0,0,47.32,0L342,199.7A33.48,33.48,0,0,0,342.05,152.34Z"/>
+    </clipPath>
+  </defs>
+  <line clip-path="url(#svgPath1)" class="cls-2" x1="38.5" y1="323.33" x2="253.07" y2="109.9"/>
+  <polyline clip-path="url(#svgPath2)" class="cls-1" points="39.17 465.22 183.17 321 418.17 557"/>
+  <polyline clip-path="url(#svgPath3)" class="cls-1" points="39 180.64 181.61 38.5 323.44 180.2 110.17 394"/>
+</svg>

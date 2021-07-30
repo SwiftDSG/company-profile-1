@@ -1,9 +1,37 @@
 <template>
   <div class="container">
     <div class="background">
-      <div class="text-container">
-        <div ref="text" class="text"></div>
-        <div ref="textOverlay" class="text-overlay"></div>
+      <div ref="logoContainer" class="logo-container">
+        <svg ref="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 351.86 494.13">
+            <defs>
+              <style>
+                .cls-1{
+                  fill: none;
+                  stroke-linecap: round;
+                  stroke-linejoin: round;
+                  stroke-width: 100px;
+                }
+                .cls-2 {
+                  fill: none;
+                  stroke-linecap: round;
+                  stroke-linejoin: round;
+                  stroke-width: 80px;
+                }
+              </style>
+              <clipPath id="svgPath1">
+                <path d="M199.73,199.47,57.16,342.05a33.49,33.49,0,0,1-47.35,0h0a33.47,33.47,0,0,1,0-47.35L152.38,152.12a33.47,33.47,0,0,1,47.35,0h0A33.47,33.47,0,0,1,199.73,199.47Z"/>
+              </clipPath>
+              <clipPath id="svgPath2">
+                <path d="M342.05,437,199.73,294.43a33.48,33.48,0,0,0-47.36,0L9.81,437a33.47,33.47,0,0,0,0,47.35h0a33.49,33.49,0,0,0,47.35,0L163,378.49a18.29,18.29,0,0,1,25.86,0L294.69,484.33a33.49,33.49,0,0,0,47.35,0l0,0A33.49,33.49,0,0,0,342.07,437Z"/>
+              </clipPath>
+              <clipPath id="svgPath3">
+                <path d="M342.05,152.34,199.73,9.82a33.47,33.47,0,0,0-47.36,0L9.81,152.37a33.47,33.47,0,0,0,0,47.35h0a33.49,33.49,0,0,0,47.35,0L163,93.88a18.29,18.29,0,0,1,25.86,0L258,163a18.28,18.28,0,0,1,0,25.85L216.79,230a33.49,33.49,0,0,0,0,47.35l0,0a33.47,33.47,0,0,0,47.32,0L342,199.7A33.48,33.48,0,0,0,342.05,152.34Z"/>
+              </clipPath>
+            </defs>
+            <line clip-path="url(#svgPath1)" class="cls-2 svg-elem-1" x1="38.5" y1="323.33" x2="253.07" y2="109.9"/>
+            <polyline clip-path="url(#svgPath2)" class="cls-1 svg-elem-2" points="39.17 465.22 183.17 321 418.17 557"/>
+            <polyline clip-path="url(#svgPath3)" class="cls-1 svg-elem-3" points="39 180.64 181.61 38.5 323.44 180.2 110.17 394"/>
+        </svg>
       </div>
       <div ref="overlay" class="overlay"></div>
     </div>
@@ -79,8 +107,9 @@
           </div>
         </div>
         <div class="company-info">
-          <div class="company email">hello@radian.com</div>
-          <div class="company telephone">08953960988012</div>
+          <div class="desc-mobile">LET'S TALK</div>
+          <div ref="companyEmail" class="company email">hello@radian.com</div>
+          <div ref="companyTelephone" class="company telephone">08953960988012</div>
           <div class="address">Jalan Mutiara Regency 34b,buduran, Gigatan, Sidoarjo</div>
         </div>
        </div>
@@ -123,19 +152,23 @@ export default {
   methods: {
     init() {
       const {
-        mode,
         $refs: {
           header,
           text,
           overlay,
-          textOverlay,
           greet,
           title,
           titleOverlay,
           description,
-          menu
+          menu,
+          logo
         }
       } = this
+      
+      const pathOne = logo.children[1]
+      const pathTwo = logo.children[2]
+      const pathThree = logo.children[3]
+      
       const tl = gsap.timeline({
         onComplete() {
           gsap.to(menu, {
@@ -145,7 +178,7 @@ export default {
         }
       })
 
-      if (mode === 'desktop') {
+      if (this.mode === 'desktop') {
         tl.to(text, {
           x: 0,
           duration: 1,
@@ -160,11 +193,45 @@ export default {
               duration: 0
             })
           }
-        }).to(textOverlay, {
+        })
+        tl.to(header, {
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.out'
+        }, this.mode === 'mobile' ? '>0.5' : null).to([...greet.children].reverse(), {
           x: 0,
-          duration: 1,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: 'power2.out'
+        }, '<0').to(title.children, {
+          y: 0,
+          duration: 0.75,
+          stagger: 0.1,
           ease: 'power2.inOut'
-        }, '<0')
+        }, '<0').to(pathOne, {
+          strokeDashoffset: 609.2855834960938,
+          duration: 0.5,
+          ease: 'power2.out'
+        }, '>0').to(pathTwo, {
+          strokeDashoffset: 1077.700927734375,
+          duration: 0.5,
+          ease: 'power2.out'
+        }, '<0.25').to(pathThree, {
+          strokeDashoffset: 1411.638427734375,
+          duration: 0.5,
+          ease: 'power2.out'
+        }, '<0.25').to(titleOverlay, {
+          y: '-100%',
+          duration: 0.75,
+          stagger: 0.1,
+          ease: 'power2.inOut'
+        }, '<0').to(description, {
+          y: 0,
+          opacity: 1,
+          duration: 0.75,
+          ease: 'power2.inOut'
+        }, '<0.5')
       } else {
         tl.to(text, {
           x: 0,
@@ -172,41 +239,51 @@ export default {
         }).to(overlay, {
           x: 0,
           duration: 0
-        }).to(textOverlay, {
-          x: 0,
-          duration: 0,
         }).to(title, {
           opacity: 1,
           duration: 0
         })
+
+        tl.to(header, {
+        y: 0,
+        duration: 0.5,
+        ease: 'power2.out'
+        }, this.mode === 'mobile' ? '>0.5' : null).to([...greet.children].reverse(), {
+          x: 0,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: 'power2.out'
+        }, '<0').to(title.children, {
+          y: 0,
+          duration: 0.75,
+          stagger: 0.1,
+          ease: 'power2.inOut'
+        }, '<0.25').to(titleOverlay, {
+          y: '-100%',
+          duration: 0.75,
+          stagger: 0.1,
+          ease: 'power2.inOut'
+        }, '<0').to(description, {
+          y: 0,
+          opacity: 1,
+          duration: 0.75,
+          ease: 'power2.inOut'
+        }, '<0').to(pathOne, {
+          strokeDashoffset: 609.2855834960938,
+          duration: 0.5,
+          ease: 'power2.out'
+        }, '>0').to(pathTwo, {
+          strokeDashoffset: 1077.700927734375,
+          duration: 0.5,
+          ease: 'power2.out'
+        }, '<0.25').to(pathThree, {
+          strokeDashoffset: 1411.638427734375,
+          duration: 0.5,
+          ease: 'power2.out'
+        }, '<0.25')
       }
 
-      tl.to(header, {
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out'
-      }, mode === 'mobile' ? '>0.5' : null).to([...greet.children].reverse(), {
-        x: 0,
-        opacity: 1,
-        duration: 0.5,
-        stagger: 0.05,
-        ease: 'power2.out'
-      }, '<0').to(title.children, {
-        y: 0,
-        duration: 0.75,
-        stagger: 0.1,
-        ease: 'power2.inOut'
-      }, '<0.25').to(titleOverlay, {
-        y: '-100%',
-        duration: 0.75,
-        stagger: 0.1,
-        ease: 'power2.inOut'
-      }, '<0').to(description, {
-        y: 0,
-        opacity: 1,
-        duration: 0.75,
-        ease: 'power2.inOut'
-      }, '<0.5')
     },
     resizeHandler(e) {
       if (e.matches) this.$store.dispatch('changeMode', 'mobile')
@@ -237,7 +314,9 @@ export default {
             mainContent,
             menu,
             menulist,
-            companyName
+            companyName,
+            companyEmail,
+            companyTelephone
           }
         } = this
         const screenHeight = window.innerHeight
@@ -256,28 +335,35 @@ export default {
           width: diameter,
           height: diameter,
           duration: 0.5,
-          ease: 'power2.inOut'
+          ease: 'slow(0.5, 0.9,  false)'
         }).to(menuBtnBg, {
           scale: 1,
           rotate: 45,
           duration: 0.5,
           ease: 'power2.inOut'
-        }, '<0').to(menucontent,{
-          opacity: 1,
-          display: 'flex',
-        }, '<0.5').to(menulist.children,{
-          x: 0,
-          opacity: 1,
-          duration: 0.5,
-          stagger: 0.05,
-          ease: 'power2.out'
-        },'<0').to([...mainContent.children].slice(1),{
-          pointerEvents: 'none'
-        }, '<0').to(menu,{
-          pointerEvents: 'auto'
-        }, '<0').to(companyName,{
-          opacity:0,
-        },'<0')
+        }, '<0')
+
+
+          this.menuAnim.to(menucontent,{
+            opacity: 1,
+            display: 'flex',
+          }, '<0.5').to(menulist.children,{
+            x: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.05,
+            ease: 'power2.out'
+          },'<0').to([...mainContent.children].slice(1),{
+            pointerEvents: 'none'
+          }, '<0').to(menu,{
+            pointerEvents: 'auto'
+          }, '<0').to(companyName,{
+            opacity: 0,
+          },'<0').to([companyEmail, companyTelephone],{
+            y: 0,
+            opacity: 1,
+          },'<0.25')
+        
       } else {
         this.menuAnim.reverse()
       }
@@ -291,6 +377,7 @@ export default {
   position: relative;
   width: 100vw;
   min-height: 100vh;
+  min-height: calc((var(--vh, 1vh) * 100));
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -302,32 +389,41 @@ export default {
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: calc((var(--vh, 1vh) * 100));
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    .text-container {
+    .logo-container {
       z-index: 1;
       position: relative;
-      width: 20vw;
+      width: 40vw;
       height: 100vh;
-      margin-right: 20vw;
-      background: #fff;
+      height: calc((var(--vh, 1vh) * 100));
       overflow: hidden;
-      .text {
-        position: relative;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      svg{
         width: 100%;
-        height: 100%;
-        background: #000;
-        transform: translateX(-100%);
-      }
-      .text-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #999;
-        transform: translateX(100%);
+        transform: translateY(12.5%);
+        .svg-elem-1 {
+          stroke-dashoffset: 304.6427917480469px;
+          stroke-dasharray: 304.6427917480469px;
+        }
+        .svg-elem-2 {
+          stroke-dashoffset: 538.8504638671875px;
+          stroke-dasharray: 538.8504638671875px;
+        }
+        .svg-elem-3 {
+          stroke-dashoffset: 705.8192138671875px;
+          stroke-dasharray: 705.8192138671875px;
+        }
+        .cls-1{
+          stroke: #272628;
+        }
+        .cls-2{
+          stroke: #272628;
+        }
       }
     }
     .overlay {
@@ -336,6 +432,7 @@ export default {
       left: 0;
       width: 100vw;
       height: 100vh;
+      height: calc((var(--vh, 1vh) * 100));
       background: $background-color;
       transform: translateX(-100vw);
     }
@@ -348,7 +445,9 @@ export default {
     justify-content: flex-start;
     .header {
       z-index: 5;
-      position: relative;
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       padding: 2rem;
       transform: translateY(-100%);
@@ -360,9 +459,9 @@ export default {
         z-index: 2;
         position: relative;
         color:white;
-        font-family: 'Raleway';
+        font-family: 'Exo';
         font-size: 1.2rem;
-        font-weight: 800;
+        font-weight: 700;
       }
       .menu-btn {
         cursor: pointer;
@@ -413,7 +512,8 @@ export default {
       position: relative;
       width: 100vw;
       height: calc(100vh - 6rem);
-      padding: 0 12.5vw 6rem 12.5vw;
+      height: calc((var(--vh, 1vh) * 100) - 6rem);
+      padding: 6rem 12.5vw 0 12.5vw;
       box-sizing: border-box;
       display: flex;
       justify-content: flex-start;
@@ -428,11 +528,11 @@ export default {
         align-items: flex-start;
         h2.greet {
           position: relative;
-          font-family: 'Raleway';
+          font-family: 'Oswald';
           font-size: 0.75rem;
-          font-weight: 400;
+          font-weight: 500;
           color: $primary-color;
-          letter-spacing: 0.2rem;
+          letter-spacing: 0.4rem;
           span.letter {
             display: inline-block;
             transform: translateX(-24px);
@@ -475,12 +575,12 @@ export default {
         p.description {
           position: relative;
           left: 2rem;
-          font-family: 'Raleway';
+          font-family: 'Quicksand';
           font-size: 0.75rem;
           margin-right: 2rem;
           transform: translateY(1rem);
           opacity: 0;
-          font-weight: 450;
+          font-weight: 300;
           color: #fefdfc;
           line-height: 1.75;
         }
@@ -496,19 +596,20 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-      .menu-bg {
-        position: absolute;
-        top: 2rem;
-        right: 2rem;
-        width: 2rem;
-        height: 2rem;
-        background: #fff;
-        border-radius: 50%;
-      }
+    .menu-bg {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      width: 2rem;
+      height: 2rem;
+      background: #fff;
+      border-radius: 50%;
+    }
     .content{
       display: none;
       width: 100vw;
       height: 100vh;
+      height: calc((var(--vh, 1vh) * 100));
       top: 0;
       left: 0;
       opacity: 0;
@@ -640,6 +741,16 @@ export default {
           flex-direction: column;
           justify-content: flex-end;
           align-items: flex-start;
+          .desc-mobile {
+            position: relative;
+            display: none;
+            font-family: 'Manrope';
+            font-size: 0.5rem;
+            font-weight: 900;
+            color: black;
+            flex-shrink: 0;
+            letter-spacing: 0.15rem;
+          }
           .company {
             display: flex;
             position: relative;
@@ -648,6 +759,8 @@ export default {
             font-family: 'Mulish';
             font-size: 0.7rem;
             font-weight: 600;
+            opacity: 0;
+            transform: translateY(100%)
           }
           .address{
             display: flex;
@@ -661,13 +774,24 @@ export default {
     }
   }
   @media screen and (max-width: 1024px) {
+    .background{
+      .logo-container{
+          width: 100%;
+          height: 100%;
+          height: calc((var(--vh, 1vh) * 100));
+          svg{
+            width: 60%;
+          }
+      }
+    }
     .content {
       .header {
         padding: 1rem;
       }
       .hero-wrapper {
         height: calc(100vh - 4rem);
-        padding: 0 1rem 4rem 1rem;
+        height: calc((var(--vh, 1vh) * 100) - 4rem);
+        padding: 4rem 1rem;
         .hero {
           width: 100%;
           overflow: hidden;
@@ -693,6 +817,49 @@ export default {
       .menu-bg {
         top: 1rem;
         right: 1rem;
+      }
+      .content{
+        .header-menu{
+          padding: 1.3rem 0 1rem 1rem ;
+          .button-exit{
+            width: 1.3rem;
+            height: 1.3rem;
+          }
+          .desc{
+            display: none
+          }
+        }
+        .body-menu{
+          .sub-menu{
+            display: none;
+          }
+          .menu-list{
+            .menu-word{
+             bottom: 3rem;
+             right: 1rem; 
+              span.name{
+                font-size: 40px;
+                line-height: 1;
+              }
+              span.number {
+                display: none;
+              }
+            }
+          }
+            .company-info{
+             top: 5rem;
+             right: 10rem;
+              .desc-mobile{
+                display: flex;
+                width: 5rem;
+                bottom: 3rem;
+                left: 0.2rem;
+              }
+             .address{ 
+               display: none;
+              }
+            }
+        }
       }
     }
   }
