@@ -215,7 +215,6 @@ export default {
           ease: 'power2.out'
         }, '<0.25')
       }
-
     },
     resizeHandler(e) {
       if (e.matches) this.$store.dispatch('changeMode', 'mobile')
