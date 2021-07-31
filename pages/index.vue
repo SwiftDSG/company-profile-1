@@ -60,12 +60,13 @@
           </h1>
           <p ref="description" class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum enim omnis qui perferendis autem repellendus sapiente officiis?</p>
           <div class="about-company">
-            <div class="bg-animated"></div>
-            <span>GET TO KNOW US</span>
+            <div ref="bgButton" class="bg-animated"></div>
+            <span ref="wordButton" >GET TO KNOW US</span>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -111,7 +112,9 @@ export default {
           title,
           titleOverlay,
           description,
-          logo
+          logo,
+          bgButton,
+          wordButton
         }
       } = this
       
@@ -169,7 +172,18 @@ export default {
           opacity: 1,
           duration: 0.75,
           ease: 'power2.inOut'
-        }, '<0.5')
+        }, '<0.5').to(bgButton,{
+          x: 0,
+          opacity: 1,
+          ease: 'power2.inOut'
+        },'<0').to(wordButton, {
+          x: 0,
+          stagger: 0.5, 
+          opacity: 1,
+          ease: 'power2.inOut'
+        },'>0')
+
+
       } else {
         tl.to(text, {
           x: 0,
@@ -213,7 +227,17 @@ export default {
           strokeDashoffset: 1411.638427734375,
           duration: 0.5,
           ease: 'power2.out'
-        }, '<0.25')
+        }, '<0.25').to(bgButton,{
+          x: 0,
+          opacity: 1,
+          ease: 'power2.inOut'
+        },'<0').to(wordButton, {
+          x: 0,
+          stagger: 0.5, 
+          opacity: 1,
+          ease: 'power2.inOut'
+        },'>0')
+
       }
     },
     resizeHandler(e) {
@@ -295,7 +319,6 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    
     .hero-wrapper {
       position: relative;
       width: 100vw;
@@ -386,6 +409,7 @@ export default {
             position: absolute;
             top: 0;
             left: 0;
+            opacity: 0;
             background: #272628;
             width: 2rem;
             height: 2rem;
@@ -396,6 +420,8 @@ export default {
             position: relative;
             font-family: 'Manrope';
             font-weight: 800;
+            opacity: 0;
+            transform: translateX(1rem);
             letter-spacing: 0.2rem;
             font-size: 12px;
             color: white;
@@ -403,7 +429,6 @@ export default {
 
           &:hover{
             .bg-animated{
-              
               width: 100%;
             }
           }

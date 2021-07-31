@@ -11,7 +11,7 @@
         <div class="bar bar-2"></div>
       </div>
     </div>
-    <div ref="menu" class="menu">
+    <div ref="menu" class="menu dark">
       <div ref="menuBg" class="menu-bg"></div>
       <div ref="menucontent" class="content">
         <div class="header-menu">
@@ -481,6 +481,11 @@ export default {
           }
         }
       }
+    }
+    &.dark {
+      .header{
+        
+     }
     }
   }
   @media screen and (max-width: 1024px) {
