@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <div ref="header" class="header">
+    <div ref="header" class="header dark">
       <div ref="companyName" class="title" @click="menuHandler">Redian</div>
       <div class="menu-btn" @click="menuHandler">
         <div ref="menuBtnBg" class="background">
@@ -105,6 +105,9 @@ export default {
  computed: {
     mode() {
       return this.$store.getters.mode
+    },
+    route() {
+      return this.$route.path
     }
   },
 
@@ -121,6 +124,7 @@ export default {
     this.mediaQuery.addListener(this.resizeHandler)
     this.resizeHandler(this.mediaQuery)
     this.init()
+    console.log(route)
   },
 
   methods: {
@@ -146,7 +150,7 @@ export default {
           y: 0,
           duration: 0.5,
           ease: 'power2.out'
-        }, this.mode === 'mobile' ? '>0.5' : null)
+        }, '<2')
       } else {
         tl.to(header, {
         y: 0,
@@ -293,6 +297,32 @@ export default {
         &.bar-2 {
           margin-top: 0.1rem;
         }
+      }
+    }
+
+    &.dark {
+      
+      .menu-btn{
+          .background{
+            background: white;
+            z-index: 1000;
+            .bar{
+              background: black;
+            }
+            .bar-1{
+              background:black;
+            }
+          }
+          .bar{
+            background: black;
+            &.bar-1{
+              color:black;
+              
+            }
+            &.bar-2{
+              color: black;
+            }
+          }
       }
     }
   }
@@ -482,10 +512,57 @@ export default {
         }
       }
     }
+    
+    
     &.dark {
-      .header{
-        
-     }
+        .menu-bg{
+          background: $background-color;
+        }
+        .content{
+          .header-menu{
+            .button-exit{
+              background: $background-color;
+              svg{
+                background: $background-color;
+                .cls-1{
+                  stroke: white;
+                }
+                .cls-2{
+                  stroke: white;
+                }
+              }
+            }
+            .desc{
+              color: white;
+            }
+          }
+          .body-menu{
+           .sub-menu{
+             span.text{
+              color: white;
+             }
+           }
+           .menu-list{
+             .menu-word{
+               span.name{
+                 color: white;
+               }
+               span.number{
+                 color: white;
+               }
+             }
+           }
+           .company-info{
+             .desc-mobile{
+               color: white; 
+             }
+            .address{
+               color: #6f6f6f;
+             }
+           }
+          }
+        }
+     
     }
   }
   @media screen and (max-width: 1024px) {
