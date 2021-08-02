@@ -2,7 +2,31 @@
   <div class="container">
     <div class="background">
       <div ref="logoContainer" class="logo-container">
-        <svg ref="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 351.86 494.13">
+        <svg ref="logo" class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 351.86 494.13" width="351.8599853515625" height="494.1300048828125">
+        <defs>
+          <style>
+            .cls-1 {
+              fill: none;
+              stroke-linecap: round;
+              stroke-miterlimit: 10;
+              stroke-width: 100px;
+            }
+          </style>
+          <clipPath id="svg-path-1">
+            <rect x="-26.36" y="191.63" width="240" height="60" rx="30" transform="translate(-129.29 131.13) rotate(-45)" class="svg-elem-1"></rect>
+          </clipPath>
+          <clipPath id="svg-path-2">
+            <path d="M285.27,199.71l21.21-21.22a30,30,0,0,0,0-42.42L179.2,8.79a30,30,0,0,0-42.43,0L9.49,136.07a30,30,0,0,0,0,42.42h0a30,30,0,0,0,42.43,0L147.38,83a15,15,0,0,1,21.21,0l63.64,63.64a15,15,0,0,1,0,21.22l-31.82,31.82a30,30,0,0,0,0,42.42h0a30,30,0,0,0,42.43,0l42.43-42.42Z" class="svg-elem-2"></path>
+          </clipPath>
+          <clipPath id="svg-path-3">
+            <path d="M9.49,433.05h0a30,30,0,0,0,42.43,0l95.46-95.46a15,15,0,0,1,21.21,0l95.46,95.46a30,30,0,0,0,42.43,0h0a30,30,0,0,0,0-42.43L200.41,284.56,179.2,263.35a30,30,0,0,0-42.43,0L9.49,390.62A30,30,0,0,0,9.49,433.05Z" class="svg-elem-3"></path>
+          </clipPath>
+        </defs>
+        <line clip-path="url(#svg-path-1)" class="cls-1 svg-elem-1" x1="30.41" y1="285.15" x2="221.32" y2="94.24"></line>
+        <path clip-path="url(#svg-path-2)" class="cls-1 svg-elem-2" d="M31.11,157.17,137.18,51.1a30,30,0,0,1,42.42,0L264.52,136a30,30,0,0,1,.06,42.37L159.05,284.5"></path>
+        <path clip-path="url(#svg-path-3)" class="cls-1 svg-elem-3" d="M420,546.08,179.6,305.66a30,30,0,0,0-42.42,0L31.11,411.73"></path>
+      </svg>
+        <!-- <svg ref="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 351.86 494.13">
           <defs>
             <style>
               .cls-1{
@@ -31,7 +55,7 @@
           <line clip-path="url(#svg-path-1)" class="cls-2 svg-elem-1" x1="38.5" y1="323.33" x2="253.07" y2="109.9"/>
           <polyline clip-path="url(#svg-path-2)" class="cls-1 svg-elem-2" points="39.17 465.22 183.17 321 418.17 557"/>
           <polyline clip-path="url(#svg-path-3)" class="cls-1 svg-elem-3" points="39 180.64 181.61 38.5 323.44 180.2 110.17 394"/>
-        </svg>
+        </svg> -->
       </div>
       <div ref="overlay" class="overlay"></div>
     </div>
@@ -67,6 +91,53 @@
       </div>
     </div>
 
+    <div class="featured-content">
+      <div class="title-container">
+        <h1 class="title-featured">
+            <span 
+              v-for="(n, i) in titleFeatured.split(' ')"
+              :key="i"
+              class="word-container"
+            >
+              <span class="word">{{ n }}</span>
+              <span ref="titleOverlay" class="overlay"></span>
+            </span>
+        </h1>
+        <p class="subtitle-featured">
+          Explore some of our latest website projects.
+        </p>
+      </div>
+      <div class="image-container">
+        <div class="image-wrapper">
+          <div class="image"></div>
+          <div class="desc-image">
+            <span class="main">Optimal Dynamics</span>
+            <span class="sub">Corporate Website</span>
+          </div>
+        </div>
+        <div class="image-wrapper">
+          <div class="image"></div>
+          <div class="desc-image">
+            <span class="main">Optimal Dynamics</span>
+            <span class="sub">Corporate Website</span>
+          </div>
+        </div>
+        <div class="image-wrapper">
+          <div class="image"></div>
+          <div class="desc-image">
+            <span class="main">Optimal Dynamics</span>
+            <span class="sub">Corporate Website</span>
+          </div>
+        </div>
+        <div class="image-wrapper">
+          <div class="image"></div>
+          <div class="desc-image">
+            <span class="main">Optimal Dynamics</span>
+            <span class="sub">Corporate Website</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -80,7 +151,8 @@ export default {
       menuAnim: null,
       heroGreet: 'WE ARE REDIAN',
       heroTitle: 'The only digital agency you\'ll need.',
-      mediaQuery: null
+      mediaQuery: null,
+      titleFeatured: 'Featured Work'
     }
   },
   computed: {
@@ -280,20 +352,22 @@ export default {
       justify-content: flex-end;
       align-items: center;
       svg {
+        position: relative;
         width: 100%;
         transform: translateY(12.5%);
         .svg-elem-1 {
-          stroke-dashoffset: 304.6427917480469px;
-          stroke-dasharray: 304.6427917480469px;
+          stroke-dashoffset: 271.9875183105469px;
+          stroke-dasharray: 271.9875183105469px;
         }
         .svg-elem-2 {
-          stroke-dashoffset: 538.8504638671875px;
-          stroke-dasharray: 538.8504638671875px;
+          stroke-dashoffset: 515.9256591796875px;
+          stroke-dasharray: 515.9256591796875px;
         }
         .svg-elem-3 {
-          stroke-dashoffset: 705.8192138671875px;
-          stroke-dasharray: 705.8192138671875px;
+          stroke-dashoffset: 539.1181640625px;
+          stroke-dasharray: 539.1181640625px;
         }
+     }
         .cls-1{
           stroke: #272628;
         }
@@ -316,6 +390,7 @@ export default {
   .content {
     position: relative;
     width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -437,6 +512,114 @@ export default {
       }
     }
   }
+  .featured-content{
+    position: relative;
+    width: 100%;
+    padding: 5rem calc(12.5vw + 2rem);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    .title-container{
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      h1.title-featured{
+        position: relative;
+        font-family: 'Manrope';
+        font-size: 2.75rem;
+        // opacity: 0;
+        font-weight: 800;
+        line-height: 1.2;
+        color: black;
+        span.word-container {
+          position: relative;
+          margin-right: 0.65rem;
+          // transform: translateY(1.5rem);
+          padding: 0.125rem 0;
+          overflow: hidden;
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          span.overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: $background-color;
+          }
+          &:first-child {
+            margin-left: 0;
+          }
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+      p.subtitle-featured {
+        position: relative;
+        font-family: 'Quicksand';
+        font-size: 0.9rem;
+        margin-right: 2rem;
+        transform: translateY(-2.5rem);
+        // transform: translateY(1rem);
+        font-weight: 400;
+        color: black;
+        line-height: 1.75;
+      }
+    }
+    .image-container{
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      .image-wrapper{
+        position: relative;
+        height: 26rem;
+        width: calc(50% - 1.5rem);
+        background:cyan;
+        display: flex;
+        flex-shrink: 0;
+        margin-bottom: 3rem;
+        .desc-image{
+          position: relative;
+          height: 100%;
+          width: 100%;
+          left: 1rem;
+          display: flex;
+          transform: translateY(-2rem);
+          flex-direction: column;
+          justify-content: flex-end;
+          align-items: flex-end;
+          span.main{
+            font-family: 'Manrope';
+            font-weight: 800;
+            font-size: 36px;
+            line-height: 70px;
+          }
+          span.sub{
+            font-weight: 500;
+            font-family: 'Quicksand';
+            font-size: 16px;
+            line-height: 1.3rem;
+          }
+        }
+        &:nth-child(odd){
+          // ganjil
+          margin-right: 1.5rem;
+        }
+
+         &:nth-child(even){
+          // genap
+          margin-left: 1.5rem;
+        }
+      }
+    }
+  }
   
   @media screen and (max-width: 1024px) {
     .background{
@@ -479,5 +662,4 @@ export default {
       }
     }
   }
-}
 </style>
