@@ -2,60 +2,41 @@
   <div class="container">
     <div class="background">
       <div ref="logoContainer" class="logo-container">
-        <svg ref="logo" class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 351.86 494.13" width="351.8599853515625" height="494.1300048828125">
-        <defs>
-          <style>
-            .cls-1 {
-              fill: none;
-              stroke-linecap: round;
-              stroke-miterlimit: 10;
-              stroke-width: 100px;
-            }
-          </style>
-          <clipPath id="svg-path-1">
-            <rect x="-26.36" y="191.63" width="240" height="60" rx="30" transform="translate(-129.29 131.13) rotate(-45)" class="svg-elem-1"></rect>
-          </clipPath>
-          <clipPath id="svg-path-2">
-            <path d="M285.27,199.71l21.21-21.22a30,30,0,0,0,0-42.42L179.2,8.79a30,30,0,0,0-42.43,0L9.49,136.07a30,30,0,0,0,0,42.42h0a30,30,0,0,0,42.43,0L147.38,83a15,15,0,0,1,21.21,0l63.64,63.64a15,15,0,0,1,0,21.22l-31.82,31.82a30,30,0,0,0,0,42.42h0a30,30,0,0,0,42.43,0l42.43-42.42Z" class="svg-elem-2"></path>
-          </clipPath>
-          <clipPath id="svg-path-3">
-            <path d="M9.49,433.05h0a30,30,0,0,0,42.43,0l95.46-95.46a15,15,0,0,1,21.21,0l95.46,95.46a30,30,0,0,0,42.43,0h0a30,30,0,0,0,0-42.43L200.41,284.56,179.2,263.35a30,30,0,0,0-42.43,0L9.49,390.62A30,30,0,0,0,9.49,433.05Z" class="svg-elem-3"></path>
-          </clipPath>
-        </defs>
-        <line clip-path="url(#svg-path-1)" class="cls-1 svg-elem-1" x1="30.41" y1="285.15" x2="221.32" y2="94.24"></line>
-        <path clip-path="url(#svg-path-2)" class="cls-1 svg-elem-2" d="M31.11,157.17,137.18,51.1a30,30,0,0,1,42.42,0L264.52,136a30,30,0,0,1,.06,42.37L159.05,284.5"></path>
-        <path clip-path="url(#svg-path-3)" class="cls-1 svg-elem-3" d="M420,546.08,179.6,305.66a30,30,0,0,0-42.42,0L31.11,411.73"></path>
-      </svg>
-        <!-- <svg ref="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 351.86 494.13">
+        <svg ref="logo" class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 315.27 441.84">
           <defs>
             <style>
-              .cls-1{
+              .cls-1 {
                 fill: none;
                 stroke-linecap: round;
-                stroke-linejoin: round;
+                stroke-miterlimit: 10;
                 stroke-width: 100px;
-              }
-              .cls-2 {
-                fill: none;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                stroke-width: 80px;
               }
             </style>
             <clipPath id="svg-path-1">
-              <path d="M199.73,199.47,57.16,342.05a33.49,33.49,0,0,1-47.35,0h0a33.47,33.47,0,0,1,0-47.35L152.38,152.12a33.47,33.47,0,0,1,47.35,0h0A33.47,33.47,0,0,1,199.73,199.47Z"/>
+              <rect x="-26.36" y="191.63" width="240" height="60" rx="30" transform="translate(-129.29 131.13) rotate(-45)"></rect>
             </clipPath>
             <clipPath id="svg-path-2">
-              <path d="M342.05,437,199.73,294.43a33.48,33.48,0,0,0-47.36,0L9.81,437a33.47,33.47,0,0,0,0,47.35h0a33.49,33.49,0,0,0,47.35,0L163,378.49a18.29,18.29,0,0,1,25.86,0L294.69,484.33a33.49,33.49,0,0,0,47.35,0l0,0A33.49,33.49,0,0,0,342.07,437Z"/>
+              <path d="M285.27,199.71l21.21-21.22a30,30,0,0,0,0-42.42L179.2,8.79a30,30,0,0,0-42.43,0L9.49,136.07a30,30,0,0,0,0,42.42h0a30,30,0,0,0,42.43,0L147.38,83a15,15,0,0,1,21.21,0l63.64,63.64a15,15,0,0,1,0,21.22l-31.82,31.82a30,30,0,0,0,0,42.42h0a30,30,0,0,0,42.43,0l42.43-42.42Z"></path>
             </clipPath>
             <clipPath id="svg-path-3">
-              <path d="M342.05,152.34,199.73,9.82a33.47,33.47,0,0,0-47.36,0L9.81,152.37a33.47,33.47,0,0,0,0,47.35h0a33.49,33.49,0,0,0,47.35,0L163,93.88a18.29,18.29,0,0,1,25.86,0L258,163a18.28,18.28,0,0,1,0,25.85L216.79,230a33.49,33.49,0,0,0,0,47.35l0,0a33.47,33.47,0,0,0,47.32,0L342,199.7A33.48,33.48,0,0,0,342.05,152.34Z"/>
+              <path d="M9.49,433.05h0a30,30,0,0,0,42.43,0l95.46-95.46a15,15,0,0,1,21.21,0l95.46,95.46a30,30,0,0,0,42.43,0h0a30,30,0,0,0,0-42.43L200.41,284.56,179.2,263.35a30,30,0,0,0-42.43,0L9.49,390.62A30,30,0,0,0,9.49,433.05Z"></path>
             </clipPath>
           </defs>
-          <line clip-path="url(#svg-path-1)" class="cls-2 svg-elem-1" x1="38.5" y1="323.33" x2="253.07" y2="109.9"/>
-          <polyline clip-path="url(#svg-path-2)" class="cls-1 svg-elem-2" points="39.17 465.22 183.17 321 418.17 557"/>
-          <polyline clip-path="url(#svg-path-3)" class="cls-1 svg-elem-3" points="39 180.64 181.61 38.5 323.44 180.2 110.17 394"/>
-        </svg> -->
+          <line clip-path="url(#svg-path-1)" class="cls-1 svg-elem-1" x1="30.41" y1="285.15" x2="221.32" y2="94.24"></line>
+          <path clip-path="url(#svg-path-2)" class="cls-1 svg-elem-2" d="M31.11,157.17,137.18,51.1a30,30,0,0,1,42.42,0L264.52,136a30,30,0,0,1,.06,42.37L159.05,284.5"></path>
+          <path clip-path="url(#svg-path-3)" class="cls-1 svg-elem-3" d="M420,546.08,179.6,305.66a30,30,0,0,0-42.42,0L31.11,411.73"></path>
+        </svg>
+        <svg class="line" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 444 458.77">
+          <defs>
+            <style>
+              .cls-2 {
+                stroke-width: 1px;
+                stroke-miterlimit: 10;
+              }
+            </style>
+          </defs>
+          <path class="cls-2" d="M.35,458.42l269-269a22.51,22.51,0,0,0,0-31.82l-31.83-31.82a22.48,22.48,0,0,0-31.81,0L126.89,204.6a45,45,0,0,1-63.64,0h0a45,45,0,0,1,0-63.64L190.53,13.68a45,45,0,0,1,63.64,0L381.93,141.44A45,45,0,0,1,382,205l-64,64.19a45,45,0,0,0,.12,63.67L443.65,458"/>
+        </svg>
       </div>
       <div ref="overlay" class="overlay"></div>
     </div>
@@ -94,14 +75,14 @@
     <div class="featured-content">
       <div class="title-container">
         <h1 class="title-featured">
-            <span 
-              v-for="(n, i) in titleFeatured.split(' ')"
-              :key="i"
-              class="word-container"
-            >
-              <span class="word">{{ n }}</span>
-              <span ref="titleOverlay" class="overlay"></span>
-            </span>
+          <span 
+            v-for="(n, i) in titleFeatured.split(' ')"
+            :key="i"
+            class="word-container"
+          >
+            <span class="word">{{ n }}</span>
+            <span ref="titleOverlay" class="overlay"></span>
+          </span>
         </h1>
         <p class="subtitle-featured">
           Explore some of our latest website projects.
@@ -193,6 +174,7 @@ export default {
       const pathOne = logo.children[1]
       const pathTwo = logo.children[2]
       const pathThree = logo.children[3]
+      const pathFour = logo.nextElementSibling.children[1]
       
       const tl = gsap.timeline()
 
@@ -223,15 +205,15 @@ export default {
           stagger: 0.1,
           ease: 'power2.inOut'
         }, '<0').to(pathOne, {
-          strokeDashoffset: 609.2855834960938,
+          strokeDashoffset: 543.9750366210938,
           duration: 0.5,
           ease: 'power2.out'
         }, '>0').to(pathTwo, {
-          strokeDashoffset: 1077.700927734375,
+          strokeDashoffset: 1031.851318359375,
           duration: 0.5,
           ease: 'power2.out'
         }, '<0.25').to(pathThree, {
-          strokeDashoffset: 1411.638427734375,
+          strokeDashoffset: 0,
           duration: 0.5,
           ease: 'power2.out'
         }, '<0.25').to(titleOverlay, {
@@ -253,7 +235,11 @@ export default {
           stagger: 0.5, 
           opacity: 1,
           ease: 'power2.inOut'
-        },'>0')
+        }).to(pathFour, {
+          strokeDashoffset: 0,
+          duration: 5,
+          ease: 'power2.inOut'
+        })
 
 
       } else {
@@ -288,15 +274,15 @@ export default {
           duration: 0.75,
           ease: 'power2.inOut'
         }, '<0').to(pathOne, {
-          strokeDashoffset: 609.2855834960938,
+          strokeDashoffset: 543.9750366210938,
           duration: 0.5,
           ease: 'power2.out'
         }, '>0').to(pathTwo, {
-          strokeDashoffset: 1077.700927734375,
+          strokeDashoffset: 1031.851318359375,
           duration: 0.5,
           ease: 'power2.out'
         }, '<0.25').to(pathThree, {
-          strokeDashoffset: 1411.638427734375,
+          strokeDashoffset: 0,
           duration: 0.5,
           ease: 'power2.out'
         }, '<0.25').to(bgButton,{
@@ -341,20 +327,25 @@ export default {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    overflow: hidden;
     .logo-container {
       z-index: 1;
       position: relative;
       width: 40vw;
       height: 100vh;
       height: calc((var(--vh, 1vh) * 100));
-      overflow: hidden;
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      svg {
-        position: relative;
+      svg.logo {
+        position: absolute;
+        right: 0;
+        bottom: 0;
         width: 100%;
-        transform: translateY(12.5%);
+        transform: translateY(4rem);
+        .cls-1{
+          stroke: #272628;
+        }
         .svg-elem-1 {
           stroke-dashoffset: 271.9875183105469px;
           stroke-dasharray: 271.9875183105469px;
@@ -367,12 +358,17 @@ export default {
           stroke-dashoffset: 539.1181640625px;
           stroke-dasharray: 539.1181640625px;
         }
-     }
-        .cls-1{
-          stroke: #272628;
-        }
-        .cls-2{
-          stroke: #272628;
+      }
+      svg.line {
+        position: absolute;
+        width: 140.61017123339812526327008084612%;
+        right: 0;
+        bottom: 0;
+        transform: translate(15%, 4rem);
+        .cls-2 {
+          stroke: $primary-color;
+          stroke-dashoffset: 1591.5682373046875px;
+          stroke-dasharray: 1591.5682373046875px;
         }
       }
     }
@@ -501,13 +497,11 @@ export default {
             font-size: 12px;
             color: white;
           }
-
           &:hover{
             .bg-animated{
               width: 100%;
             }
           }
-
         }
       }
     }
@@ -612,15 +606,13 @@ export default {
           // ganjil
           margin-right: 1.5rem;
         }
-
-         &:nth-child(even){
+        &:nth-child(even){
           // genap
           margin-left: 1.5rem;
         }
       }
     }
   }
-  
   @media screen and (max-width: 1024px) {
     .background{
       .logo-container{
@@ -662,4 +654,5 @@ export default {
       }
     }
   }
+}
 </style>
