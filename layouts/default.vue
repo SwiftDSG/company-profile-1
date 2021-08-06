@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <div ref="header" class="header dark">
+    <div ref="header" class="header" :class="route === '/' ? '' : ' dark' ">
       <div ref="companyName" class="title" @click="menuHandler">Redian</div>
       <div class="menu-btn" @click="menuHandler">
         <div ref="menuBtnBg" class="background">
@@ -11,7 +11,7 @@
         <div class="bar bar-2"></div>
       </div>
     </div>
-    <div ref="menu" class="menu dark">
+    <div ref="menu" class="menu" :class="route === '/' ? '' : ' dark' ">
       <div ref="menuBg" class="menu-bg"></div>
       <div ref="menucontent" class="content">
         <div class="header-menu">
@@ -232,6 +232,7 @@ export default {
 .layout{
   position: relative;
   width: 100vw;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -240,7 +241,7 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     padding: 2rem;
     transform: translateY(-100%);
     box-sizing: border-box;
@@ -301,8 +302,11 @@ export default {
     }
 
     &.dark {
-      
+      .title{
+        color: black;
+      }
       .menu-btn{
+        background: black;
           .background{
             background: white;
             z-index: 1000;
@@ -314,7 +318,7 @@ export default {
             }
           }
           .bar{
-            background: black;
+            background: white;
             &.bar-1{
               color:black;
               
@@ -327,14 +331,15 @@ export default {
     }
   }
   .menu {
-    display: none;
-    pointer-events: none;
     z-index: 4;
+    pointer-events: none;
     position: fixed;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: calc((var(--vh, 1vh) * 100));
+    display: none;
     .menu-bg {
       position: absolute;
       top: 2rem;
@@ -346,13 +351,10 @@ export default {
     }
     .content{
       display: none;
-      width: 100vw;
-      height: 100vh;
-      height: calc((var(--vh, 1vh) * 100));
-      top: 0;
-      left: 0;
+      position: relative;
+      width: 100%;
+      height: 100%;
       opacity: 0;
-      position: fixed;
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
@@ -397,6 +399,7 @@ export default {
         position: relative;
         width: 100vw;
         padding: 0 20vw;
+        box-sizing: border-box;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -512,121 +515,121 @@ export default {
         }
       }
     }
-    
-    
     &.dark {
-        .menu-bg{
-          background: $background-color;
-        }
-        .content{
-          .header-menu{
-            .button-exit{
+      .menu-bg{
+        background: $background-color;
+      }
+      .content{
+        .header-menu{
+          .button-exit{
+            background: $background-color;
+            svg{
               background: $background-color;
-              svg{
-                background: $background-color;
-                .cls-1{
-                  stroke: white;
-                }
-                .cls-2{
-                  stroke: white;
-                }
+              .cls-1{
+                stroke: white;
+              }
+              .cls-2{
+                stroke: white;
               }
             }
-            .desc{
-              color: white;
-            }
           }
-          .body-menu{
-           .sub-menu{
-             span.text{
-              color: white;
-             }
-           }
-           .menu-list{
-             .menu-word{
-               span.name{
-                 color: white;
-               }
-               span.number{
-                 color: white;
-               }
-             }
-           }
-           .company-info{
-             .desc-mobile{
-               color: white; 
-             }
-            .address{
-               color: #6f6f6f;
-             }
-           }
+          .desc{
+            color: white;
           }
         }
-     
+        .body-menu{
+          .sub-menu{
+            span.text{
+            color: white;
+            }
+          }
+          .menu-list{
+            .menu-word{
+              span.name{
+                color: white;
+              }
+              span.number{
+                color: white;
+              }
+            }
+          }
+          .company-info{
+            .desc-mobile{
+              color: white; 
+            }
+          .address{
+              color: #6f6f6f;
+            }
+          }
+        }
+      }
     }
   }
   @media screen and (max-width: 1024px) {
-      .header{
-        padding : 1rem;
+    .header{
+      padding : 1rem;
+    }
+    .menu {
+      .menu-bg {
+        top: 1rem;
+        right: 1rem;
       }
-      .menu {
-        .menu-bg {
-          top: 1rem;
-          right: 1rem;
+      .content{
+        .header-menu{
+          padding: 1.3rem 0 1rem 1rem ;
+          .button-exit{
+            width: 1.3rem;
+            height: 1.3rem;
+          }
+          .desc{
+            display: none
+          }
         }
-        .content{
-          .header-menu{
-            padding: 1.3rem 0 1rem 1rem ;
-            .button-exit{
-              width: 1.3rem;
-              height: 1.3rem;
-            }
-            .desc{
-              display: none
-            }
+        .body-menu{
+          .sub-menu{
+            display: none;
           }
-          .body-menu{
-            .sub-menu{
-              display: none;
-            }
-            .menu-list{
-              .menu-word{
-               bottom: 3rem;
-               right: 1rem; 
-                span.name{
-                  font-size: 40px;
-                  line-height: 1;
-                }
-                span.number {
-                  display: none;
-                }
+          .menu-list{
+            .menu-word{
+              bottom: 3rem;
+              right: 1rem; 
+              span.name{
+                font-size: 40px;
+                line-height: 1;
+              }
+              span.number {
+                display: none;
               }
             }
-              .company-info{
-               top: 5rem;
-               right: 10rem;
-                .desc-mobile{
-                  display: flex;
-                  width: 5rem;
-                  bottom: 3rem;
-                  left: 0.2rem;
-                }
-               .address{ 
-                 display: none;
-                }
-              }
           }
+            .company-info{
+              top: 5rem;
+              right: 10rem;
+              .desc-mobile{
+                display: flex;
+                width: 5rem;
+                bottom: 3rem;
+                left: 0.2rem;
+              }
+              .address{ 
+                display: none;
+              }
+            }
         }
       }
     }
-  
+  }
 }
 </style>
 
 <style lang="scss">
+::-webkit-scrollbar {
+  display: none;
+}
 html, body {
   margin: 0;
   padding: 0;
   font-size: 24px;
+  overflow-x: hidden;
 }
 </style>
