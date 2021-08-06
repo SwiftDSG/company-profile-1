@@ -124,7 +124,7 @@ export default {
     this.mediaQuery.addListener(this.resizeHandler)
     this.resizeHandler(this.mediaQuery)
     this.init()
-    console.log(route)
+    console.log(this.route)
   },
 
   methods: {
