@@ -64,7 +64,7 @@
               <span class="number">02</span>
               <span class="name" >Services</span>
             </div>
-            <div class="menu-word">
+            <div class="menu-word" @click="$router.push('/about')">
               <span class="number">03</span>
               <span class="name">About</span>
             </div>

@@ -66,7 +66,7 @@
           <p ref="description" class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum enim omnis qui perferendis autem repellendus sapiente officiis?</p>
           <div class="about-company">
             <div ref="bgButton" class="bg-animated"></div>
-            <span ref="wordButton" >GET TO KNOW US + </span>
+            <span ref="wordButton" @click="$router.push('/about')">GET TO KNOW US + </span>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@
     <div class="more-about">
        <div class="hero-wrapper">
         <div class="hero">
-          <h2 ref="greet" class="greet">
+          <h2 ref="greetTwo" class="greet">
             <span 
               v-for="(n, i) in moreAbout.split('')"
               :key="i"
@@ -135,23 +135,48 @@
               {{ n }}
             </span>
           </h2>
-          <h1 ref="title" class="title">
+          <h1 class="title">
             <span 
               class="word-container"
             >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, cumque, velit atque dicta porro at veniam, inventore unde voluptatibus deserunt adipisci? Ea odio ad officia laudantium distinctio. Quaerat, fugit molestiae?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga similique culpa labore distinctio cupiditate ratione ea
+              We are a web design and development company, building websites that drive traffic, engagement, and conversion for industry-leading brands and startups in Indonesia.
             </span>
           </h1>
         </div>
       </div>
-
+    </div>
+    <div class="our-services">
+     <div class="hero-wrapper">
+        <div class="hero">
+          <h2 ref="greetThree" class="greet">
+            <span 
+              v-for="(n, i) in ourServices.split('')"
+              :key="i"
+              class="letter"
+              :style="n === ' ' ? 'margin: 0 0.25rem' : ''"
+            >
+              {{ n }}
+            </span>
+          </h2>
+          <div class="list-service">
+            <div class="service">
+              <span class="name-service">Websites</span>
+              <div class="image-service"></div>
+            </div>
+            <div class="desc">
+              <span class="word-container">
+                We build impactful experiences through great UX, design, and development.
+              </span>
+            </div>            
+          </div>
+        </div>
+     </div>
     </div>
   </div>
 </template>
 
 <script>
 import gsap from 'gsap'
-
 export default {
   layout: "default",
   data() {
@@ -161,7 +186,8 @@ export default {
       heroTitle: 'The only digital agency you\'ll need.',
       mediaQuery: null,
       titleFeatured: 'Featured Work',
-      moreAbout: 'A DIGITAL AGENCY'
+      moreAbout: 'A DIGITAL AGENCY',
+      ourServices: 'WHAT WE DO'
     }
   },
   computed: {
@@ -195,7 +221,9 @@ export default {
           description,
           logo,
           bgButton,
-          wordButton
+          wordButton,
+          greetTwo,
+          greetThree
         }
       } = this
       
@@ -205,7 +233,6 @@ export default {
       const pathFour = logo.nextElementSibling.children[1]
       
       const tl = gsap.timeline()
-
       if (this.mode === 'desktop') {
         tl.to(text, {
           x: 0,
@@ -224,6 +251,18 @@ export default {
         }).to([...greet.children].reverse(), {
           x: 0,
           opacity: 1,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: 'power2.out'
+        }, '<0').to([...greetTwo.children], {
+          x: 0,
+          opacity:1,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: 'power2.out'
+        }, '<0').to([...greetThree.children], {
+          x: 0,
+          opacity:1,
           duration: 0.5,
           stagger: 0.05,
           ease: 'power2.out'
@@ -268,8 +307,6 @@ export default {
           duration: 5,
           ease: 'power2.inOut'
         })
-
-
       } else {
         tl.to(text, {
           x: 0,
@@ -323,7 +360,6 @@ export default {
           opacity: 1,
           ease: 'power2.inOut'
         },'>0')
-
       }
     },
     resizeHandler(e) {
@@ -571,7 +607,7 @@ export default {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: $background-color;
+            background: white;
           }
           &:first-child {
             margin-left: 0;
@@ -676,11 +712,12 @@ export default {
       }
     }
     }
-
   }
   .more-about{
     position: relative;
     width: 100%;
+    height: 98vh;
+    height: calc((var(--vh, 1vh) * 98));
     padding: 5rem calc(12.5vw + 2rem);
     background: $primary-color;
     box-sizing: border-box;
@@ -693,26 +730,29 @@ export default {
       width: 100vw;
       height: calc(100vh - 6rem);
       height: calc((var(--vh, 1vh) * 100) - 6rem);
-      padding: 6rem 12.5vw 0 12.5vw;
+      padding: 0 12.5vw 2rem 12.5vw;
       box-sizing: border-box;
       display: flex;
       justify-content: flex-start;
       align-items: center;
       .hero {
         position: relative;
-        width: 50%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         margin-top: 2rem;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: flex-start;
         h2.greet {
           position: relative;
           font-family: 'Oswald';
-          font-size: 0.65rem;
+          font-size: 0.5rem;
           font-weight: 400;
           color:  white;
           letter-spacing: 0.4rem;
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start ;
           span.letter {
             display: inline-block;
             transform: translateX(-24px);
@@ -721,13 +761,13 @@ export default {
         }
         h1.title {
           position: relative;
+          width: 70%;
           left: 2rem;
           font-family: 'Manrope';
-          font-size: 36px;
+          font-size: 30px;
           font-weight: 800;
-          opacity: 0;
           margin: 1rem 0;
-          line-height: 1.2;
+          line-height: 70px;
           color: #fff;
           span.word-container {
             position: relative;
@@ -749,6 +789,110 @@ export default {
             }
             &:last-child {
               margin-right: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+  .our-services{
+    position: relative;
+    width: 100%;
+    padding: 5rem calc(12.5vw + 2rem);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    .hero-wrapper {
+      position: relative;
+      width: 100vw;
+      height: calc(100vh - 6rem);
+      height: calc((var(--vh, 1vh) * 100) - 6rem);
+      padding: 5rem calc(12.5vw + 2rem);
+      box-sizing: border-box;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      .hero {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        h2.greet {
+          position: relative;
+          font-family: 'Oswald';
+          font-size: 0.5rem;
+          font-weight: 400;
+          width: 100%;
+          color: black;
+          letter-spacing: 0.4rem;
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start ;
+          span.letter {
+            display: inline-block;
+            transform: translateX(-24px);
+            opacity: 0;
+          }
+        }
+        .list-service{
+          position: relative;
+          width: 100%;
+          padding-bottom: 1rem;
+          box-sizing: border-box;
+          // display: flex;
+          // justify-content: center;
+          // align-items: center;
+          .service{
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            span.name-service{
+            position: absolute;
+            display: flex;
+            top: 1rem;
+            transform: translateY(2rem);
+            letter-spacing: 0.5rem;
+            font-family: 'Mulish';
+            font-weight: 750;
+            font-size: 8rem;
+            color: rgba(black, 0.1);
+            }
+            .image-service{
+              position: relative;
+              width: 11rem;
+              height: 20rem;
+              z-index: 1;
+              transform: scale(1) rotate(35deg);
+              background: cyan;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+          .desc {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            width: 100%;
+            justify-content: flex-end;
+            align-items: flex-end;
+            transform: translateY(-5rem);
+            span.word-container {
+              font-family: 'Manrope';
+              font-size: 0.6rem;
+              width: 28%;
+              transform: translateX(-2rem);
+              font-weight: 600;
+              color: rgba(black, 0.6);
             }
           }
         }

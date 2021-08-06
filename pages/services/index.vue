@@ -35,8 +35,8 @@ import gsap from 'gsap'
 export default {
   data(){
     return{
-      heroGreet: "WHO WE ARE",
-      heroTitle: "A Passionate team, rooted in digital",
+      heroGreet: "WHAT WE DO",
+      heroTitle: "Driving brands fowards online.",
     }
   },
 

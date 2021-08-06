@@ -1,33 +1,32 @@
 <template>
-  <div class="container">
-    <div class="hero-wrapper">
-      <div class="hero">
-        <h2 ref="greet" class="greet">
-          <span 
-            v-for="(n, i) in heroGreet.split('')"
-            :key="i"
-            class="letter"
-            :style="n === ' ' ? 'margin: 0 0.25rem' : ''"
-          >
-            {{ n }}
-          </span>
-        </h2>
-        <h1 ref="title" class="title">
-          <span 
-            v-for="(n, i) in heroTitle.split(' ')"
-            :key="i"
-            class="word-container"
-          >
-            <span class="word">{{ n }}</span>
-            <span ref="titleOverlay" class="overlay"></span>
-          </span>
-        </h1>
-        <p ref="description" class="description">Building great things in the heart Indonesia.</p>
-      </div>
-    </div>
+<div class="container">
+  <div class="hero-wrapper">
+  <div class="hero">
+    <h2 ref="greet" class="greet">
+      <span 
+        v-for="(n, i) in heroGreet.split('')"
+        :key="i"
+        class="letter"
+        :style="n === ' ' ? 'margin: 0 0.25rem' : ''"
+      >
+        {{ n }}
+      </span>
+    </h2>
+    <h1 ref="title" class="title">
+      <span 
+        v-for="(n, i) in heroTitle.split(' ')"
+        :key="i"
+        class="word-container"
+      >
+        <span class="word">{{ n }}</span>
+        <span ref="titleOverlay" class="overlay"></span>
+      </span>
+    </h1>
+    <p ref="description" class="description">Solving diverse business needs through great design and UX.</p>
   </div>
+  </div>
+</div>
 </template>
-
 
 <script>
 import gsap from 'gsap'
@@ -35,19 +34,19 @@ import gsap from 'gsap'
 export default {
   data(){
     return{
-      heroGreet: "WHO WE ARE",
-      heroTitle: "A Passionate team, rooted in digital",
+      heroGreet: "CASE STUDIES",
+      heroTitle: "Some of our finest work.",
     }
   },
 
   computed: {
-    mode() {
+    mode(){
       return this.$store.getters.mode
     }
   },
 
-  mounted() {
-  // CSS 1vh var
+  mounted(){
+    // CSS 1vh var
       const vh = window.innerHeight * 0.01
       document.documentElement.style.setProperty('--vh', `${vh}px`)
       window.addEventListener('resize', () => {
@@ -62,72 +61,70 @@ export default {
   },
 
   methods: {
-  init() {
-      const {
-        $refs: {
-          greet,
-          title,
-          titleOverlay,
-          description,
-        }
-      } = this
-      
-      
-      const tl = gsap.timeline()
+   init() {
+        const {
+          $refs: {
+            greet,
+            title,
+            titleOverlay,
+            description,
+          }
+        } = this
+        
+        
+        const tl = gsap.timeline()
 
-      if (this.mode === 'desktop') {
-        tl.to([...greet.children].reverse(), {
-          x: 0,
-          opacity: 1,
-          duration: 0.5,
-          stagger: 0.05,
-          ease: 'power2.out'
-        }, '<0').to(title.children, {
-          y: 0,
-          duration: 0.75,
-          stagger: 0.1,
-          opacity: 1,
-          ease: 'power2.inOut'
-        }, '<0').to(titleOverlay, {
-          y: '-100%',
-          duration: 0.75,
-          stagger: 0.1,
-          ease: 'power2.inOut'
-        }, '<0').to(description, {
-          y: 0,
-          opacity: 1,
-          duration: 0.75,
-          ease: 'power2.inOut'
-        }, '<0.5')
-      } else {
-        tl.to(title, {
-          opacity: 1,
-          duration: 0
-        }).to([...greet.children].reverse(), {
-          x: 0,
-          opacity: 1,
-          duration: 0.5,
-          stagger: 0.05,
-          ease: 'power2.out'
-        }, '<0').to(title.children, {
-          y: 0,
-          duration: 0.75,
-          stagger: 0.1,
-          ease: 'power2.inOut'
-        }, '<0.25').to(titleOverlay, {
-          y: '-100%',
-          duration: 0.75,
-          stagger: 0.1,
-          ease: 'power2.inOut'
-        }, '<0').to(description, {
-          y: 0,
-          opacity: 1,
-          duration: 0.75,
-          ease: 'power2.inOut'
-        }, '<0')}
-    },
-
-
+        if (this.mode === 'desktop') {
+          tl.to([...greet.children].reverse(), {
+            x: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.05,
+            ease: 'power2.out'
+          }, '<0').to(title.children, {
+            y: 0,
+            duration: 0.75,
+            stagger: 0.1,
+            opacity: 1,
+            ease: 'power2.inOut'
+          }, '<0').to(titleOverlay, {
+            y: '-100%',
+            duration: 0.75,
+            stagger: 0.1,
+            ease: 'power2.inOut'
+          }, '<0').to(description, {
+            y: 0,
+            opacity: 1,
+            duration: 0.75,
+            ease: 'power2.inOut'
+          }, '<0.5')
+        } else {
+          tl.to(title, {
+            opacity: 1,
+            duration: 0
+          }).to([...greet.children].reverse(), {
+            x: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.05,
+            ease: 'power2.out'
+          }, '<0').to(title.children, {
+            y: 0,
+            duration: 0.75,
+            stagger: 0.1,
+            ease: 'power2.inOut'
+          }, '<0.25').to(titleOverlay, {
+            y: '-100%',
+            duration: 0.75,
+            stagger: 0.1,
+            ease: 'power2.inOut'
+          }, '<0').to(description, {
+            y: 0,
+            opacity: 1,
+            duration: 0.75,
+            ease: 'power2.inOut'
+          }, '<0')}
+      },
    resizeHandler(e) {
       if (e.matches) this.$store.dispatch('changeMode', 'mobile')
       else this.$store.dispatch('changeMode', 'desktop')
@@ -135,8 +132,6 @@ export default {
   }
 }
 </script>
-
-
 
 <style lang="scss" scoped>
 .container{
