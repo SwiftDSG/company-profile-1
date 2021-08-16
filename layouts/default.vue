@@ -503,7 +503,7 @@ export default {
             font-size: 0.7rem;
             font-weight: 600;
             opacity: 0;
-            transform: translateY(100%)
+            transform: translateY(100%);
           }
           .address{
             display: flex;
