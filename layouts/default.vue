@@ -501,6 +501,7 @@ export default {
             padding-bottom: 0.5rem;
             font-family: 'Mulish';
             font-size: 0.7rem;
+            text-decoration: underline;
             font-weight: 600;
             opacity: 0;
             transform: translateY(100%);

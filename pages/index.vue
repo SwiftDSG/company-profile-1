@@ -880,13 +880,14 @@ export default {
         display: flex;
         flex-direction: column;
         margin-top: 2rem;
+        margin-left: 7rem;
         justify-content: center;
         align-items: flex-start;
         h2.greet {
           position: relative;
           font-family: 'Oswald';
-          font-size: 0.5rem;
-          font-weight: 400;
+          font-size: 0.8rem;
+          font-weight: 300;
           color:  white;
           letter-spacing: 0.4rem;
           display: flex;
@@ -900,10 +901,10 @@ export default {
         }
         h1.title {
           position: relative;
-          width: 70%;
+          width: 80%;
           left: 2rem;
           font-family: 'Manrope';
-          font-size: 30px;
+          font-size: 40px;
           font-weight: 800;
           margin: 1rem 0;
           line-height: 70px;
@@ -939,7 +940,7 @@ export default {
     width: 100%;
     min-height: 100vh;
     min-height: calc((var(--vh, 1vh) * 100));
-    padding: 5rem calc(12.5vw + 2rem);
+    padding: 0.2rem calc(12.5vw + 2rem);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -948,7 +949,7 @@ export default {
     .hero-wrapper {
       position: relative;
       width: 100vw;
-      padding: 5rem calc(12.5vw + 2rem);
+      padding: 1rem calc(12.5vw + 2rem);
       box-sizing: border-box;
       display: flex;
       justify-content: flex-start;
@@ -1320,6 +1321,8 @@ export default {
             display: flex;
             position: relative;
             color: $primary-color;
+            padding-top: 1rem;
+            text-decoration: underline;
             padding-bottom: 0.5rem;
             font-family: 'Mulish';
             font-size: 0.7rem;
@@ -1329,6 +1332,7 @@ export default {
             display: flex;
             position: relative;
             color: $primary-color;
+            text-decoration: underline;
             padding-bottom: 0.5rem;
             font-family: 'Mulish';
             font-size: 0.7rem;
@@ -1339,22 +1343,27 @@ export default {
           position: relative;
           height: 50%;
           width: 100%;
-          top: 4rem;
+          top: 2rem;
          .menu-list{
            position: relative;
            display: flex;
+           padding-top: 1rem;
            justify-content: flex-start;
            align-items: flex-start;
            .menu{
-             font-size: 0.8rem;
+             font-size: 0.7rem;
              color: #9c9c9c;
              font-family: 'Manrope';
              margin-right: 0.5rem;
            }
          }
          span.alamat{
+           position: relative;
+           height: 100%;
+           transform: translateY(1rem);
            font-family: 'Manrope';
            color: #6f6f6f;
+           font-size: 0.7rem;
          }
         }
         span.title{
@@ -1406,10 +1415,60 @@ export default {
           }
           .about-company{
             left: 0;
+            opacity:0;
           }
         }
       }
     }
+    .featured-content{
+      padding: 5rem 1rem;
+      .title-container{
+        transform: translateX(-2%);
+        h1.title-featured{
+          font-size: 1.8rem;
+        }
+        p.subtitle-featured{
+          top: 1rem;
+          font-size: 0.75rem;
+        }
+      }
+      .image-container{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        .image-wrapper{
+          position: relative;
+          width:  14rem;
+          height: 20rem; 
+          background: cyan;
+          flex-shrink: 0;
+          display: flex;
+
+          &:nth-child(odd){
+            //ganjil 
+            margin-right: 1.5rem;
+          }
+
+          &:nth-child(even){
+            // genap
+            margin-right: rem;
+          }
+        }
+      }
+    }
+    .more-about{
+     .hero-wrapper{
+       .hero{
+         h2.greet{
+           font-size: 0.5rem;
+         }
+         h1.title{
+           font-size: 0.8rem;
+         }
+       }
+     }
+    }
   }
-}
+ }
 </style>
