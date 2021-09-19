@@ -892,7 +892,7 @@ export default {
           letter-spacing: 0.4rem;
           display: flex;
           justify-content: flex-start;
-          align-items: flex-start ;
+          align-items: flex-start;
           span.letter {
             display: inline-block;
             transform: translateX(-24px);
@@ -1459,12 +1459,18 @@ export default {
     }
     .more-about{
      .hero-wrapper{
+       padding: 0;
+       justify-content: flex-start;
+       align-items: flex-start;
        .hero{
+         justify-content: flex-start;
+         align-items: flex-start;
+         margin-left: -5rem;
          h2.greet{
-           font-size: 0.5rem;
+           font-size: 0.7rem;
          }
          h1.title{
-           font-size: 0.8rem;
+           font-size: 1rem;
          }
        }
      }

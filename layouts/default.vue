@@ -232,7 +232,6 @@ export default {
 .layout{
   position: relative;
   width: 100vw;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
