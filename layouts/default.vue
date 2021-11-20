@@ -10,7 +10,7 @@
         <div class="bar bar-1"></div>
         <div class="bar bar-2"></div>
       </div>
-    </div>
+     </div>
     <div ref="menu" class="menu" :class="route === '/' ? '' : ' dark' ">
       <div ref="menuBg" class="menu-bg"></div>
       <div ref="menucontent" class="content">
@@ -85,7 +85,7 @@
           </div>
         </div>
       </div>
-    </div>
+     </div>
     <nuxt />
   </div>   
 </template>
@@ -165,7 +165,6 @@ export default {
       if (e.matches) this.$store.dispatch('changeMode', 'mobile')
       else this.$store.dispatch('changeMode', 'desktop')
     },
-
     menuHandler() {
       if (!this.menuAnim) {
         const {
@@ -338,7 +337,7 @@ export default {
     width: 100vw;
     height: 100vh;
     height: calc((var(--vh, 1vh) * 100));
-    display: none;
+    display:none;
     .menu-bg {
       position: absolute;
       top: 2rem;
@@ -353,7 +352,7 @@ export default {
       position: relative;
       width: 100%;
       height: 100%;
-      opacity: 0;
+      opacity: 1;
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;

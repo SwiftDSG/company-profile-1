@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" @scroll="scrollHandler">
     <div class="background">
       <div ref="logoContainer" class="logo-container">
         <svg ref="logo" class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 315.27 441.84">
@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <div class="featured-content">
+    <div class="featured-content" >
       <div class="title-container">
         <h1 class="title-featured">
           <span 
@@ -87,30 +87,50 @@
           Explore some of our latest website projects.
         </p>
       </div>
-      <div class="image-container">
-        <div class="image-wrapper">
-          <div class="image"></div>
+      <div class="image-container target">
+        <div ref="coba" class="image-wrapper">
+          <div class="image">
+            <img
+                src="https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80"
+                alt=""
+              />
+          </div>
+          <div class="desc-image">
+            <span class="main">Optimal Dynamics</span>
+            <span class="sub">Corporate Website</span>
+          </div>
+        </div>
+        <div class="image-wrapper kanan">
+          <div class="image">
+            <img
+                src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80"
+                alt=""
+            />
+          </div>
           <div class="desc-image">
             <span class="main">Optimal Dynamics</span>
             <span class="sub">Corporate Website</span>
           </div>
         </div>
         <div class="image-wrapper">
-          <div class="image"></div>
+          <div class="image">
+             <img
+                src="https://images.unsplash.com/photo-1633113088092-3460c3c9b13f?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80"
+                alt=""
+            />
+          </div>
           <div class="desc-image">
             <span class="main">Optimal Dynamics</span>
             <span class="sub">Corporate Website</span>
           </div>
         </div>
-        <div class="image-wrapper">
-          <div class="image"></div>
-          <div class="desc-image">
-            <span class="main">Optimal Dynamics</span>
-            <span class="sub">Corporate Website</span>
+        <div class="image-wrapper kanan">
+          <div class="image">
+             <img
+                src="https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"
+                alt=""
+            />
           </div>
-        </div>
-        <div class="image-wrapper">
-          <div class="image"></div>
           <div class="desc-image">
             <span class="main">Optimal Dynamics</span>
             <span class="sub">Corporate Website</span>
@@ -123,6 +143,7 @@
       </div>
     </div>
     <div class="more-about">
+      <div class="background-slider"></div>
        <div class="hero-wrapper">
         <div class="hero">
           <h2 ref="greetTwo" class="greet">
@@ -161,7 +182,9 @@
           <div class="list-service 1">
             <div class="service">
               <span class="name-service">Websites</span>
-              <div class="image-service"></div>
+              <div class="image-service">
+                <img src="https://images.unsplash.com/photo-1531989417401-0f85f7e673f8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80" alt="">
+              </div>
             </div>
             <div class="desc">
               <span class="word-container">
@@ -176,7 +199,9 @@
           <div class="list-service 2">
           <div class="service">
             <span class="name-service">Creative</span>
-            <div class="image-service"></div>
+            <div class="image-service">
+              <img src="https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1176&q=80" alt="">
+            </div>
           </div>
           <div class="desc">
             <span class="word-container">
@@ -192,7 +217,9 @@
           <div class="list-service 3">
           <div class="service">
             <span class="name-service">Strategy</span>
-            <div class="image-service"></div>
+            <div class="image-service">
+              <img src="https://images.unsplash.com/flagged/photo-1566127992631-137a642a90f4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80" alt="">
+            </div>
           </div>
           <div class="desc">
             <span class="word-container">
@@ -223,30 +250,50 @@
           Our thoughts and perspectives on digital.
         </p>
       </div>
-      <div class="image-container">
+      <div class="image-container target">
         <div class="image-wrapper">
-          <div class="image"></div>
+          <div class="image">
+             <img
+                src="https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80"
+                alt=""
+              />
+          </div>
           <div class="desc-image">
             <span class="main">WEB & DIGITAL DESIGN</span>
             <span class="sub">Design Systems for the Web</span>
           </div>
         </div>
-        <div class="image-wrapper">
-          <div class="image"></div>
+        <div class="image-wrapper kanan">
+          <div class="image">
+            <img
+                src="https://images.unsplash.com/photo-1576153192396-180ecef2a715?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1074&q=80"
+                alt=""
+              />
+          </div>
           <div class="desc-image">
             <span class="main">CUSTOMER TRENDS</span>
             <span class="sub">Building a Consumer-focus</span>
           </div>
         </div>
         <div class="image-wrapper">
-          <div class="image"></div>
+          <div class="image">
+            <img
+                src="https://images.unsplash.com/photo-1586717799252-bd134ad00e26?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80"
+                alt=""
+              />
+          </div>
           <div class="desc-image actions">
             <span class="main">WEB & DIGITAL DESIGN</span>
             <span class="sub">Build an inclusive Brand by Integrating Accesible Web Standards</span>
           </div>
         </div>
-        <div class="image-wrapper">
-          <div class="image"></div>
+        <div class="image-wrapper kanan">
+          <div class="image">
+            <img
+                src="https://images.unsplash.com/photo-1545235617-7a424c1a60cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80"
+                alt=""
+              />
+          </div>
           <div class="desc-image">
             <span class="main">CUSTOMER TRENDS</span>
             <span class="sub">Driving Engagement Through Storytelling</span>
@@ -316,9 +363,9 @@
 <script>
 import gsap from 'gsap'
 export default {
-  layout: "default",
   data() {
     return {
+      scrollTargets: [],
       menuAnim: null,
       heroGreet: 'WE ARE REDIAN',
       heroTitle: 'The only digital agency you\'ll need.',
@@ -326,7 +373,8 @@ export default {
       titleFeatured: 'Featured Work',
       titleInsights: 'Latest Insights',
       moreAbout: 'A DIGITAL AGENCY',
-      ourServices: 'WHAT WE DO'
+      ourServices: 'WHAT WE DO',
+      scrollTop: 0,
     }
   },
   computed: {
@@ -335,6 +383,13 @@ export default {
     }
   },
   mounted() {
+     // scroll target gsap
+    const targets = document.querySelectorAll('.target')
+    this.scrollTargets = [...targets].map((a) => ({
+      distance: a.getBoundingClientRect().top - window.innerHeight,
+      el: a,
+    }))
+    this.scrollTargets.sort((a, b) => a.distance - b.distance)
     // CSS 1vh var
     const vh = window.innerHeight * 0.01
     document.documentElement.style.setProperty('--vh', `${vh}px`)
@@ -505,6 +560,22 @@ export default {
       if (e.matches) this.$store.dispatch('changeMode', 'mobile')
       else this.$store.dispatch('changeMode', 'desktop')
     },
+    scrollHandler(e) {
+      console.log(e)
+      const top = e.target.scrollTop
+      if (this.scrollTargets.length && top >= this.scrollTargets[0].distance) {
+        // play anim
+        gsap.to(this.scrollTargets[0].el.children, {
+          duration: 1,
+          opacity:1,
+          stagger: 0.5,
+          y:0,
+        })
+        this.scrollTargets.splice(0, 1)
+      }
+
+      this.scrollTop = top
+    },
   }  
 }
 </script>
@@ -513,12 +584,16 @@ export default {
 .container {
   position: relative;
   width: 100vw;
-  min-height: 100vh;
-  min-height: calc((var(--vh, 1vh) * 100));
+  height: 100vh;
+  height: calc((var(--vh, 1vh) * 100));
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  overflow-y: auto;
+  > * {
+    flex-shrink: 0;
+  }
   > .background {
     z-index: -1;
     position: absolute;
@@ -779,10 +854,36 @@ export default {
         position: relative;
         height: 26rem;
         width: calc(50% - 1.5rem);
-        background:cyan;
         display: flex;
+        opacity: 0;
+        cursor: pointer;
+        transform: translateY(50%);
         flex-shrink: 0;
         margin-bottom: 3rem;
+        .image{
+          position: absolute;
+          display: flex;
+          overflow: hidden;
+          transform: translateX(100%);
+          width: 100%;
+          height: 100%;
+          // background: red;
+          transform:
+              rotate3d(0,0,0,0deg)
+              rotate(0deg);
+          box-shadow:
+          2em 2em 4em -4em rgba(0,0,0,.5),
+          -1em 2em 1.5em -4.5em rgba(0,0,0,.5);
+          transition:
+            transform .4s ease,
+            box-shadow .4s ease;
+          img{
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            transition: transform .2s;
+          }
+        }
         .desc-image{
           position: relative;
           height: 100%;
@@ -814,12 +915,26 @@ export default {
           // genap
           margin-left: 1.5rem;
         }
+        &.kanan{
+          transform: translateY(50%);
+          top:5%;
+        }
+        &:hover{
+          .image{
+            transform:
+            rotate3d(.5,-.866,0,15deg)
+            rotate(1deg);
+            img{
+              transform: scale(1.1);
+            }
+          }
+        }
       }
     }
     .more-work{
     cursor: pointer;
     position: relative;
-    margin-top: 1.5rem;
+    margin-top: 5rem;
     height: 2rem;
     padding: 0 1rem;
     display: flex;
@@ -858,12 +973,17 @@ export default {
     height: 98vh;
     height: calc((var(--vh, 1vh) * 98));
     padding: 5rem calc(12.5vw + 2rem);
-    background: $primary-color;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    .background-slider{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: $primary-color; 
+    }
     .hero-wrapper {
       position: relative;
       width: 100vw;
@@ -1012,10 +1132,15 @@ export default {
               height: 20rem;
               z-index: 1;
               transform: scale(1) rotate(35deg);
-              background: cyan;
               display: flex;
               justify-content: center;
               align-items: center;
+              img{
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+                opacity: 80%;
+              }
             }
           }
           .desc {
@@ -1151,9 +1276,12 @@ export default {
       .image-wrapper{
         position: relative;
         height: 26rem;
+        cursor: pointer;
         width: calc(50% - 1.5rem);
         display: flex;
         flex-shrink: 0;
+        opacity: 0;
+        transform: translateY(50%);
         margin-bottom: 3rem;
         display: flex;
         flex-direction: column;
@@ -1163,8 +1291,22 @@ export default {
           position: relative;
           height: 80%;
           width: 100%;
-          background: red;
           display: flex;
+          transform:
+              rotate3d(0,0,0,0deg)
+              rotate(0deg);
+          box-shadow:
+          1em 2em 4em -4em rgba(0,0,0,.5),
+          -1em 1em 1.5em -4.5em rgba(0,0,0,.5);
+          transition:
+            transform .4s ease,
+            box-shadow .4s ease;
+          border-radius: .5em;
+          img{
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+          }
         }
         .desc-image{
           position: relative;
@@ -1204,12 +1346,24 @@ export default {
           // genap
           margin-left: 1.5rem;
         }
+        &.kanan{
+           transform: translateY(50%);
+          top:5%;
+        }
+         &:hover{
+          .image{
+            transform:
+            rotate3d(.5,-.866,0,15deg)
+            rotate(1deg);
+            
+          }
+        }
       }
     }
     .more-work{
     cursor: pointer;
     position: relative;
-    margin-top: 1.5rem;
+    margin-top: 5rem;
     height: 2rem;
     padding: 0 1rem;
     display: flex;

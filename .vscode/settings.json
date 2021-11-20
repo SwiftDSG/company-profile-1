@@ -1,0 +1,6 @@
+{
+  "editor.find.cursorMoveOnType": true,
+  "editor.dragAndDrop": true,
+  "workbench.editor.showTabs": true,
+  "editor.guides.bracketPairs": true
+}
