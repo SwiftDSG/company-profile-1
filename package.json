@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "devDependencies": {
+    "nuxt": "3.0.0-rc.1",
+    "sass": "^1.49.7"
+  },
+  "dependencies": {
+    "gsap": "^3.9.1",
+    "idb-keyval": "^6.1.0",
+    "smooth-scrollbar": "^8.7.4"
+  }
+}
