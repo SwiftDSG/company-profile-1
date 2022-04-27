@@ -60,7 +60,9 @@
         <div class="rd-navigation-button-bar"></div>
       </div>
     </div>
-    <div class="rd-body"></div>
+    <div class="rd-body">
+      <NuxtPage />
+    </div>
   </div>
 </template>
 
@@ -69,14 +71,26 @@
 
   import { baseStore } from "./store/base";
 
+  const baseState = baseStore.getState();
+  const rdNav = ref(null);
+  const rdLogo = ref(null);
+
   function resizeHandler(e: MediaQueryListEvent) {
     if (e.matches) baseStore.setViewMode("mobile");
     else baseStore.setViewMode("desktop");
   }
 
-  function init(rdNav: HTMLElement) {}
+  function init(rdNav: Element) {
+    const tl: GSAPTimeline = gsap.timeline();
 
-  function logoHandler(rdLogo: HTMLElement, state: "show" | "hide") {
+    tl.to(rdNav.children, {
+      width: "1rem",
+      x: 0,
+      duration: 0.25,
+    });
+  }
+
+  function logoHandler(rdLogo: Element, state: "show" | "hide") {
     const tl: GSAPTimeline = gsap.timeline();
 
     const pathOne: Element = rdLogo.children[1];
@@ -134,8 +148,13 @@
     }
   }
 
-  const rdNav = ref(null);
-  const rdLogo = ref(null);
+  // watch(
+  //   () => baseState.viewMode,
+  //   (val) => {
+  //     if (val === "desktop") logoHandler(rdLogo.value, "hide");
+  //     else logoHandler(rdLogo.value, "show");
+  //   }
+  // );
 
   onMounted(() => {
     const event = new Event("resize");
@@ -148,7 +167,7 @@
     const mediaQuery = window.matchMedia("(max-width: 1024px)");
     mediaQuery.addEventListener("change", resizeHandler);
 
-    logoHandler(rdLogo.value, "show");
+    init(rdNav.value);
   });
 </script>
 
@@ -166,6 +185,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     .rd-header {
+      pointer-events: none;
       z-index: 2;
       position: absolute;
       top: 1rem;
@@ -291,6 +311,91 @@
     }
     @media only screen and (max-width: 320px) {
       font-size: 17px;
+    }
+  }
+
+  span.rd-letter-wrapper,
+  span.rd-text-wrapper,
+  span.rd-word-wrapper,
+  span.rd-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    span.rd-letter-container,
+    span.rd-text-container,
+    span.rd-word-container,
+    span.rd-image-container {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &.rd-letter-container-up,
+      &.rd-text-container-up,
+      &.rd-word-container-up,
+      &.rd-image-container-up {
+        transform: translateY(-100%);
+        span.rd-letter,
+        span.rd-text,
+        span.rd-word,
+        img.rd-image {
+          transform: translateY(100%);
+        }
+      }
+      &.rd-letter-container-down,
+      &.rd-text-container-down,
+      &.rd-word-container-down,
+      &.rd-image-container-down {
+        transform: translateY(100%);
+        span.rd-letter,
+        span.rd-text,
+        span.rd-word,
+        img.rd-image {
+          transform: translateY(-100%);
+        }
+      }
+      &.rd-letter-container-left,
+      &.rd-text-container-left,
+      &.rd-word-container-left,
+      &.rd-image-container-left {
+        transform: translateX(-100%);
+        span.rd-letter,
+        span.rd-text,
+        span.rd-word,
+        img.rd-image {
+          transform: translateX(100%);
+        }
+      }
+      &.rd-letter-container-right,
+      &.rd-text-container-right,
+      &.rd-word-container-right,
+      &.rd-image-container-right {
+        transform: translateX(100%);
+        span.rd-letter,
+        span.rd-text,
+        span.rd-word,
+        img.rd-image {
+          transform: translateX(-100%);
+        }
+      }
+    }
+  }
+
+  span.rd-image-wrapper {
+    width: 100%;
+    height: 100%;
+    span.rd-image-container {
+      width: 100%;
+      height: 100%;
+      img.rd-image {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.25);
+      }
     }
   }
 </style>
