@@ -36,7 +36,7 @@
     </div>
     <div class="rd-body">
       <div ref="rdBackground" class="rd-background"></div>
-      <div id="rd-logo-container" class="rd-logo-container">
+      <div class="rd-logo-container">
         <svg
           ref="rdLogo"
           class="rd-logo rd-logo-redian"
@@ -85,6 +85,51 @@
           ></path>
         </svg>
       </div>
+      <div class="rd-details-container">
+        <div class="rd-title-section">
+          <p ref="rdPlaceholder" class="rd=placeholder">
+            <span class="rd-text-wrapper">
+              <span class="rd-text-container rd-text-container-down">
+                <span class="text">{{
+                  projects[activeProject].placeholder
+                }}</span>
+              </span>
+            </span>
+          </p>
+          <h1 class="main-title">
+            <span
+              v-for="n in projects[activeProject].title.split(' ')"
+              class="rd-word-wrapper"
+              :key="n"
+            >
+              <span ref="mainTitle" class="word-container">
+                <span ref="mainTitleWord" class="word">{{ n }}</span>
+              </span>
+            </span>
+          </h1>
+        </div>
+        <div id="action-section" class="action-section">
+          <div
+            ref="actionButton"
+            class="action-button"
+            @click="exit(projects[activeProject].href)"
+          >
+            <span class="action-name">
+              <span class="text-container">
+                <span class="text">{{ projects[activeProject].action }}</span>
+              </span>
+            </span>
+            <svg
+              class="circle"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 48 48"
+            >
+              <circle class="circle-1" cx="24" cy="24" r="23" />
+              <circle class="circle-2" cx="24" cy="24" r="3" />
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -94,8 +139,264 @@
 
   import { baseStore } from "../store/base";
 
+  interface Project {
+    placeholder: String;
+    title: String;
+    action: String;
+    href: String;
+  }
+
   const baseState = baseStore.getState();
   const rdHeaderTitle = ref(null);
+  const rdLogo = ref(null);
+  const rdBackground = ref(null);
+
+  const activeProject = "redian";
+  const projects = {
+    redian: {
+      placeholder: "Digital Agency",
+      title: "Redian Grup",
+      action: "Tentang Kami",
+      href: "/about",
+    },
+    pezen: {
+      placeholder: "Application",
+      title: "Pezen",
+      action: "Telusuri",
+      href: "/work/pezen",
+    },
+  };
+
+  const animate = {
+    init(rdHeaderTitle: Element, cb?: Function) {
+      const tl: GSAPTimeline = gsap.timeline({
+        onComplete() {
+          if (cb) cb();
+        },
+      });
+      const lettersContainer: Element[] = gsap.utils.toArray(
+        rdHeaderTitle.querySelectorAll(".rd-letter-container")
+      );
+      const letters: Element[] = gsap.utils.toArray(
+        rdHeaderTitle.querySelectorAll(".rd-letter")
+      );
+
+      shuffleArray(lettersContainer, letters);
+
+      tl.to(
+        lettersContainer,
+        {
+          x: 0,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "power2.out",
+        },
+        "<0"
+      ).to(
+        letters,
+        {
+          x: 0,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "power2.out",
+        },
+        "<0"
+      );
+    },
+    initProject(
+      mode: "desktop" | "mobile",
+      project: String,
+      rdLogo: Element,
+      rdBackground: Element,
+      placeholder,
+      placeholderText,
+      mainTitle,
+      mainTitleWord,
+      actionButton,
+      cb?: Function
+    ) {
+      const tl = gsap.timeline({
+        onComplete() {
+          if (cb) cb();
+        },
+      });
+
+      const obj = {
+        number: 0,
+      };
+
+      if (project === "redian") {
+        const pathOne = rdLogo.children[1];
+        const pathTwo = rdLogo.children[2];
+        const pathThree = rdLogo.children[3];
+
+        tl.to(
+          pathOne,
+          {
+            strokeDashoffset: 543.9750366210938,
+            duration: 0.5,
+            ease: "power2.out",
+          },
+          "<0"
+        )
+          .to(
+            pathTwo,
+            {
+              strokeDashoffset: 1031.851318359375,
+              duration: 0.5,
+              ease: "power2.out",
+            },
+            "<0.25"
+          )
+          .to(
+            pathThree,
+            {
+              strokeDashoffset: 0,
+              duration: 0.5,
+              ease: "power2.out",
+            },
+            "<0.25"
+          )
+          .to(
+            obj,
+            {
+              number: 100,
+              duration: 1,
+              ease: "power2.inOut",
+              onUpdate() {
+                gsap.to(rdBackground, {
+                  background: `radial-gradient(circle, rgba(55,41,47,1) 0%, rgba(38,25,31,1) ${obj.number}%)`,
+                  duration: 0,
+                });
+              },
+            },
+            ">0.25"
+          );
+      } else if (project === "pezen") {
+        const pathOne = rdLogo.children[1];
+        const pathTwo = rdLogo.children[2];
+        const pathThree = rdLogo.children[3];
+
+        tl.to(
+          pathOne,
+          {
+            strokeDashoffset: 0,
+            duration: 0.5,
+            ease: "power2.out",
+          },
+          "<0"
+        )
+          .to(
+            pathTwo,
+            {
+              strokeDashoffset: 0,
+              duration: 0.5,
+              ease: "power2.out",
+            },
+            "<0.25"
+          )
+          .to(
+            pathThree,
+            {
+              strokeDashoffset: 0,
+              duration: 0.5,
+              ease: "power2.out",
+            },
+            "<0.25"
+          )
+          .to(
+            obj,
+            {
+              number: 100,
+              duration: 1,
+              ease: "power2.inOut",
+              onUpdate() {
+                gsap.to(rdBackground, {
+                  background: `radial-gradient(circle, rgba(255,202,146,1) 0%, rgba(255,168,76,1) ${obj.number}%)`,
+                  duration: 0,
+                });
+              },
+            },
+            ">0.25"
+          );
+      }
+
+      // if (mode === 'desktop') {
+      //   tl.to(mainTitleWord, {
+      //     x: 0,
+      //     duration: 0.5,
+      //     ease: 'power2.out',
+      //     stagger: 0.125,
+      //   }).to(
+      //     mainTitle,
+      //     {
+      //       x: 0,
+      //       duration: 0.5,
+      //       ease: 'power2.out',
+      //       stagger: 0.125,
+      //     },
+      //     '<0'
+      //   )
+      // } else {
+      //   tl.to([...mainTitleWord].reverse(), {
+      //     y: 0,
+      //     duration: 0.5,
+      //     ease: 'power2.out',
+      //     stagger: 0.125,
+      //   }).to(
+      //     [...mainTitle].reverse(),
+      //     {
+      //       y: 0,
+      //       duration: 0.5,
+      //       ease: 'power2.out',
+      //       stagger: 0.125,
+      //     },
+      //     '<0'
+      //   )
+      // }
+
+      // tl.to(
+      //   [placeholder, placeholderText],
+      //   {
+      //     y: 0,
+      //     duration: 0.5,
+      //     ease: 'power2.out',
+      //   },
+      //   '<0.25'
+      // )
+      // .to(
+      //   [
+      //     actionButton.children[0].children[0],
+      //     actionButton.children[0].children[0].children,
+      //   ],
+      //   {
+      //     x: 0,
+      //     duration: 0.5,
+      //     ease: 'power2.out',
+      //   },
+      //   '<0'
+      // )
+      // .to(
+      //   actionButton.children[1].children[0],
+      //   {
+      //     strokeDashoffset: 0,
+      //     duration: 0.5,
+      //     ease: 'power2.inOut',
+      //   },
+      //   '<0'
+      // )
+      // .to(
+      //   actionButton.children[1].children[1],
+      //   {
+      //     opacity: 1,
+      //     ease: 'power2.out',
+      //   },
+      //   '<0.25'
+      // )
+
+      // return tl
+    },
+  };
 
   function shuffleArray(arrayOne: Element[], arrayTwo: Element[]) {
     for (let i = arrayOne.length - 1; i > 0; i--) {
@@ -105,239 +406,20 @@
     }
   }
 
-  function init(rdHeaderTitle: Element, cb?: Function) {
-    const tl: GSAPTimeline = gsap.timeline({
-      onComplete() {
-        if (cb) cb();
-      },
-    });
-    const lettersContainer: Element[] = gsap.utils.toArray(
-      rdHeaderTitle.querySelectorAll(".rd-letter-container")
-    );
-    const letters: Element[] = gsap.utils.toArray(
-      rdHeaderTitle.querySelectorAll(".rd-letter")
-    );
-
-    shuffleArray(lettersContainer, letters);
-
-    tl.to(
-      lettersContainer,
-      {
-        x: 0,
-        duration: 0.5,
-        stagger: 0.1,
-        ease: "power2.out",
-      },
-      "<0"
-    ).to(
-      letters,
-      {
-        x: 0,
-        duration: 0.5,
-        stagger: 0.1,
-        ease: "power2.out",
-      },
-      "<0"
-    );
-  }
-
-  // function initProject(
-  //   mode,
-  //   project,
-  //   logo,
-  //   background,
-  //   placeholder,
-  //   placeholderText,
-  //   mainTitle,
-  //   mainTitleWord,
-  //   actionButton,
-  //   cb
-  // ) {
-  //   const tl = gsap.timeline({
-  //     onComplete() {
-  //       if (cb) cb()
-  //     },
-  //   })
-
-  //   const obj = {
-  //     number: 0,
-  //   }
-
-  //   if (project === 'redian') {
-  //     const pathOne = logo.children[1]
-  //     const pathTwo = logo.children[2]
-  //     const pathThree = logo.children[3]
-
-  //     tl.to(
-  //       pathOne,
-  //       {
-  //         strokeDashoffset: 543.9750366210938,
-  //         duration: 0.5,
-  //         ease: 'power2.out',
-  //       },
-  //       '<0'
-  //     )
-  //       .to(
-  //         pathTwo,
-  //         {
-  //           strokeDashoffset: 1031.851318359375,
-  //           duration: 0.5,
-  //           ease: 'power2.out',
-  //         },
-  //         '<0.25'
-  //       )
-  //       .to(
-  //         pathThree,
-  //         {
-  //           strokeDashoffset: 0,
-  //           duration: 0.5,
-  //           ease: 'power2.out',
-  //         },
-  //         '<0.25'
-  //       )
-  //       .to(
-  //         obj,
-  //         {
-  //           number: 100,
-  //           duration: 1,
-  //           ease: 'power2.inOut',
-  //           onUpdate() {
-  //             gsap.to(background, {
-  //               background: `radial-gradient(circle, rgba(55,41,47,1) 0%, rgba(38,25,31,1) ${obj.number}%)`,
-  //               duration: 0,
-  //             })
-  //           },
-  //         },
-  //         '>0.25'
-  //       )
-  //   } else if (project === 'pezen') {
-  //     const pathOne = logo.children[1]
-  //     const pathTwo = logo.children[2]
-  //     const pathThree = logo.children[3]
-
-  //     tl.to(
-  //       pathOne,
-  //       {
-  //         strokeDashoffset: 0,
-  //         duration: 0.5,
-  //         ease: 'power2.out',
-  //       },
-  //       '<0'
-  //     )
-  //       .to(
-  //         pathTwo,
-  //         {
-  //           strokeDashoffset: 0,
-  //           duration: 0.5,
-  //           ease: 'power2.out',
-  //         },
-  //         '<0.25'
-  //       )
-  //       .to(
-  //         pathThree,
-  //         {
-  //           strokeDashoffset: 0,
-  //           duration: 0.5,
-  //           ease: 'power2.out',
-  //         },
-  //         '<0.25'
-  //       )
-  //       .to(
-  //         obj,
-  //         {
-  //           number: 100,
-  //           duration: 1,
-  //           ease: 'power2.inOut',
-  //           onUpdate() {
-  //             gsap.to(background, {
-  //               background: `radial-gradient(circle, rgba(255,202,146,1) 0%, rgba(255,168,76,1) ${obj.number}%)`,
-  //               duration: 0,
-  //             })
-  //           },
-  //         },
-  //         '>0.25'
-  //       )
-  //   }
-
-  //   if (mode === 'desktop') {
-  //     tl.to(mainTitleWord, {
-  //       x: 0,
-  //       duration: 0.5,
-  //       ease: 'power2.out',
-  //       stagger: 0.125,
-  //     }).to(
-  //       mainTitle,
-  //       {
-  //         x: 0,
-  //         duration: 0.5,
-  //         ease: 'power2.out',
-  //         stagger: 0.125,
-  //       },
-  //       '<0'
-  //     )
-  //   } else {
-  //     tl.to([...mainTitleWord].reverse(), {
-  //       y: 0,
-  //       duration: 0.5,
-  //       ease: 'power2.out',
-  //       stagger: 0.125,
-  //     }).to(
-  //       [...mainTitle].reverse(),
-  //       {
-  //         y: 0,
-  //         duration: 0.5,
-  //         ease: 'power2.out',
-  //         stagger: 0.125,
-  //       },
-  //       '<0'
-  //     )
-  //   }
-
-  //   tl.to(
-  //     [placeholder, placeholderText],
-  //     {
-  //       y: 0,
-  //       duration: 0.5,
-  //       ease: 'power2.out',
-  //     },
-  //     '<0.25'
-  //   )
-  //     .to(
-  //       [
-  //         actionButton.children[0].children[0],
-  //         actionButton.children[0].children[0].children,
-  //       ],
-  //       {
-  //         x: 0,
-  //         duration: 0.5,
-  //         ease: 'power2.out',
-  //       },
-  //       '<0'
-  //     )
-  //     .to(
-  //       actionButton.children[1].children[0],
-  //       {
-  //         strokeDashoffset: 0,
-  //         duration: 0.5,
-  //         ease: 'power2.inOut',
-  //       },
-  //       '<0'
-  //     )
-  //     .to(
-  //       actionButton.children[1].children[1],
-  //       {
-  //         opacity: 1,
-  //         ease: 'power2.out',
-  //       },
-  //       '<0.25'
-  //     )
-
-  //   return tl
-  // }
+  function init() {}
+  function exit() {}
 
   onMounted(() => {
     setTimeout(() => {
-      init(rdHeaderTitle.value);
+      animate.initProject(
+        baseState.viewMode,
+        "redian",
+        rdLogo.value,
+        rdBackground.value,
+        () => {
+          animate.init(rdHeaderTitle.value);
+        }
+      );
     }, 500);
   });
 </script>
@@ -353,6 +435,7 @@
     justify-content: center;
     align-items: center;
     .rd-header {
+      z-index: 1;
       position: absolute;
       top: 1rem;
       width: 100%;
@@ -373,6 +456,7 @@
       }
     }
     .rd-body {
+      z-index: 0;
       position: relative;
       width: 100%;
       height: 100%;
@@ -380,7 +464,6 @@
       justify-content: center;
       align-items: center;
       .rd-background {
-        z-index: -1;
         position: absolute;
         top: 0;
         left: 0;
