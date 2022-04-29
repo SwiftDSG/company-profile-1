@@ -36,15 +36,16 @@
     </div>
     <div class="rd-body">
       <div ref="rdBackground" class="rd-background"></div>
-      <div class="rd-logo-container">
+      <div ref="rdLogoContainer" class="rd-logo-container">
         <svg
+          v-if="activeProject === 'redian'"
           ref="rdLogo"
           class="rd-logo rd-logo-redian"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 315.27 441.84"
         >
           <defs>
-            <clipPath id="rd-logo-path-1">
+            <clipPath id="rd-logo-redian-path-1">
               <rect
                 x="-26.36"
                 y="191.63"
@@ -54,19 +55,19 @@
                 transform="translate(-129.29 131.13) rotate(-45)"
               ></rect>
             </clipPath>
-            <clipPath id="rd-logo-path-2">
+            <clipPath id="rd-logo-redian-path-2">
               <path
                 d="M285.27,199.71l21.21-21.22a30,30,0,0,0,0-42.42L179.2,8.79a30,30,0,0,0-42.43,0L9.49,136.07a30,30,0,0,0,0,42.42h0a30,30,0,0,0,42.43,0L147.38,83a15,15,0,0,1,21.21,0l63.64,63.64a15,15,0,0,1,0,21.22l-31.82,31.82a30,30,0,0,0,0,42.42h0a30,30,0,0,0,42.43,0l42.43-42.42Z"
               ></path>
             </clipPath>
-            <clipPath id="rd-logo-path-3">
+            <clipPath id="rd-logo-redian-path-3">
               <path
                 d="M9.49,433.05h0a30,30,0,0,0,42.43,0l95.46-95.46a15,15,0,0,1,21.21,0l95.46,95.46a30,30,0,0,0,42.43,0h0a30,30,0,0,0,0-42.43L200.41,284.56,179.2,263.35a30,30,0,0,0-42.43,0L9.49,390.62A30,30,0,0,0,9.49,433.05Z"
               ></path>
             </clipPath>
           </defs>
           <line
-            clip-path="url(#rd-logo-path-1)"
+            clip-path="url(#rd-logo-redian-path-1)"
             class="rd-logo-svg rd-logo-svg-1"
             x1="30.41"
             y1="285.15"
@@ -74,20 +75,67 @@
             y2="94.24"
           ></line>
           <path
-            clip-path="url(#rd-logo-path-2)"
+            clip-path="url(#rd-logo-redian-path-2)"
             class="rd-logo-svg rd-logo-svg-2"
             d="M31.11,157.17,137.18,51.1a30,30,0,0,1,42.42,0L264.52,136a30,30,0,0,1,.06,42.37L159.05,284.5"
           ></path>
           <path
-            clip-path="url(#rd-logo-path-3)"
+            clip-path="url(#rd-logo-redian-path-3)"
             class="rd-logo-svg rd-logo-svg-3"
             d="M420,546.08,179.6,305.66a30,30,0,0,0-42.42,0L31.11,411.73"
           ></path>
         </svg>
+        <svg
+          v-else-if="activeProject === 'pezen'"
+          ref="logo"
+          class="rd-logo rd-logo-pezen"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 300 510"
+        >
+          <defs>
+            <clipPath id="rd-logo-pezen-path-1">
+              <path
+                d="M300,149.83a149.84,149.84,0,0,1-150,151H0a60,60,0,0,1,60-60h90a89.94,89.94,0,0,0,90-88.19c1-49.68-39.06-91.13-88.74-91.8a90,90,0,0,0-91.24,90h0C23.62,150.87.55,112,17.77,80A150,150,0,0,1,148,.88C230.81-.23,299.43,67,300,149.83Z"
+              ></path>
+            </clipPath>
+            <clipPath id="rd-logo-pezen-path-2">
+              <path
+                d="M0,330.87H60a0,0,0,0,1,0,0v120a60,60,0,0,1-60,60H0a0,0,0,0,1,0,0v-180A0,0,0,0,1,0,330.87Z"
+              ></path>
+            </clipPath>
+            <clipPath id="rd-logo-pezen-path-3">
+              <path
+                d="M150,105.87a45,45,0,1,0,45,45A45,45,0,0,0,150,105.87Zm0,67.5a22.5,22.5,0,1,1,22.5-22.5A22.5,22.5,0,0,1,150,173.37Z"
+              ></path>
+            </clipPath>
+          </defs>
+          <path
+            clip-path="url(#rd-logo-pezen-path-1)"
+            class="rd-logo-svg rd-logo-svg-1"
+            d="M0,270H150A120,120,0,0,0,270,150h0A120,120,0,0,0,150,30h0A120,120,0,0,0,30,150v90"
+          ></path>
+          <line
+            clip-path="url(#rd-logo-pezen-path-2)"
+            class="rd-logo-svg rd-logo-svg-2"
+            x1="30"
+            y1="330"
+            x2="30"
+            y2="510"
+          ></line>
+          <rect
+            clip-path="url(#rd-logo-pezen-path-3)"
+            class="rd-logo-svg-4 rd-logo-svg-3"
+            x="116.25"
+            y="116.25"
+            width="67.5"
+            height="67.5"
+            rx="33.75"
+          ></rect>
+        </svg>
       </div>
       <div class="rd-details-container">
         <div class="rd-title-section">
-          <p ref="rdPlaceholder" class="rd=placeholder">
+          <p ref="rdPlaceholder" class="rd-placeholder rd-caption-text">
             <span class="rd-text-wrapper">
               <span class="rd-text-container rd-text-container-down">
                 <span class="text">{{
@@ -96,36 +144,39 @@
               </span>
             </span>
           </p>
-          <h1 class="main-title">
+          <h1 ref="rdTitle" class="rd-title rd-headline-1">
             <span
               v-for="n in projects[activeProject].title.split(' ')"
               class="rd-word-wrapper"
               :key="n"
             >
-              <span ref="mainTitle" class="word-container">
-                <span ref="mainTitleWord" class="word">{{ n }}</span>
+              <span ref="mainTitle" class="rd-word-container" :class="baseState.viewMode === 'desktop' ? 'rd-word-container-left' : 'rd-word-container-down'">
+                <span ref="mainTitleWord" class="rd-word">{{ n }}</span>
               </span>
             </span>
           </h1>
         </div>
-        <div id="action-section" class="action-section">
+        <div class="rd-action-section">
           <div
-            ref="actionButton"
-            class="action-button"
+            ref="rdActionButton"
+            class="rd-action-button"
             @click="exit(projects[activeProject].href)"
           >
-            <span class="action-name">
-              <span class="text-container">
-                <span class="text">{{ projects[activeProject].action }}</span>
+            <span class="rd-action-name rd-caption-text">
+              <span class="rd-text-wrapper">
+                <span class="rd-text-container rd-text-container-left">
+                  <span class="rd-text">{{ projects[activeProject].action }}</span>
+                </span>
               </span>
             </span>
+            <span v-if="baseState.viewMode === 'mobile'" class="line"></span>
             <svg
-              class="circle"
+              class="rd-circle"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
             >
-              <circle class="circle-1" cx="24" cy="24" r="23" />
-              <circle class="circle-2" cx="24" cy="24" r="3" />
+              <circle class="rd-circle-1" cx="24" cy="24" r="23" />
+              <circle class="rd-circle-2" cx="24" cy="24" r="3" />
             </svg>
           </div>
         </div>
@@ -140,16 +191,20 @@
   import { baseStore } from "../store/base";
 
   interface Project {
-    placeholder: String;
-    title: String;
-    action: String;
-    href: String;
+    placeholder: string;
+    title: string;
+    action: string;
+    href: string;
   }
 
   const baseState = baseStore.getState();
   const rdHeaderTitle = ref(null);
   const rdLogo = ref(null);
+  const rdLogoContainer = ref(null);
   const rdBackground = ref(null);
+  const rdPlaceholder = ref(null);  
+  const rdTitle = ref(null);
+  const rdActionButton = ref(null);  
 
   const activeProject = "redian";
   const projects = {
@@ -168,7 +223,7 @@
   };
 
   const animate = {
-    init(rdHeaderTitle: Element, cb?: Function) {
+    init(rdHeaderTitle: Element, cb?: () => void) {
       const tl: GSAPTimeline = gsap.timeline({
         onComplete() {
           if (cb) cb();
@@ -205,15 +260,13 @@
     },
     initProject(
       mode: "desktop" | "mobile",
-      project: String,
+      project: string,
       rdLogo: Element,
       rdBackground: Element,
-      placeholder,
-      placeholderText,
-      mainTitle,
-      mainTitleWord,
-      actionButton,
-      cb?: Function
+      rdPlaceholder: Element,
+      rdTitle: Element,
+      rdActionButton: Element,
+      cb?: () => void
     ) {
       const tl = gsap.timeline({
         onComplete() {
@@ -224,6 +277,25 @@
       const obj = {
         number: 0,
       };
+
+      const rdPlaceholderTextContainer: Element[] = gsap.utils.toArray(
+        rdPlaceholder.querySelectorAll('.rd-text-container')
+      )
+      const rdPlaceholderText: Element[] = gsap.utils.toArray(
+        rdPlaceholder.querySelectorAll('.rd-text')
+      )
+      const rdMainTitleWordContainer: Element[] = gsap.utils.toArray(
+        rdTitle.querySelectorAll('.rd-word-container')
+      )
+      const rdMainTitleWord: Element[] = gsap.utils.toArray(
+        rdTitle.querySelectorAll('.rd-word')
+      )
+      const rdActionTextContainer: Element[] = gsap.utils.toArray(
+        rdActionButton.querySelectorAll('.rd-text-container')
+      )
+      const rdActionText: Element[] = gsap.utils.toArray(
+        rdActionButton.querySelectorAll('.rd-text')
+      )
 
       if (project === "redian") {
         const pathOne = rdLogo.children[1];
@@ -321,84 +393,469 @@
           );
       }
 
-      // if (mode === 'desktop') {
-      //   tl.to(mainTitleWord, {
-      //     x: 0,
-      //     duration: 0.5,
-      //     ease: 'power2.out',
-      //     stagger: 0.125,
-      //   }).to(
-      //     mainTitle,
-      //     {
-      //       x: 0,
-      //       duration: 0.5,
-      //       ease: 'power2.out',
-      //       stagger: 0.125,
-      //     },
-      //     '<0'
-      //   )
-      // } else {
-      //   tl.to([...mainTitleWord].reverse(), {
-      //     y: 0,
-      //     duration: 0.5,
-      //     ease: 'power2.out',
-      //     stagger: 0.125,
-      //   }).to(
-      //     [...mainTitle].reverse(),
-      //     {
-      //       y: 0,
-      //       duration: 0.5,
-      //       ease: 'power2.out',
-      //       stagger: 0.125,
-      //     },
-      //     '<0'
-      //   )
-      // }
+      if (mode === 'desktop') {
+        tl.to(rdMainTitleWord, {
+          x: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+          stagger: 0.125,
+        }).to(
+          rdMainTitleWordContainer,
+          {
+            x: 0,
+            duration: 0.5,
+            ease: 'power2.out',
+            stagger: 0.125,
+          },
+          '<0'
+        )
+      } else {
+        tl.to([...rdMainTitleWord].reverse(), {
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+          stagger: 0.125,
+        }).to(
+          [...rdMainTitleWordContainer].reverse(),
+          {
+            y: 0,
+            duration: 0.5,
+            ease: 'power2.out',
+            stagger: 0.125,
+          },
+          '<0'
+        )
+      }
 
-      // tl.to(
-      //   [placeholder, placeholderText],
-      //   {
-      //     y: 0,
-      //     duration: 0.5,
-      //     ease: 'power2.out',
-      //   },
-      //   '<0.25'
-      // )
-      // .to(
-      //   [
-      //     actionButton.children[0].children[0],
-      //     actionButton.children[0].children[0].children,
-      //   ],
-      //   {
-      //     x: 0,
-      //     duration: 0.5,
-      //     ease: 'power2.out',
-      //   },
-      //   '<0'
-      // )
-      // .to(
-      //   actionButton.children[1].children[0],
-      //   {
-      //     strokeDashoffset: 0,
-      //     duration: 0.5,
-      //     ease: 'power2.inOut',
-      //   },
-      //   '<0'
-      // )
-      // .to(
-      //   actionButton.children[1].children[1],
-      //   {
-      //     opacity: 1,
-      //     ease: 'power2.out',
-      //   },
-      //   '<0.25'
-      // )
+      tl.to(
+        [...rdPlaceholderText, ...rdPlaceholderTextContainer],
+        {
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+        },
+        '<0.25'
+      )
+      .to(
+        [
+          ...rdActionTextContainer,
+          ...rdActionText,
+        ],
+        {
+          x: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+        },
+        '<0'
+      )
 
-      // return tl
+      if (mode === 'desktop') {
+        tl.to(
+          rdActionButton.children[1].children[0],
+          {
+            strokeDashoffset: 0,
+            duration: 0.5,
+            ease: 'power2.inOut',
+          },
+          '<0'
+        )
+        .to(
+          rdActionButton.children[1].children[1],
+          {
+            opacity: 1,
+            ease: 'power2.out',
+          },
+          '<0.25'
+        )
+      } else {
+        tl.to(rdActionButton.children[1], {
+          scaleY: 1,
+          transformOrigin: 'center top',
+          ease: 'power2.out',
+        },'<0').to(
+          rdActionButton.children[2].children[0],
+          {
+            strokeDashoffset: 0,
+            duration: 0.5,
+            ease: 'power2.inOut',
+          },
+          '<0'
+        )
+        .to(
+          rdActionButton.children[2].children[1],
+          {
+            opacity: 1,
+            ease: 'power2.out',
+          },
+          '<0.25'
+        )
+      }
     },
+    exitProject(
+      mode: "desktop" | "mobile",
+      project: string,
+      rdLogo: Element,
+      rdBackground: Element,
+      rdPlaceholder: Element,
+      rdTitle: Element,
+      rdActionButton: Element,
+      cb?: () => void,
+      nextProject?: string
+    ) {
+      const rdPlaceholderTextContainer: Element[] = gsap.utils.toArray(
+        rdPlaceholder.querySelectorAll('.rd-text-container')
+      )
+      const rdPlaceholderText: Element[] = gsap.utils.toArray(
+        rdPlaceholder.querySelectorAll('.rd-text')
+      )
+      const rdMainTitleWordContainer: Element[] = gsap.utils.toArray(
+        rdTitle.querySelectorAll('.rd-word-container')
+      )
+      const rdMainTitleWord: Element[] = gsap.utils.toArray(
+        rdTitle.querySelectorAll('.rd-word')
+      )
+      const rdActionTextContainer: Element[] = gsap.utils.toArray(
+        rdActionButton.querySelectorAll('.rd-text-container')
+      )
+      const rdActionText: Element[] = gsap.utils.toArray(
+        rdActionButton.querySelectorAll('.rd-text')
+      )
+
+      const tl = gsap.timeline({
+        onComplete() {
+          if (cb) cb()
+          if (nextProject) {
+            rdPlaceholderTextContainer.forEach((a) => a.removeAttribute('style'))
+            rdPlaceholderText.forEach((a) => a.removeAttribute('style'))
+            if (project === 'redian') {
+              const pathOne = rdLogo.children[1]
+              const pathTwo = rdLogo.children[2]
+              const pathThree = rdLogo.children[3]
+              pathOne.removeAttribute('style')
+              pathTwo.removeAttribute('style')
+              pathThree.removeAttribute('style')
+            } else if (project === 'pezen') {
+              const pathOne = rdLogo.children[1]
+              const pathTwo = rdLogo.children[2]
+              const pathThree = rdLogo.children[3]
+              pathOne.removeAttribute('style')
+              pathTwo.removeAttribute('style')
+              pathThree.removeAttribute('style')
+            }
+          }
+        },
+      })
+
+      const obj = {
+        number: 100,
+      }
+
+      if (!nextProject) {
+        tl.to(rdActionTextContainer, {
+          x: '100%',
+          duration: 0.25,
+          ease: 'power2.in',
+        })
+          .to(
+            rdActionText,
+            {
+              x: '-100%',
+              duration: 0.25,
+              ease: 'power2.in',
+            },
+            '<0'
+          )
+          .to(
+            rdActionButton.children[1].children[1],
+            {
+              opacity: 0,
+              duration: 0.25,
+              ease: 'power2.in',
+            },
+            '<0'
+          )
+          .to(
+            rdActionButton.children[1].children[0],
+            {
+              strokeDashoffset: 146.51326206513048,
+              duration: 0.25,
+              ease: 'power2.inOut',
+            },
+            '<0.25'
+          )
+      }
+
+      if (project === 'redian') {
+        const pathOne = rdLogo.children[1]
+        const pathTwo = rdLogo.children[2]
+        const pathThree = rdLogo.children[3]
+
+        tl.to(
+          pathOne,
+          {
+            strokeDashoffset: 271.9875183105469,
+            duration: 0.75,
+            ease: 'power4.inOut',
+          },
+          '<0'
+        )
+          .to(
+            pathTwo,
+            {
+              strokeDashoffset: 515.9256591796875,
+              duration: 0.75,
+              ease: 'power4.inOut',
+            },
+            '<0.25'
+          )
+          .to(
+            pathThree,
+            {
+              strokeDashoffset: 539.1181640625,
+              duration: 0.75,
+              ease: 'power4.inOut',
+            },
+            '<0.25'
+          )
+          .to(
+            obj,
+            {
+              number: 0,
+              duration: 0.25,
+              ease: 'power2.out',
+              onUpdate() {
+                gsap.to(rdBackground, {
+                  background: `radial-gradient(circle, rgba(55, 41, 47, 1) 0%, rgba(38, 25, 31, 1) ${obj.number}%)`,
+                })
+              },
+            },
+            '<0.5'
+          )
+      } else if (project === 'pezen') {
+        const pathOne = rdLogo.children[1]
+        const pathTwo = rdLogo.children[2]
+        const pathThree = rdLogo.children[3]
+
+        tl.to(
+          pathOne,
+          {
+            strokeDashoffset: 807.5662841796875,
+            duration: 0.75,
+            ease: 'power4.inOut',
+          },
+          '<0'
+        )
+          .to(
+            pathTwo,
+            {
+              strokeDashoffset: 182,
+              duration: 0.75,
+              ease: 'power4.inOut',
+            },
+            '<0.25'
+          )
+          .to(
+            pathThree,
+            {
+              strokeDashoffset: 213.7148895263672,
+              duration: 0.75,
+              ease: 'power4.inOut',
+            },
+            '<0.25'
+          )
+          .to(
+            obj,
+            {
+              number: 0,
+              duration: 0.25,
+              ease: 'power2.out',
+              onUpdate() {
+                gsap.to(rdBackground, {
+                  background: `radial-gradient(circle, rgba(255,202,146,1) 0%, rgba(255,168,76,1) ${obj.number}%)`,
+                })
+              },
+            },
+            '<0.5'
+          )
+      }
+
+      if (mode === 'desktop') {
+        tl.to(rdMainTitleWord, {
+          x: '100%',
+          duration: 0.25,
+          ease: 'power2.in',
+          stagger: 0.125,
+        })
+          .to(
+            rdMainTitleWordContainer,
+            {
+              x: '-100%',
+              duration: 0.25,
+              ease: 'power2.in',
+              stagger: 0.125,
+            },
+            '<0'
+          )
+          .to(
+            rdPlaceholderTextContainer,
+            {
+              y: '-100%',
+              duration: 0.25,
+              ease: 'power2.in',
+            },
+            '<0.25'
+          )
+          .to(
+            rdPlaceholderText,
+            {
+              y: '100%',
+              duration: 0.25,
+              ease: 'power2.in',
+            },
+            '<0'
+          )
+      } else {
+        tl.to(rdMainTitleWord.reverse(), {
+          y: '100%',
+          duration: 0.25,
+          ease: 'power2.in',
+          stagger: 0.125,
+        })
+          .to(
+            rdMainTitleWordContainer.reverse(),
+            {
+              y: '-100%',
+              duration: 0.25,
+              ease: 'power2.in',
+              stagger: 0.125,
+            },
+            '<0'
+          )
+          .to(
+            rdPlaceholderTextContainer,
+            {
+              y: '100%',
+              duration: 0.25,
+              ease: 'power2.in',
+            },
+            '<0.25'
+          )
+          .to(
+            rdPlaceholderText,
+            {
+              y: '-100%',
+              duration: 0.25,
+              ease: 'power2.in',
+            },
+            '<0'
+          )
+      }
+
+      if (nextProject) {
+        tl.to(rdActionTextContainer, {
+          x: '100%',
+          duration: 0.25,
+          ease: 'power2.in',
+        })
+          .to(
+            rdMainTitleWord,
+            {
+              x: '-100%',
+              duration: 0.25,
+              ease: 'power2.in',
+            },
+            '<0'
+          )
+          .to(
+            rdActionButton.children[1].children[1],
+            {
+              opacity: 0,
+              duration: 0.25,
+              ease: 'power2.i',
+            },
+            '<0'
+          )
+          .to(
+            rdActionButton.children[1].children[0],
+            {
+              strokeDashoffset: 146.51326206513048,
+              duration: 0.25,
+              ease: 'power2.inOut',
+            },
+            '<0.25'
+          )
+
+        if (nextProject === 'redian') {
+          tl.to(rdBackground, {
+            background: '#26191f',
+            duration: 0.5,
+            onStart() {
+              document.documentElement.style.setProperty("--font-color", '#ede0e6')
+              document.documentElement.style.setProperty("--background-color", '#26191f')
+              document.documentElement.style.setProperty("--menu-color", '#21161b')
+            }
+          })
+        } else if (nextProject === 'pezen') {
+          tl.to(rdBackground, {
+            background: '#ffa84c',
+            duration: 0.5,
+            onStart() {
+              document.documentElement.style.setProperty("--font-color", '#fff')
+              document.documentElement.style.setProperty("--background-color", '#ffa84c')
+              document.documentElement.style.setProperty("--menu-color", '#ffa84c')
+            }
+          })
+        }
+      }
+
+      return tl
+    }
   };
 
-  function shuffleArray(arrayOne: Element[], arrayTwo: Element[]) {
+  function count(val: number, trackLength: number, outMin: number, outMax: number): number {
+    return (val / trackLength) * (outMax - outMin) + outMin
+  }
+
+  function mouseMove({ x, y }: MouseEvent): void {
+    const dx = count(x, window.innerWidth, -12, 12)
+    const dy = count(y, window.innerHeight, -12, 12)
+    gsap.to(rdLogoContainer.value, {
+      rotateX: -dy,
+      rotateY: dx,
+    })
+    gsap.to(rdTitle.value, {
+      x: 1.25 * -dx,
+      y: 1.25 * -dy,
+    })
+    gsap.to(rdPlaceholder.value, {
+      x: -dx,
+      y: -dy,
+    })
+    gsap.to(rdActionButton.value, {
+      x: dx,
+      y: dy,
+    })
+  }
+  function mouseLeave(): void {
+    gsap.to(rdLogoContainer.value, {
+      rotateX: 0,
+      rotateY: 0,
+    })
+    gsap.to(rdTitle.value, {
+      x: 0,
+      y: 0,
+    })
+    gsap.to(rdPlaceholder.value, {
+      x: 0,
+      y: 0,
+    })
+    gsap.to(rdActionButton.value, {
+      x: 0,
+      y: 0,
+    })
+  }
+
+  function shuffleArray<T>(arrayOne: T[], arrayTwo: T[]): void {
     for (let i = arrayOne.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arrayOne[i], arrayOne[j]] = [arrayOne[j], arrayOne[i]];
@@ -413,15 +870,28 @@
     setTimeout(() => {
       animate.initProject(
         baseState.viewMode,
-        "redian",
+        activeProject,
         rdLogo.value,
         rdBackground.value,
+        rdPlaceholder.value,
+        rdTitle.value,
+        rdActionButton.value,
         () => {
           animate.init(rdHeaderTitle.value);
+          console.log(baseState.viewMode)
+          if (baseState.viewMode === 'desktop') {
+            window.addEventListener('mousemove', mouseMove)
+            window.addEventListener('mouseleave', mouseLeave)
+          }
         }
       );
     }, 500);
   });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('mousemove', mouseMove)
+    window.removeEventListener('mouseleave', mouseLeave)
+  })
 </script>
 
 <style lang="scss" scoped>
@@ -501,6 +971,153 @@
             .rd-logo-svg-3 {
               stroke-dashoffset: 539.1181640625px;
               stroke-dasharray: 539.1181640625px;
+            }
+          }
+          &.rd-logo-pezen {
+            .rd-logo-svg,
+            .rd-logo-svg-4 {
+              fill: none;
+              stroke-miterlimit: 10;
+              stroke-width: 60px;
+              stroke: #ffb96f;
+            }
+            .rd-logo-svg-4 {
+              stroke-width: 22.5px;
+            }
+            .rd-logo-svg-1 {
+              stroke-dashoffset: 807.5662841796875px;
+              stroke-dasharray: 807.5662841796875px;
+            }
+            .rd-logo-svg-2 {
+              stroke-dashoffset: 182px;
+              stroke-dasharray: 182px;
+            }
+            .rd-logo-svg-3 {
+              stroke-dashoffset: 213.7148895263672px;
+              stroke-dasharray: 213.7148895263672px;
+            }
+          }
+        }
+      }
+      .rd-details-container {
+        position: relative;
+        width: 100%;
+        height: 80%;
+        padding: 0 10vw;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .rd-title-section { 
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          transition: 0.05s transform ease-out;
+          p.rd-placeholder {
+            left: -0.05rem;
+            position: relative;
+            text-transform: uppercase;
+          }
+          h1.rd-title {
+            left: -0.2rem;
+            position: relative;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+          }
+        }
+        .rd-action-section {
+          position: relative;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          transition: 0.05s transform ease-out;
+          .rd-action-button {
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            span.rd-action-name {
+              position: relative;
+              text-transform: uppercase;
+              transition: 0.25s color;
+              margin-right: 1rem;
+            }
+            svg.rd-circle {
+              position: relative;
+              width: 2rem;
+              height: 2rem;
+              * {
+                pointer-events: none;
+              }
+              .rd-circle-1 {
+                fill: none;
+                stroke: var(--font-color);
+                stroke-width: 2px;
+                stroke-dashoffset: 146.51326206513048px;
+                stroke-dasharray: 146.51326206513048px;
+              }
+              .rd-circle-2 {
+                fill: rgba(var(--font-color), 0.5);
+                opacity: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+    @media screen and (max-width: 1024px) {
+      .rd-body {
+        .rd-logo-container {
+          width: 100vw;
+          svg.rd-logo {
+            width: 42.72463548vw;
+            height: 60vw;
+          }
+        }
+        .rd-details-container {
+          height: 70vh;
+          flex-direction: column;
+          align-items: center;
+          .rd-title-section {
+            align-items: center;
+            p.rd-placeholder {
+              left: 0;
+              text-align: center;
+            }
+            h1.rd-title {
+              left: 0;
+              text-align: center;
+              align-items: center;
+            }
+          }
+          .rd-action-section {
+            .rd-action-button {
+              flex-direction: column;
+              justify-content: flex-start;
+              span.rd-action-name {
+                margin: 0;
+              }
+              span.line {
+                position: relative;
+                width: 1px;
+                height: 1.25rem;
+                margin: calc(0.75rem - 2px) 0 0.75rem 0;
+                background: var(--font-color);
+                transform: scaleY(0);
+                transform-origin: center top;
+              }
+              svg.rd-circle {
+                position: relative;
+                width: 1.5rem;
+                height: 1.5rem;
+              }
             }
           }
         }
