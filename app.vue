@@ -1,5 +1,5 @@
 <template>
-  <div class="rd-layout">
+  <div ref="rdLayout" class="rd-layout" :class="cursorVisible ? 'rd-cursor-visible' : ''">
     <div class="rd-header">
       <div class="rd-home-button">
         <svg
@@ -55,13 +55,13 @@
           ></path>
         </svg>
       </div>
-      <div ref="rdNavBtn" class="rd-navigation-button" @click="navHandler(navOpened ? 'close' : 'open')">
+      <div ref="rdNavBtn" data-default-pin="button" class="rd-navigation-button" @click="navHandler(navOpened ? 'close' : 'open')">
         <div class="rd-navigation-button-bar"></div>
         <div class="rd-navigation-button-bar"></div>
       </div>
     </div>
-    <div class="rd-body">
-      <NuxtPage />
+    <div ref="rdBody" class="rd-body">
+      <NuxtPage @pin-elements="pinElements" @unpin-elements="unpinElements" />
     </div>
     <div ref="rdNav" class="rd-navigation">
       <div class="rd-navigation-overlay"></div>
@@ -74,6 +74,7 @@
             class="rd-navigation-link rd-headline-2"
             :href="link.to"
             :class="navOpened && route === link.to ? 'active' : ''"
+            data-default-pin="link"
           >
             <span class="rd-word-wrapper">
               <span class="rd-word-container rd-word-container-right">
@@ -89,6 +90,7 @@
             ref="rdNavSocials"
             :key="social.icon"
             class="rd-navigation-social rd-caption-text"
+            data-default-pin="button"
           >
             <span class="rd-word-wrapper">
               <span class="rd-word-container rd-word-container-down">
@@ -98,7 +100,7 @@
           </div>
         </div>
         <div class="rd-navigation-row">
-          <a ref="rdNavEmail" href="mailto:hello@redian.id" class="rd-navigation-email rd-body-text">
+          <a ref="rdNavEmail" data-default-pin="link" href="mailto:hello@redian.id" class="rd-navigation-email rd-body-text">
             <span class="rd-word-wrapper">
               <span class="rd-word-container rd-word-container-down">
                 <span class="rd-word">hello@redian.id</span>
@@ -108,6 +110,7 @@
         </div>
       </div>
     </div>
+    <div ref="rdCursor" v-if="baseState.viewMode === 'desktop'" class="rd-cursor" :class="cursorHover || cursorPinned ? 'rd-cursor-grow' : ''"></div>
   </div>
 </template>
 
@@ -119,12 +122,22 @@
 
   const baseState = baseStore.getState();
 
+  const rdLayout = ref(null)
+  const rdCursor = ref(null)
+  const rdLogo = ref(null);
+  const rdBody = ref(null)
   const rdNav = ref(null)
   const rdNavBtn = ref(null);
   const rdNavLinks = ref(null);
   const rdNavSocials = ref(null);
   const rdNavEmail = ref(null);
-  const rdLogo = ref(null);
+  const rdPinnedButtons = ref([])
+  const rdPinnedLinks = ref([])
+
+  const cursorPinned = ref(false)
+  const cursorHover = ref(false)
+  const cursorVisible = ref(false)
+
 
   const navOpened = ref(false)
   const navAnim = ref<GSAPTimeline>(null)
@@ -160,9 +173,21 @@
       to: '/contact',
     },
   ]
+
+
   const route: ComputedRef<string> = computed((): string => useRoute().path)
+  const rem: ComputedRef<number> = computed((): number => typeof getComputedStyle === 'function' ? parseInt(getComputedStyle(document.body).fontSize) : 0)
 
   const animate = {
+    init(rdNavBtn: Element) {
+      const tl: GSAPTimeline = gsap.timeline();
+
+      tl.to(rdNavBtn.children, {
+        width: "1rem",
+        x: 0,
+        duration: 0.25,
+      });
+    },
     navHandler(rdNav: Element, rdNavLinks: Element[], rdNavSocials: Element[], rdNavEmail: Element, rdNavBtn: Element, cb?: () => void, rcb?: () => void): GSAPTimeline {
       const tl: GSAPTimeline = gsap.timeline({
         onComplete() {
@@ -286,16 +311,6 @@
     else baseStore.setViewMode("desktop");
   }
 
-  function init(rdNavBtn: Element) {
-    const tl: GSAPTimeline = gsap.timeline();
-
-    tl.to(rdNavBtn.children, {
-      width: "1rem",
-      x: 0,
-      duration: 0.25,
-    });
-  }
-
   function logoHandler(rdLogo: Element, state: "show" | "hide") {
     const tl: GSAPTimeline = gsap.timeline();
 
@@ -354,6 +369,116 @@
     }
   }
 
+  function moveCursor({ clientX, clientY }: MouseEvent) {
+    if (!cursorVisible.value) cursorVisible.value = true
+    if (!cursorPinned.value && !cursorHover.value) {
+      gsap.to(rdCursor.value, {
+        x: `${clientX - 0.25 * rem.value}`,
+        y: `${clientY - 0.25 * rem.value}`,
+      })
+    }
+  }
+
+  function pinCursorButton() {
+    cursorPinned.value = true
+  }
+  function unpinCursorButton({ target }: MouseEvent) {
+    if (target instanceof Element) {
+      cursorPinned.value = false
+      gsap.to(target, {
+        x: 0,
+        y: 0
+      })
+    }
+  }
+  function dragCursorButton({ target, clientX, clientY }: MouseEvent) {
+    if (target instanceof Element) {
+      const { top, left, height, width }: DOMRect = target.getBoundingClientRect()
+      const cx = left + 0.5 * width
+      const cy = top + 0.5 * height
+      const dx = clientX - cx
+      const dy = clientY - cy
+      gsap.to(rdCursor.value, {
+        x: `${cx - 1.25 * rem.value + dx * 0.25}`,
+        y: `${cy - 1.25 * rem.value + dy * 0.25}`,
+      })
+      gsap.to(target, {
+        x: `${dx * 0.25}`,
+        y: `${dy * 0.25}`
+      })
+    }
+  }
+
+  function pinCursorLink() {
+    cursorHover.value = true
+  }
+  function unpinCursorLink({ target }: MouseEvent) {
+    if (target instanceof Element) {
+      cursorHover.value = false
+      gsap.to(target, {
+        x: 0,
+        y: 0
+      })
+    }
+  }
+  function dragCursorLink({ target, clientX, clientY }: MouseEvent) {
+    if (target instanceof Element) {
+      const { top, left, height, width }: DOMRect = target.getBoundingClientRect()
+      const cx = left + 0.5 * width
+      const cy = top + 0.5 * height
+      const dx = clientX - cx
+      const dy = clientY - cy
+      gsap.to(rdCursor.value, {
+        x: `${clientX - 1.25 * rem.value}`,
+        y: `${clientY - 1.25 * rem.value}`,
+      })
+      gsap.to(target, {
+        x: `${dx * 0.25}`,
+        y: `${dy * 0.25}`
+      })
+    }
+  }
+
+  function pinElements() {
+    if (baseState.viewMode === 'desktop') {
+      rdPinnedButtons.value = gsap.utils.toArray(
+        rdBody.value.querySelectorAll('[data-pin=button]')
+      )
+      for (const rdButton of rdPinnedButtons.value) {
+        rdButton.addEventListener('mouseenter', pinCursorButton)
+        rdButton.addEventListener('mouseleave', unpinCursorButton)
+        rdButton.addEventListener('mousemove', dragCursorButton)
+      }
+      
+      rdPinnedLinks.value = gsap.utils.toArray(
+        rdBody.value.querySelectorAll('[data-pin=link]')
+      )
+      for (const rdLink of rdPinnedLinks.value) {
+        rdLink.addEventListener('mouseenter', pinCursorLink)
+        rdLink.addEventListener('mouseleave', unpinCursorLink)
+        rdLink.addEventListener('mousemove', dragCursorLink)
+      }
+    }
+  }
+
+  function unpinElements() {
+    if (baseState.viewMode === 'desktop') {
+      for (const rdButton of rdPinnedButtons.value) {
+        rdButton.removeEventListener('mouseenter', pinCursorButton)
+        rdButton.removeEventListener('mouseleave', unpinCursorButton)
+        rdButton.removeEventListener('mousemove', dragCursorButton)
+      }
+      rdPinnedButtons.value = []
+
+      for (const rdLink of rdPinnedLinks.value) {
+        rdLink.removeEventListener('mouseenter', pinCursorLink)
+        rdLink.removeEventListener('mouseleave', unpinCursorLink)
+        rdLink.removeEventListener('mousemove', dragCursorLink)
+      }
+      rdPinnedLinks.value = []
+    }
+  }  
+
   function navHandler(state: 'open' | 'close') {
     if (!navAnim.value) {
       navAnim.value = animate.navHandler(rdNav.value, rdNavLinks.value, rdNavSocials.value, rdNavEmail.value, rdNavBtn.value, () => {
@@ -371,15 +496,12 @@
     }
   }
 
-  // watch(
-  //   () => baseState.viewMode,
-  //   (val) => {
-  //     console.log(val)
-  //     if (val === "desktop") logoHandler(rdLogo.value, "hide");
-  //     else logoHandler(rdLogo.value, "show");
-  //   },
-  //   { immediate: true }
-  // );
+  watch(
+    () => baseState.viewMode,
+    (val, oldVal) => {
+      if (val && oldVal) location.reload()
+    }
+  );
 
   onMounted(() => {
     const event = new Event("resize");
@@ -393,7 +515,27 @@
     mediaQuery.addEventListener("change", resizeHandler);
     resizeHandler(mediaQuery)
 
-    init(rdNavBtn.value);
+    if (baseState.viewMode === 'desktop') {
+      rdLayout.value.addEventListener('mousemove', moveCursor)
+      rdLayout.value.addEventListener('mouseenter', () => cursorVisible.value = true)
+      rdLayout.value.addEventListener('mouseleave', () => cursorVisible.value = false)
+
+      const rdButtonPins: Element[] = gsap.utils.toArray('[data-default-pin=button]')
+      for (const rdButton of rdButtonPins) {
+        rdButton.addEventListener('mouseenter', pinCursorButton)
+        rdButton.addEventListener('mouseleave', unpinCursorButton)
+        rdButton.addEventListener('mousemove', dragCursorButton)
+      }
+      
+      const rdLinkPins: Element[] = gsap.utils.toArray('[data-default-pin=link')
+      for (const rdLink of rdLinkPins) {
+        rdLink.addEventListener('mouseenter', pinCursorLink)
+        rdLink.addEventListener('mouseleave', unpinCursorLink)
+        rdLink.addEventListener('mousemove', dragCursorLink)
+      }
+    }
+
+    animate.init(rdNavBtn.value);
   });
 </script>
 
@@ -627,6 +769,31 @@
         }
       }
     }
+    .rd-cursor {
+      pointer-events: none;
+      z-index: 10000000;
+      position: fixed;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: 0.06125s transform ease-out, 0.25s width ease-in-out,
+        0.25s height ease-in-out;
+      backdrop-filter: invert(100%) hue-rotate(180deg);
+      background: rgba(#fff, 0.1);
+      &.rd-cursor-grow {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+        transition: 0.06125s transform ease-out, 0.5s width ease-out,
+          0.5s height ease-out;
+      }
+    }
+    &.rd-cursor-visible {
+      .rd-cursor {
+        width: 0.5rem;
+        height: 0.5rem;
+      }
+    }
     @media screen and (max-width: 1024px) {
       .rd-header {
         padding: 0 1rem;
@@ -762,6 +929,7 @@
   span.rd-text-wrapper,
   span.rd-word-wrapper,
   span.rd-image-wrapper {
+    pointer-events: none;
     position: relative;
     overflow: hidden;
     display: flex;

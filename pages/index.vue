@@ -87,7 +87,7 @@
         </svg>
         <svg
           v-else-if="activeProject === 'pezen'"
-          ref="logo"
+          ref="rdLogo"
           class="rd-logo rd-logo-pezen"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 300 510"
@@ -161,6 +161,7 @@
             ref="rdActionButton"
             class="rd-action-button"
             @click="exit(projects[activeProject].href)"
+            data-pin="link"
           >
             <span class="rd-action-name rd-caption-text">
               <span class="rd-text-wrapper">
@@ -182,6 +183,13 @@
         </div>
       </div>
     </div>
+    <div class="rd-footer">
+      <div ref="rdBarContainer" class="rd-bar-container">
+        <div v-for="project in Object.keys(projects)" :key="project" :class="activeProject === project ? 'rd-bar-active' : ''" class="rd-bar" @click="selectProject(project)">
+          <div v-if="activeProject === project" class="rd-bar-filled"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -197,8 +205,11 @@
     href: string;
   }
 
+  const emit = defineEmits(['pin-elements', 'unpin-elements'])
+
   const baseState = baseStore.getState();
   const rdHeaderTitle = ref(null);
+  const rdBarContainer = ref(null)
   const rdLogo = ref(null);
   const rdLogoContainer = ref(null);
   const rdBackground = ref(null);
@@ -206,7 +217,9 @@
   const rdTitle = ref(null);
   const rdActionButton = ref(null);  
 
-  const activeProject = "redian";
+  let projectTimeout: GSAPTween = null
+  let projectChanging: boolean = false
+  const activeProject = ref("redian");
   const projects = {
     redian: {
       placeholder: "Digital Agency",
@@ -219,27 +232,30 @@
       title: "Pezen",
       action: "Telusuri",
       href: "/work/pezen",
-    },
+    }
   };
 
   const animate = {
-    init(rdHeaderTitle: Element, cb?: () => void) {
+    init(rdHeaderTitle: Element, rdBarContainer: Element, cb?: () => void) {
       const tl: GSAPTimeline = gsap.timeline({
         onComplete() {
           if (cb) cb();
         },
       });
-      const lettersContainer: Element[] = gsap.utils.toArray(
+      const rdLettersContainer: Element[] = gsap.utils.toArray(
         rdHeaderTitle.querySelectorAll(".rd-letter-container")
       );
-      const letters: Element[] = gsap.utils.toArray(
+      const rdLetters: Element[] = gsap.utils.toArray(
         rdHeaderTitle.querySelectorAll(".rd-letter")
       );
+      const rdBars: Element[] = gsap.utils.toArray(
+        rdBarContainer.querySelectorAll('.rd-bar')
+      )
 
-      shuffleArray(lettersContainer, letters);
+      shuffleArray(rdLettersContainer, rdLetters);
 
       tl.to(
-        lettersContainer,
+        rdLettersContainer,
         {
           x: 0,
           duration: 0.5,
@@ -248,7 +264,7 @@
         },
         "<0"
       ).to(
-        letters,
+        rdLetters,
         {
           x: 0,
           duration: 0.5,
@@ -256,6 +272,14 @@
           ease: "power2.out",
         },
         "<0"
+      ).to(
+        rdBars,
+        {
+          width: '100%',
+          duration: 0.5,
+          ease: 'power1.inOut',
+        },
+        '<0'
       );
     },
     initProject(
@@ -462,7 +486,7 @@
         .to(
           rdActionButton.children[1].children[1],
           {
-            opacity: 1,
+            opacity: 0.5,
             ease: 'power2.out',
           },
           '<0.25'
@@ -484,7 +508,7 @@
         .to(
           rdActionButton.children[2].children[1],
           {
-            opacity: 1,
+            opacity: 0.5,
             ease: 'power2.out',
           },
           '<0.25'
@@ -800,7 +824,8 @@
             background: '#ffa84c',
             duration: 0.5,
             onStart() {
-              document.documentElement.style.setProperty("--font-color", '#fff')
+              // document.documentElement.style.setProperty("--font-color", '#fff')
+              document.documentElement.style.setProperty("--font-color", '#9d5524')
               document.documentElement.style.setProperty("--background-color", '#ffa84c')
               document.documentElement.style.setProperty("--menu-color", '#ffa84c')
             }
@@ -863,32 +888,73 @@
     }
   }
 
-  function init() {}
+  function startTimeout(): void {
+    projectChanging = false
+    const nextProject = Object.keys(projects).indexOf(activeProject.value) + 1
+    projectTimeout = gsap.to(rdBarContainer.value.querySelector('.rd-bar-filled'), {
+      width: '100%',
+      duration: 10,
+      ease: 'linear',
+      onComplete() {
+        selectProject(Object.keys(projects)[nextProject] || Object.keys(projects)[0])
+      }
+    })
+  }
+  function selectProject(project: string): void {
+    if (Object.keys(projects).includes(project) && !projectChanging && project !== activeProject.value) {
+      projectChanging = true
+      mouseLeave()
+      window.removeEventListener('mousemove', mouseMove)
+      window.removeEventListener('mouseleave', mouseLeave)
+      if (projectTimeout?.isActive) {
+        projectTimeout.kill()
+        projectTimeout = null
+      }
+      animate.exitProject(baseState.viewMode, activeProject.value, rdLogo.value,
+        rdBackground.value,
+        rdPlaceholder.value,
+        rdTitle.value,
+        rdActionButton.value, 
+        () => {
+          activeProject.value = project
+          setTimeout(init, 100)
+        },
+        project)
+    }
+  }
+
+  function init(init: boolean = false) {
+    animate.initProject(
+      baseState.viewMode,
+      activeProject.value,
+      rdLogo.value,
+      rdBackground.value,
+      rdPlaceholder.value,
+      rdTitle.value,
+      rdActionButton.value,
+      () => {
+        if (init) {
+          emit('pin-elements')
+          animate.init(rdHeaderTitle.value, rdBarContainer.value);
+        }
+        if (baseState.viewMode === 'desktop') {
+          window.addEventListener('mousemove', mouseMove)
+          window.addEventListener('mouseleave', mouseLeave)
+        }
+        startTimeout()
+      }
+    );
+  }
   function exit() {}
 
   onMounted(() => {
     setTimeout(() => {
-      animate.initProject(
-        baseState.viewMode,
-        activeProject,
-        rdLogo.value,
-        rdBackground.value,
-        rdPlaceholder.value,
-        rdTitle.value,
-        rdActionButton.value,
-        () => {
-          animate.init(rdHeaderTitle.value);
-          console.log(baseState.viewMode)
-          if (baseState.viewMode === 'desktop') {
-            window.addEventListener('mousemove', mouseMove)
-            window.addEventListener('mouseleave', mouseLeave)
-          }
-        }
-      );
+      init(true)
     }, 500);
   });
 
   onBeforeUnmount(() => {
+    emit('unpin-elements')
     window.removeEventListener('mousemove', mouseMove)
     window.removeEventListener('mouseleave', mouseLeave)
   })
@@ -1064,10 +1130,68 @@
                 stroke-dasharray: 146.51326206513048px;
               }
               .rd-circle-2 {
-                fill: rgba(var(--font-color), 0.5);
+                fill: var(--font-color);
                 opacity: 0;
               }
             }
+          }
+        }
+      }
+    }
+    .rd-footer {
+      z-index: 1;
+      position: absolute;
+      bottom: 1.75rem;
+      width: 100vw;
+      height: 1.5rem;
+      padding: 0 2rem;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .rd-bar-container {
+        position: absolute;
+        left: 37.5vw;
+        width: 25vw;
+        height: 6px;
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        .rd-bar {
+          cursor: pointer;
+          position: relative;
+          width: 0;
+          height: 100%;
+          overflow: hidden;
+          display: flex;
+          flex-shrink: 1;
+          justify-content: flex-start;
+          align-items: center;
+          .rd-bar-filled {
+            pointer-events: none;
+            position: absolute;
+            top: 2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            border-radius: 1px;
+            background: var(--font-color);
+          }
+          &::before {
+            content: '';
+            position: relative;
+            width: 100%;
+            height: 2px;
+            border-radius: 1px;
+            background: var(--font-color);
+            opacity: 0.25;
+            transition: 0.2s opacity linear;
+          }
+          &.rd-bar-active::before {
+            opacity: 0.5;
           }
         }
       }

@@ -7,7 +7,7 @@ interface Base extends Object {
 class BaseStore extends PersistentStore<Base> {
   protected data(): Base {
     return {
-      viewMode: 'desktop',
+      viewMode: null,
     };
   }
 
