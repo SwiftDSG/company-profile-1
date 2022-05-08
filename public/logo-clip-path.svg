@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 315.27 441.84">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+        stroke-width: 100px;
+      }
+    </style>
+    <clipPath id="svg-path-1">
+      <rect x="-26.36" y="191.63" width="240" height="60" rx="30" transform="translate(-129.29 131.13) rotate(-45)"></rect>
+    </clipPath>
+    <clipPath id="svg-path-2">
+      <path d="M285.27,199.71l21.21-21.22a30,30,0,0,0,0-42.42L179.2,8.79a30,30,0,0,0-42.43,0L9.49,136.07a30,30,0,0,0,0,42.42h0a30,30,0,0,0,42.43,0L147.38,83a15,15,0,0,1,21.21,0l63.64,63.64a15,15,0,0,1,0,21.22l-31.82,31.82a30,30,0,0,0,0,42.42h0a30,30,0,0,0,42.43,0l42.43-42.42Z"></path>
+    </clipPath>
+    <clipPath id="svg-path-3">
+      <path d="M9.49,433.05h0a30,30,0,0,0,42.43,0l95.46-95.46a15,15,0,0,1,21.21,0l95.46,95.46a30,30,0,0,0,42.43,0h0a30,30,0,0,0,0-42.43L200.41,284.56,179.2,263.35a30,30,0,0,0-42.43,0L9.49,390.62A30,30,0,0,0,9.49,433.05Z"></path>
+    </clipPath>
+  </defs>
+  <line clip-path="url(#svg-path-1)" class="cls-1" x1="30.41" y1="285.15" x2="221.32" y2="94.24"></line>
+  <path clip-path="url(#svg-path-2)" class="cls-1" d="M31.11,157.17,137.18,51.1a30,30,0,0,1,42.42,0L264.52,136a30,30,0,0,1,.06,42.37L159.05,284.5"></path>
+  <path clip-path="url(#svg-path-3)" class="cls-1" d="M420,546.08,179.6,305.66a30,30,0,0,0-42.42,0L31.11,411.73"></path>
+</svg>

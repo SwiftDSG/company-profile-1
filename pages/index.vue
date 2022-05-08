@@ -198,16 +198,11 @@
 
   import { baseStore } from "../store/base";
 
-  interface Project {
-    placeholder: string;
-    title: string;
-    action: string;
-    href: string;
-  }
-
-  const emit = defineEmits(['pin-elements', 'unpin-elements'])
-
   const baseState = baseStore.getState();
+  const props = defineProps<{ pageState: string }>()
+  const emit = defineEmits(['pin-elements', 'unpin-elements', 'exit-page'])
+  const router = useRouter()
+
   const rdHeaderTitle = ref(null);
   const rdBarContainer = ref(null)
   const rdLogo = ref(null);
@@ -278,6 +273,49 @@
           width: '100%',
           duration: 0.5,
           ease: 'power1.inOut',
+        },
+        '<0'
+      );
+    },
+    exit(rdHeaderTitle: Element, rdBarContainer: Element, cb?: () => void) {
+      const tl: GSAPTimeline = gsap.timeline({
+        onComplete() {
+          if (cb) cb();
+        },
+      });
+      const rdLettersContainer: Element[] = gsap.utils.toArray(
+        rdHeaderTitle.querySelectorAll(".rd-letter-container")
+      );
+      const rdLetters: Element[] = gsap.utils.toArray(
+        rdHeaderTitle.querySelectorAll(".rd-letter")
+      );
+      const rdBars: Element[] = gsap.utils.toArray(
+        rdBarContainer.querySelectorAll('.rd-bar')
+      )
+      
+      tl.to(
+        rdLettersContainer,
+        {
+          x: '100%',
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "power4.in",
+        },
+        "<0"
+      ).to(
+        rdLetters,
+        {
+          x: '-100%',
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "power4.in",
+        },
+        "<0"
+      ).to(
+        rdBars,
+        {
+          opacity: 0,
+          duration: 0.25,
         },
         '<0'
       );
@@ -579,34 +617,39 @@
           x: '100%',
           duration: 0.25,
           ease: 'power2.in',
-        })
-          .to(
-            rdActionText,
-            {
-              x: '-100%',
-              duration: 0.25,
-              ease: 'power2.in',
-            },
-            '<0'
-          )
-          .to(
-            rdActionButton.children[1].children[1],
-            {
-              opacity: 0,
-              duration: 0.25,
-              ease: 'power2.in',
-            },
-            '<0'
-          )
-          .to(
-            rdActionButton.children[1].children[0],
-            {
-              strokeDashoffset: 146.51326206513048,
-              duration: 0.25,
-              ease: 'power2.inOut',
-            },
-            '<0.25'
-          )
+        }).to(rdActionText, {
+          x: '-100%',
+          duration: 0.25,
+          ease: 'power2.in',
+        },'<0')
+
+        if (mode === 'desktop') {
+          tl.to(rdActionButton.children[1].children[1], {
+            opacity: 0,
+            duration: 0.25,
+            ease: 'power2.in',
+          }, '<0')
+          .to(rdActionButton.children[1].children[0], {
+            strokeDashoffset: 146.51326206513048,
+            duration: 0.25,
+            ease: 'power2.inOut',
+          }, '<0.25')
+        } else {
+          tl.to(rdActionButton.children[1], {
+            scaleY: 0,
+            transformOrigin: 'center bottom',
+            ease: 'power2.in',
+          },'<0').to(rdActionButton.children[2].children[1], {
+            opacity: 0,
+            duration: 0.25,
+            ease: 'power2.in',
+          }, '<0')
+          .to(rdActionButton.children[2].children[0], {
+            strokeDashoffset: 146.51326206513048,
+            duration: 0.25,
+            ease: 'power2.inOut',
+          }, '<0.25')
+        }
       }
 
       if (project === 'redian') {
@@ -780,34 +823,39 @@
           x: '100%',
           duration: 0.25,
           ease: 'power2.in',
-        })
-          .to(
-            rdMainTitleWord,
-            {
-              x: '-100%',
-              duration: 0.25,
-              ease: 'power2.in',
-            },
-            '<0'
-          )
-          .to(
-            rdActionButton.children[1].children[1],
-            {
-              opacity: 0,
-              duration: 0.25,
-              ease: 'power2.i',
-            },
-            '<0'
-          )
-          .to(
-            rdActionButton.children[1].children[0],
-            {
-              strokeDashoffset: 146.51326206513048,
-              duration: 0.25,
-              ease: 'power2.inOut',
-            },
-            '<0.25'
-          )
+        }).to(rdActionText, {
+          x: '-100%',
+          duration: 0.25,
+          ease: 'power2.in',
+        }, '<0')
+
+        if (mode === 'desktop') {
+          tl.to(rdActionButton.children[1].children[1], {
+            opacity: 0,
+            duration: 0.25,
+            ease: 'power2.in',
+          }, '<0')
+          .to(rdActionButton.children[1].children[0], {
+            strokeDashoffset: 146.51326206513048,
+            duration: 0.25,
+            ease: 'power2.inOut',
+          }, '<0.25')
+        } else {
+          tl.to(rdActionButton.children[1], {
+            scaleY: 0,
+            transformOrigin: 'center bottom',
+            ease: 'power2.in',
+          },'<0').to(rdActionButton.children[2].children[1], {
+            opacity: 0,
+            duration: 0.25,
+            ease: 'power2.in',
+          }, '<0')
+          .to(rdActionButton.children[2].children[0], {
+            strokeDashoffset: 146.51326206513048,
+            duration: 0.25,
+            ease: 'power2.inOut',
+          }, '<0.25')
+        }
 
         if (nextProject === 'redian') {
           tl.to(rdBackground, {
@@ -824,7 +872,6 @@
             background: '#ffa84c',
             duration: 0.5,
             onStart() {
-              // document.documentElement.style.setProperty("--font-color", '#fff')
               document.documentElement.style.setProperty("--font-color", '#9d5524')
               document.documentElement.style.setProperty("--background-color", '#ffa84c')
               document.documentElement.style.setProperty("--menu-color", '#ffa84c')
@@ -923,7 +970,7 @@
     }
   }
 
-  function init(init: boolean = false) {
+  function init(init: boolean = false): void {
     animate.initProject(
       baseState.viewMode,
       activeProject.value,
@@ -945,7 +992,33 @@
       }
     );
   }
-  function exit() {}
+  function exit(path: string) {
+    projectChanging = true
+    mouseLeave()
+    window.removeEventListener('mousemove', mouseMove)
+    window.removeEventListener('mouseleave', mouseLeave)
+    if (projectTimeout?.isActive) {
+      projectTimeout.kill()
+      projectTimeout = null
+    }
+    animate.exitProject(baseState.viewMode, activeProject.value, rdLogo.value,
+      rdBackground.value,
+      rdPlaceholder.value,
+      rdTitle.value,
+      rdActionButton.value, 
+      () => {
+        animate.exit(rdHeaderTitle.value, rdBarContainer.value, () => {
+          router.push(path)
+          emit('exit-page')
+        })
+      })
+  }
+
+  watch(() => props.pageState, (val: string) => {
+    if (val !== 'idle') {
+      exit(val)
+    }
+  })
 
   onMounted(() => {
     setTimeout(() => {
@@ -1238,12 +1311,17 @@
                 transform-origin: center top;
               }
               svg.rd-circle {
-                position: relative;
                 width: 1.5rem;
                 height: 1.5rem;
               }
             }
           }
+        }
+      }
+      .rd-footer {
+        .rd-bar-container {
+          left: 25vw;
+          width: 50vw;
         }
       }
     }

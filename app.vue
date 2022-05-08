@@ -61,7 +61,7 @@
       </div>
     </div>
     <div ref="rdBody" class="rd-body">
-      <NuxtPage @pin-elements="pinElements" @unpin-elements="unpinElements" />
+      <NuxtPage :page-state="pageState" @pin-elements="pinElements" @unpin-elements="unpinElements" @exit-page="pageState = 'idle'" />
     </div>
     <div ref="rdNav" class="rd-navigation">
       <div class="rd-navigation-overlay"></div>
@@ -73,7 +73,8 @@
             :key="link.to"
             class="rd-navigation-link rd-headline-2"
             :href="link.to"
-            :class="navOpened && route === link.to ? 'active' : ''"
+            :class="navOpened && route === link.to ? 'rd-navigation-link-active' : ''"
+            @click.prevent="changePage"
             data-default-pin="link"
           >
             <span class="rd-word-wrapper">
@@ -121,23 +122,24 @@
   import { baseStore } from "./store/base";
 
   const baseState = baseStore.getState();
+  const pageState = ref('idle')
 
-  const rdLayout = ref(null)
-  const rdCursor = ref(null)
-  const rdLogo = ref(null);
-  const rdBody = ref(null)
-  const rdNav = ref(null)
-  const rdNavBtn = ref(null);
-  const rdNavLinks = ref(null);
-  const rdNavSocials = ref(null);
-  const rdNavEmail = ref(null);
+  const rdLayout = ref<Element | null>(null)
+  const rdCursor = ref<Element | null>(null)
+  const rdLogo = ref<Element | null>(null);
+  const rdBody = ref<Element | null>(null)
+  const rdNav = ref<Element | null>(null)
+  const rdNavBtn = ref<Element | null>(null);
+  const rdNavLinks = ref<Element | null>(null);
+  const rdNavSocials = ref<Element | null>(null);
+  const rdNavEmail = ref<Element | null>(null);
+
   const rdPinnedButtons = ref([])
   const rdPinnedLinks = ref([])
 
   const cursorPinned = ref(false)
   const cursorHover = ref(false)
   const cursorVisible = ref(false)
-
 
   const navOpened = ref(false)
   const navAnim = ref<GSAPTimeline>(null)
@@ -173,7 +175,6 @@
       to: '/contact',
     },
   ]
-
 
   const route: ComputedRef<string> = computed((): string => useRoute().path)
   const rem: ComputedRef<number> = computed((): number => typeof getComputedStyle === 'function' ? parseInt(getComputedStyle(document.body).fontSize) : 0)
@@ -311,6 +312,18 @@
     else baseStore.setViewMode("desktop");
   }
 
+  function changePage({ target }: TouchEvent | MouseEvent) {
+    if (target instanceof Element) {
+      navHandler('close')
+      pageState.value = target.getAttribute('href')
+      target.classList.add('rd-navigation-link-blink')
+      setTimeout(() => {
+        target.classList.remove('rd-navigation-link-blink')
+      }, 500)
+    }
+    
+  }
+
   function logoHandler(rdLogo: Element, state: "show" | "hide") {
     const tl: GSAPTimeline = gsap.timeline();
 
@@ -439,7 +452,24 @@
     }
   }
 
-  function pinElements() {
+  function navHandler(state: 'open' | 'close') {
+    if (!navAnim.value) {
+      navAnim.value = animate.navHandler(rdNav.value, rdNavLinks.value, rdNavSocials.value, rdNavEmail.value, rdNavBtn.value, () => {
+        navOpened.value = true
+      }, () => {
+        rdNav.value.style.zIndex = -1
+      })
+    }
+    if (state === 'open') {
+      rdNav.value.style.zIndex = 1
+      navAnim.value.play()
+    } else {
+      navOpened.value = false
+      navAnim.value.reverse()
+    }
+  }
+
+  function pinElements(): void {
     if (baseState.viewMode === 'desktop') {
       rdPinnedButtons.value = gsap.utils.toArray(
         rdBody.value.querySelectorAll('[data-pin=button]')
@@ -460,8 +490,7 @@
       }
     }
   }
-
-  function unpinElements() {
+  function unpinElements(): void {
     if (baseState.viewMode === 'desktop') {
       for (const rdButton of rdPinnedButtons.value) {
         rdButton.removeEventListener('mouseenter', pinCursorButton)
@@ -469,7 +498,7 @@
         rdButton.removeEventListener('mousemove', dragCursorButton)
       }
       rdPinnedButtons.value = []
-
+      
       for (const rdLink of rdPinnedLinks.value) {
         rdLink.removeEventListener('mouseenter', pinCursorLink)
         rdLink.removeEventListener('mouseleave', unpinCursorLink)
@@ -477,29 +506,19 @@
       }
       rdPinnedLinks.value = []
     }
-  }  
-
-  function navHandler(state: 'open' | 'close') {
-    if (!navAnim.value) {
-      navAnim.value = animate.navHandler(rdNav.value, rdNavLinks.value, rdNavSocials.value, rdNavEmail.value, rdNavBtn.value, () => {
-        navOpened.value = true
-      }, () => {
-        rdNav.value.style.zIndex = -1
-      })
-    }
-    if (state === 'open') {
-      rdNav.value.style.zIndex = 1
-      navAnim.value.play()
-    } else {
-      navOpened.value = false
-      navAnim.value.reverse()
-    }
   }
 
   watch(
     () => baseState.viewMode,
     (val, oldVal) => {
       if (val && oldVal) location.reload()
+    }
+  );
+  watch(
+    () => route.value,
+    (val, oldVal) => {
+      if (val !== '/') logoHandler(rdLogo.value, "show")
+      else logoHandler(rdLogo.value, "hide")
     }
   );
 
@@ -514,6 +533,8 @@
     const mediaQuery = window.matchMedia("(max-width: 1024px)");
     mediaQuery.addEventListener("change", resizeHandler);
     resizeHandler(mediaQuery)
+
+    if (route.value !== '/') logoHandler(rdLogo.value, "show")
 
     if (baseState.viewMode === 'desktop') {
       rdLayout.value.addEventListener('mousemove', moveCursor)
@@ -690,14 +711,14 @@
             &:hover {
               opacity: 1 !important;
             }
-            &.active {
+            &.rd-navigation-link-active {
               pointer-events: none;
               opacity: 1 !important;
               span.rd-navigation-underline {
                 width: calc(100% - 0.4rem);
               }
             }
-            &.blink {
+            &.rd-navigation-link-blink {
               animation: blink 0.2s ease-in-out infinite;
             }
           }
@@ -823,6 +844,7 @@
 
 <style lang="scss">
   :root {
+    user-select: none;
     --var: 1vh;
     --font-color: #ede0e6;
     --background-color: #26191f;
@@ -915,7 +937,7 @@
   .rd-caption-text {
     font-family: 'Raleway';
     font-size: 0.65rem;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1;
     letter-spacing: 0.05rem;
     text-transform: uppercase;
@@ -999,6 +1021,7 @@
     width: 100%;
     height: 100%;
     span.rd-image-container {
+      pointer-events: none;
       width: 100%;
       height: 100%;
       img.rd-image {
@@ -1008,6 +1031,30 @@
         object-fit: cover;
         transform: scale(1.25);
       }
+    }
+  }
+  
+  @keyframes blink {
+    0% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.85);
+    }
+    50% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0.85);
     }
   }
 </style>
