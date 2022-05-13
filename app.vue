@@ -86,7 +86,7 @@
           </a>
         </div>
         <div class="rd-navigation-column-small">
-          <div
+          <a
             v-for="social in navSocials"
             ref="rdNavSocials"
             :key="social.icon"
@@ -98,7 +98,7 @@
                 <span class="rd-word">{{ social.name }}</span>
               </span>
             </span>
-          </div>
+          </a>
         </div>
         <div class="rd-navigation-row">
           <a ref="rdNavEmail" data-default-pin="link" href="mailto:hello@redian.id" class="rd-navigation-email rd-body-text">
@@ -124,15 +124,15 @@
   const baseState = baseStore.getState();
   const pageState = ref('idle')
 
-  const rdLayout = ref<Element | null>(null)
-  const rdCursor = ref<Element | null>(null)
-  const rdLogo = ref<Element | null>(null);
-  const rdBody = ref<Element | null>(null)
-  const rdNav = ref<Element | null>(null)
-  const rdNavBtn = ref<Element | null>(null);
-  const rdNavLinks = ref<Element | null>(null);
-  const rdNavSocials = ref<Element | null>(null);
-  const rdNavEmail = ref<Element | null>(null);
+  const rdLayout = ref<HTMLDivElement>(null)
+  const rdCursor = ref<HTMLDivElement>(null)
+  const rdLogo = ref<SVGElement>(null);
+  const rdBody = ref<HTMLDivElement>(null)
+  const rdNav = ref<HTMLDivElement>(null)
+  const rdNavBtn = ref<HTMLDivElement>(null);
+  const rdNavLinks = ref<HTMLAnchorElement[]>(null);
+  const rdNavSocials = ref<HTMLAnchorElement[]>(null);
+  const rdNavEmail = ref<HTMLAnchorElement>(null);
 
   const rdPinnedButtons = ref([])
   const rdPinnedLinks = ref([])
@@ -457,11 +457,11 @@
       navAnim.value = animate.navHandler(rdNav.value, rdNavLinks.value, rdNavSocials.value, rdNavEmail.value, rdNavBtn.value, () => {
         navOpened.value = true
       }, () => {
-        rdNav.value.style.zIndex = -1
+        rdNav.value.style.zIndex = '-1'
       })
     }
     if (state === 'open') {
-      rdNav.value.style.zIndex = 1
+      rdNav.value.style.zIndex = '1'
       navAnim.value.play()
     } else {
       navOpened.value = false
@@ -927,13 +927,38 @@
   .rd-headline-2 {
     font-size: 2rem;
     font-family: 'Exo';
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1;
     letter-spacing: 0.15rem;
   }
-  .rd-headline-3 {}
-  .rd-headline-4 {}
-  .rd-headline-5 {}
+  .rd-headline-3 {
+    font-size: 1.25rem;
+    font-family: 'Exo';
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.125rem;
+  }
+  .rd-headline-4 {
+    font-size: 1rem;
+    font-family: 'Exo';
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.1rem;
+  }
+  .rd-headline-5 {
+    font-size: 0.75rem;
+    font-family: 'Exo';
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.075rem;
+  }
+  .rd-headline-6 {
+    font-size: 0.55rem;
+    font-family: 'Exo';
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.075rem;
+  }
   .rd-caption-text {
     font-family: 'Raleway';
     font-size: 0.65rem;
@@ -945,6 +970,14 @@
   .rd-body-text {
     font-family: 'Quicksand';
     font-size: 0.75rem;
+  }
+  .rd-placeholder-text {
+    font-family: 'Raleway';
+    font-size: 0.55rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
   }
 
   span.rd-letter-wrapper,
