@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="rd-work-slider" ref="rdWorkSlider">
-        <div v-for="(n, i) in projects" :key="n" class="rd-work" ref="rdWork">
+        <div v-for="(n, i) in projects" :key="i" class="rd-work" ref="rdWork">
           <span class="rd-image-wrapper">
             <span class="rd-image-container rd-image-container-down">
               <img class="rd-image" :src="`/about-photo-${i + 1}.jpg`" :class="i === activeIndex ? 'rd-image-active' : ''" />

@@ -87,9 +87,9 @@
         </div>
         <div class="rd-navigation-column-small">
           <a
-            v-for="social in navSocials"
+            v-for="(social, i) in navSocials"
             ref="rdNavSocials"
-            :key="social.icon"
+            :key="i"
             class="rd-navigation-social rd-caption-text"
             data-default-pin="button"
           >
@@ -853,7 +853,7 @@
 
   html,
   body {
-    font-family: "DMSans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
       "Helvetica Neue", Arial, sans-serif;
     font-size: 24px;
     color: var(--font-color);
