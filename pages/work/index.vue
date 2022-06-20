@@ -1004,7 +1004,7 @@
         width: 100vw;
         height: 27.5vh;
         box-sizing: border-box;
-        padding: 0 30vw;
+        padding: 0 20vw;
         display: flex;
         justify-content: space-between;
         align-items: center;

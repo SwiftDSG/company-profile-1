@@ -1274,12 +1274,12 @@
         .rd-logo-container {
           width: 100vw;
           svg.rd-logo {
-            width: 42.72463548vw;
-            height: 60vw;
+            width: 17.80193145vh;
+            height: 25vh;
           }
         }
         .rd-details-container {
-          height: 70vh;
+          height: 65vh;
           flex-direction: column;
           align-items: center;
           .rd-title-section {
@@ -1292,6 +1292,7 @@
               left: 0;
               text-align: center;
               align-items: center;
+              margin-top: 0.5rem;
             }
           }
           .rd-action-section {
@@ -1319,6 +1320,7 @@
         }
       }
       .rd-footer {
+        bottom: 0.5rem;
         .rd-bar-container {
           left: 25vw;
           width: 50vw;
