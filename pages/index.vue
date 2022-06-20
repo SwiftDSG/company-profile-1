@@ -150,7 +150,15 @@
               class="rd-word-wrapper"
               :key="n"
             >
-              <span ref="mainTitle" class="rd-word-container" :class="baseState.viewMode === 'desktop' ? 'rd-word-container-left' : 'rd-word-container-down'">
+              <span
+                ref="mainTitle"
+                class="rd-word-container"
+                :class="
+                  baseState.viewMode === 'desktop'
+                    ? 'rd-word-container-left'
+                    : 'rd-word-container-down'
+                "
+              >
                 <span ref="mainTitleWord" class="rd-word">{{ n }}</span>
               </span>
             </span>
@@ -166,7 +174,9 @@
             <span class="rd-action-name rd-caption-text">
               <span class="rd-text-wrapper">
                 <span class="rd-text-container rd-text-container-left">
-                  <span class="rd-text">{{ projects[activeProject].action }}</span>
+                  <span class="rd-text">{{
+                    projects[activeProject].action
+                  }}</span>
                 </span>
               </span>
             </span>
@@ -184,8 +194,28 @@
       </div>
     </div>
     <div class="rd-footer">
+      <div ref="rdSocials" class="rd-social-container">
+        <a
+          v-for="(social, i) in socials"
+          :key="i"
+          class="rd-social rd-caption-text"
+          data-pin="button"
+        >
+          <span class="rd-word-wrapper">
+            <span class="rd-word-container rd-word-container-down">
+              <span class="rd-word">{{ social.name }}</span>
+            </span>
+          </span>
+        </a>
+      </div>
       <div ref="rdBarContainer" class="rd-bar-container">
-        <div v-for="project in Object.keys(projects)" :key="project" :class="activeProject === project ? 'rd-bar-active' : ''" class="rd-bar" @click="selectProject(project)">
+        <div
+          v-for="project in Object.keys(projects)"
+          :key="project"
+          :class="activeProject === project ? 'rd-bar-active' : ''"
+          class="rd-bar"
+          @click="selectProject(project)"
+        >
           <div v-if="activeProject === project" class="rd-bar-filled"></div>
         </div>
       </div>
@@ -199,21 +229,22 @@
   import { baseStore } from "../store/base";
 
   const baseState = baseStore.getState();
-  const props = defineProps<{ pageState: string }>()
-  const emit = defineEmits(['pin-elements', 'unpin-elements', 'exit-page'])
-  const router = useRouter()
+  const props = defineProps<{ pageState: string }>();
+  const emit = defineEmits(["pin-elements", "unpin-elements", "exit-page"]);
+  const router = useRouter();
 
   const rdHeaderTitle = ref(null);
-  const rdBarContainer = ref(null)
+  const rdBarContainer = ref(null);
   const rdLogo = ref(null);
   const rdLogoContainer = ref(null);
   const rdBackground = ref(null);
-  const rdPlaceholder = ref(null);  
+  const rdPlaceholder = ref(null);
   const rdTitle = ref(null);
-  const rdActionButton = ref(null);  
+  const rdActionButton = ref(null);
+  const rdSocials = ref(null);
 
-  let projectTimeout: GSAPTween = null
-  let projectChanging: boolean = false
+  let projectTimeout: GSAPTween = null;
+  let projectChanging: boolean = false;
   const activeProject = ref("redian");
   const projects = {
     redian: {
@@ -227,11 +258,30 @@
       title: "Pezen",
       action: "Telusuri",
       href: "/work/pezen",
-    }
+    },
   };
+  const socials = [
+    {
+      name: "Fb",
+      to: "",
+    },
+    {
+      name: "Ig",
+      to: "",
+    },
+    {
+      name: "Tw",
+      to: "",
+    },
+  ];
 
   const animate = {
-    init(rdHeaderTitle: Element, rdBarContainer: Element, cb?: () => void) {
+    init(
+      rdHeaderTitle: Element,
+      rdBarContainer: Element,
+      rdSocials: Element,
+      cb?: () => void
+    ) {
       const tl: GSAPTimeline = gsap.timeline({
         onComplete() {
           if (cb) cb();
@@ -244,8 +294,14 @@
         rdHeaderTitle.querySelectorAll(".rd-letter")
       );
       const rdBars: Element[] = gsap.utils.toArray(
-        rdBarContainer.querySelectorAll('.rd-bar')
-      )
+        rdBarContainer.querySelectorAll(".rd-bar")
+      );
+      const rdSocialWordContainer: Element[] = gsap.utils.toArray(
+        rdSocials.querySelectorAll(".rd-word-container")
+      );
+      const rdSocialWord: Element[] = gsap.utils.toArray(
+        rdSocials.querySelectorAll(".rd-word")
+      );
 
       shuffleArray(rdLettersContainer, rdLetters);
 
@@ -258,26 +314,53 @@
           ease: "power2.out",
         },
         "<0"
-      ).to(
-        rdLetters,
-        {
-          x: 0,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "power2.out",
-        },
-        "<0"
-      ).to(
-        rdBars,
-        {
-          width: '100%',
-          duration: 0.5,
-          ease: 'power1.inOut',
-        },
-        '<0'
-      );
+      )
+        .to(
+          rdLetters,
+          {
+            x: 0,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: "power2.out",
+          },
+          "<0"
+        )
+        .to(
+          rdBars,
+          {
+            width: "100%",
+            duration: 0.5,
+            ease: "power1.inOut",
+          },
+          "<0"
+        )
+        .to(
+          rdSocialWordContainer,
+          {
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          rdSocialWord,
+          {
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        );
     },
-    exit(rdHeaderTitle: Element, rdBarContainer: Element, cb?: () => void) {
+    exit(
+      rdHeaderTitle: Element,
+      rdBarContainer: Element,
+      rdSocials: Element,
+      cb?: () => void
+    ) {
       const tl: GSAPTimeline = gsap.timeline({
         onComplete() {
           if (cb) cb();
@@ -290,35 +373,37 @@
         rdHeaderTitle.querySelectorAll(".rd-letter")
       );
       const rdBars: Element[] = gsap.utils.toArray(
-        rdBarContainer.querySelectorAll('.rd-bar')
-      )
-      
+        rdBarContainer.querySelectorAll(".rd-bar")
+      );
+
       tl.to(
         rdLettersContainer,
         {
-          x: '100%',
+          x: "100%",
           duration: 0.5,
           stagger: 0.1,
           ease: "power4.in",
         },
         "<0"
-      ).to(
-        rdLetters,
-        {
-          x: '-100%',
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "power4.in",
-        },
-        "<0"
-      ).to(
-        rdBars,
-        {
-          opacity: 0,
-          duration: 0.25,
-        },
-        '<0'
-      );
+      )
+        .to(
+          rdLetters,
+          {
+            x: "-100%",
+            duration: 0.5,
+            stagger: 0.1,
+            ease: "power4.in",
+          },
+          "<0"
+        )
+        .to(
+          rdBars,
+          {
+            opacity: 0,
+            duration: 0.25,
+          },
+          "<0"
+        );
     },
     initProject(
       mode: "desktop" | "mobile",
@@ -341,23 +426,23 @@
       };
 
       const rdPlaceholderTextContainer: Element[] = gsap.utils.toArray(
-        rdPlaceholder.querySelectorAll('.rd-text-container')
-      )
+        rdPlaceholder.querySelectorAll(".rd-text-container")
+      );
       const rdPlaceholderText: Element[] = gsap.utils.toArray(
-        rdPlaceholder.querySelectorAll('.rd-text')
-      )
+        rdPlaceholder.querySelectorAll(".rd-text")
+      );
       const rdMainTitleWordContainer: Element[] = gsap.utils.toArray(
-        rdTitle.querySelectorAll('.rd-word-container')
-      )
+        rdTitle.querySelectorAll(".rd-word-container")
+      );
       const rdMainTitleWord: Element[] = gsap.utils.toArray(
-        rdTitle.querySelectorAll('.rd-word')
-      )
+        rdTitle.querySelectorAll(".rd-word")
+      );
       const rdActionTextContainer: Element[] = gsap.utils.toArray(
-        rdActionButton.querySelectorAll('.rd-text-container')
-      )
+        rdActionButton.querySelectorAll(".rd-text-container")
+      );
       const rdActionText: Element[] = gsap.utils.toArray(
-        rdActionButton.querySelectorAll('.rd-text')
-      )
+        rdActionButton.querySelectorAll(".rd-text")
+      );
 
       if (project === "redian") {
         const pathOne = rdLogo.children[1];
@@ -455,38 +540,38 @@
           );
       }
 
-      if (mode === 'desktop') {
+      if (mode === "desktop") {
         tl.to(rdMainTitleWord, {
           x: 0,
           duration: 0.5,
-          ease: 'power2.out',
+          ease: "power2.out",
           stagger: 0.125,
         }).to(
           rdMainTitleWordContainer,
           {
             x: 0,
             duration: 0.5,
-            ease: 'power2.out',
+            ease: "power2.out",
             stagger: 0.125,
           },
-          '<0'
-        )
+          "<0"
+        );
       } else {
         tl.to([...rdMainTitleWord].reverse(), {
           y: 0,
           duration: 0.5,
-          ease: 'power2.out',
+          ease: "power2.out",
           stagger: 0.125,
         }).to(
           [...rdMainTitleWordContainer].reverse(),
           {
             y: 0,
             duration: 0.5,
-            ease: 'power2.out',
+            ease: "power2.out",
             stagger: 0.125,
           },
-          '<0'
-        )
+          "<0"
+        );
       }
 
       tl.to(
@@ -494,63 +579,63 @@
         {
           y: 0,
           duration: 0.5,
-          ease: 'power2.out',
+          ease: "power2.out",
         },
-        '<0.25'
-      )
-      .to(
-        [
-          ...rdActionTextContainer,
-          ...rdActionText,
-        ],
+        "<0.25"
+      ).to(
+        [...rdActionTextContainer, ...rdActionText],
         {
           x: 0,
           duration: 0.5,
-          ease: 'power2.out',
+          ease: "power2.out",
         },
-        '<0'
-      )
+        "<0"
+      );
 
-      if (mode === 'desktop') {
+      if (mode === "desktop") {
         tl.to(
           rdActionButton.children[1].children[0],
           {
             strokeDashoffset: 0,
             duration: 0.5,
-            ease: 'power2.inOut',
+            ease: "power2.inOut",
           },
-          '<0'
-        )
-        .to(
+          "<0"
+        ).to(
           rdActionButton.children[1].children[1],
           {
             opacity: 0.5,
-            ease: 'power2.out',
+            ease: "power2.out",
           },
-          '<0.25'
-        )
+          "<0.25"
+        );
       } else {
-        tl.to(rdActionButton.children[1], {
-          scaleY: 1,
-          transformOrigin: 'center top',
-          ease: 'power2.out',
-        },'<0').to(
-          rdActionButton.children[2].children[0],
+        tl.to(
+          rdActionButton.children[1],
           {
-            strokeDashoffset: 0,
-            duration: 0.5,
-            ease: 'power2.inOut',
+            scaleY: 1,
+            transformOrigin: "center top",
+            ease: "power2.out",
           },
-          '<0'
+          "<0"
         )
-        .to(
-          rdActionButton.children[2].children[1],
-          {
-            opacity: 0.5,
-            ease: 'power2.out',
-          },
-          '<0.25'
-        )
+          .to(
+            rdActionButton.children[2].children[0],
+            {
+              strokeDashoffset: 0,
+              duration: 0.5,
+              ease: "power2.inOut",
+            },
+            "<0"
+          )
+          .to(
+            rdActionButton.children[2].children[1],
+            {
+              opacity: 0.5,
+              ease: "power2.out",
+            },
+            "<0.25"
+          );
       }
     },
     exitProject(
@@ -565,366 +650,439 @@
       nextProject?: string
     ) {
       const rdPlaceholderTextContainer: Element[] = gsap.utils.toArray(
-        rdPlaceholder.querySelectorAll('.rd-text-container')
-      )
+        rdPlaceholder.querySelectorAll(".rd-text-container")
+      );
       const rdPlaceholderText: Element[] = gsap.utils.toArray(
-        rdPlaceholder.querySelectorAll('.rd-text')
-      )
+        rdPlaceholder.querySelectorAll(".rd-text")
+      );
       const rdMainTitleWordContainer: Element[] = gsap.utils.toArray(
-        rdTitle.querySelectorAll('.rd-word-container')
-      )
+        rdTitle.querySelectorAll(".rd-word-container")
+      );
       const rdMainTitleWord: Element[] = gsap.utils.toArray(
-        rdTitle.querySelectorAll('.rd-word')
-      )
+        rdTitle.querySelectorAll(".rd-word")
+      );
       const rdActionTextContainer: Element[] = gsap.utils.toArray(
-        rdActionButton.querySelectorAll('.rd-text-container')
-      )
+        rdActionButton.querySelectorAll(".rd-text-container")
+      );
       const rdActionText: Element[] = gsap.utils.toArray(
-        rdActionButton.querySelectorAll('.rd-text')
-      )
+        rdActionButton.querySelectorAll(".rd-text")
+      );
 
       const tl = gsap.timeline({
         onComplete() {
-          if (cb) cb()
+          if (cb) cb();
           if (nextProject) {
-            rdPlaceholderTextContainer.forEach((a) => a.removeAttribute('style'))
-            rdPlaceholderText.forEach((a) => a.removeAttribute('style'))
-            if (project === 'redian') {
-              const pathOne = rdLogo.children[1]
-              const pathTwo = rdLogo.children[2]
-              const pathThree = rdLogo.children[3]
-              pathOne.removeAttribute('style')
-              pathTwo.removeAttribute('style')
-              pathThree.removeAttribute('style')
-            } else if (project === 'pezen') {
-              const pathOne = rdLogo.children[1]
-              const pathTwo = rdLogo.children[2]
-              const pathThree = rdLogo.children[3]
-              pathOne.removeAttribute('style')
-              pathTwo.removeAttribute('style')
-              pathThree.removeAttribute('style')
+            rdPlaceholderTextContainer.forEach((a) =>
+              a.removeAttribute("style")
+            );
+            rdPlaceholderText.forEach((a) => a.removeAttribute("style"));
+            if (project === "redian") {
+              const pathOne = rdLogo.children[1];
+              const pathTwo = rdLogo.children[2];
+              const pathThree = rdLogo.children[3];
+              pathOne.removeAttribute("style");
+              pathTwo.removeAttribute("style");
+              pathThree.removeAttribute("style");
+            } else if (project === "pezen") {
+              const pathOne = rdLogo.children[1];
+              const pathTwo = rdLogo.children[2];
+              const pathThree = rdLogo.children[3];
+              pathOne.removeAttribute("style");
+              pathTwo.removeAttribute("style");
+              pathThree.removeAttribute("style");
             }
           }
         },
-      })
+      });
 
       const obj = {
         number: 100,
-      }
+      };
 
       if (!nextProject) {
         tl.to(rdActionTextContainer, {
-          x: '100%',
+          x: "100%",
           duration: 0.25,
-          ease: 'power2.in',
-        }).to(rdActionText, {
-          x: '-100%',
-          duration: 0.25,
-          ease: 'power2.in',
-        },'<0')
+          ease: "power2.in",
+        }).to(
+          rdActionText,
+          {
+            x: "-100%",
+            duration: 0.25,
+            ease: "power2.in",
+          },
+          "<0"
+        );
 
-        if (mode === 'desktop') {
-          tl.to(rdActionButton.children[1].children[1], {
-            opacity: 0,
-            duration: 0.25,
-            ease: 'power2.in',
-          }, '<0')
-          .to(rdActionButton.children[1].children[0], {
-            strokeDashoffset: 146.51326206513048,
-            duration: 0.25,
-            ease: 'power2.inOut',
-          }, '<0.25')
+        if (mode === "desktop") {
+          tl.to(
+            rdActionButton.children[1].children[1],
+            {
+              opacity: 0,
+              duration: 0.25,
+              ease: "power2.in",
+            },
+            "<0"
+          ).to(
+            rdActionButton.children[1].children[0],
+            {
+              strokeDashoffset: 146.51326206513048,
+              duration: 0.25,
+              ease: "power2.inOut",
+            },
+            "<0.25"
+          );
         } else {
-          tl.to(rdActionButton.children[1], {
-            scaleY: 0,
-            transformOrigin: 'center bottom',
-            ease: 'power2.in',
-          },'<0').to(rdActionButton.children[2].children[1], {
-            opacity: 0,
-            duration: 0.25,
-            ease: 'power2.in',
-          }, '<0')
-          .to(rdActionButton.children[2].children[0], {
-            strokeDashoffset: 146.51326206513048,
-            duration: 0.25,
-            ease: 'power2.inOut',
-          }, '<0.25')
+          tl.to(
+            rdActionButton.children[1],
+            {
+              scaleY: 0,
+              transformOrigin: "center bottom",
+              ease: "power2.in",
+            },
+            "<0"
+          )
+            .to(
+              rdActionButton.children[2].children[1],
+              {
+                opacity: 0,
+                duration: 0.25,
+                ease: "power2.in",
+              },
+              "<0"
+            )
+            .to(
+              rdActionButton.children[2].children[0],
+              {
+                strokeDashoffset: 146.51326206513048,
+                duration: 0.25,
+                ease: "power2.inOut",
+              },
+              "<0.25"
+            );
         }
       }
 
-      if (project === 'redian') {
-        const pathOne = rdLogo.children[1]
-        const pathTwo = rdLogo.children[2]
-        const pathThree = rdLogo.children[3]
+      if (project === "redian") {
+        const pathOne = rdLogo.children[1];
+        const pathTwo = rdLogo.children[2];
+        const pathThree = rdLogo.children[3];
 
         tl.to(
           pathOne,
           {
             strokeDashoffset: 271.9875183105469,
             duration: 0.75,
-            ease: 'power4.inOut',
+            ease: "power4.inOut",
           },
-          '<0'
+          "<0"
         )
           .to(
             pathTwo,
             {
               strokeDashoffset: 515.9256591796875,
               duration: 0.75,
-              ease: 'power4.inOut',
+              ease: "power4.inOut",
             },
-            '<0.25'
+            "<0.25"
           )
           .to(
             pathThree,
             {
               strokeDashoffset: 539.1181640625,
               duration: 0.75,
-              ease: 'power4.inOut',
+              ease: "power4.inOut",
             },
-            '<0.25'
+            "<0.25"
           )
           .to(
             obj,
             {
               number: 0,
               duration: 0.25,
-              ease: 'power2.out',
+              ease: "power2.out",
               onUpdate() {
                 gsap.to(rdBackground, {
                   background: `radial-gradient(circle, rgba(55, 41, 47, 1) 0%, rgba(38, 25, 31, 1) ${obj.number}%)`,
-                })
+                });
               },
             },
-            '<0.5'
-          )
-      } else if (project === 'pezen') {
-        const pathOne = rdLogo.children[1]
-        const pathTwo = rdLogo.children[2]
-        const pathThree = rdLogo.children[3]
+            "<0.5"
+          );
+      } else if (project === "pezen") {
+        const pathOne = rdLogo.children[1];
+        const pathTwo = rdLogo.children[2];
+        const pathThree = rdLogo.children[3];
 
         tl.to(
           pathOne,
           {
             strokeDashoffset: 807.5662841796875,
             duration: 0.75,
-            ease: 'power4.inOut',
+            ease: "power4.inOut",
           },
-          '<0'
+          "<0"
         )
           .to(
             pathTwo,
             {
               strokeDashoffset: 182,
               duration: 0.75,
-              ease: 'power4.inOut',
+              ease: "power4.inOut",
             },
-            '<0.25'
+            "<0.25"
           )
           .to(
             pathThree,
             {
               strokeDashoffset: 213.7148895263672,
               duration: 0.75,
-              ease: 'power4.inOut',
+              ease: "power4.inOut",
             },
-            '<0.25'
+            "<0.25"
           )
           .to(
             obj,
             {
               number: 0,
               duration: 0.25,
-              ease: 'power2.out',
+              ease: "power2.out",
               onUpdate() {
                 gsap.to(rdBackground, {
                   background: `radial-gradient(circle, rgba(255,202,146,1) 0%, rgba(255,168,76,1) ${obj.number}%)`,
-                })
+                });
               },
             },
-            '<0.5'
-          )
+            "<0.5"
+          );
       }
 
-      if (mode === 'desktop') {
+      if (mode === "desktop") {
         tl.to(rdMainTitleWord, {
-          x: '100%',
+          x: "100%",
           duration: 0.25,
-          ease: 'power2.in',
+          ease: "power2.in",
           stagger: 0.125,
         })
           .to(
             rdMainTitleWordContainer,
             {
-              x: '-100%',
+              x: "-100%",
               duration: 0.25,
-              ease: 'power2.in',
+              ease: "power2.in",
               stagger: 0.125,
             },
-            '<0'
+            "<0"
           )
           .to(
             rdPlaceholderTextContainer,
             {
-              y: '-100%',
+              y: "-100%",
               duration: 0.25,
-              ease: 'power2.in',
+              ease: "power2.in",
             },
-            '<0.25'
+            "<0.25"
           )
           .to(
             rdPlaceholderText,
             {
-              y: '100%',
+              y: "100%",
               duration: 0.25,
-              ease: 'power2.in',
+              ease: "power2.in",
             },
-            '<0'
-          )
+            "<0"
+          );
       } else {
         tl.to(rdMainTitleWord.reverse(), {
-          y: '100%',
+          y: "100%",
           duration: 0.25,
-          ease: 'power2.in',
+          ease: "power2.in",
           stagger: 0.125,
         })
           .to(
             rdMainTitleWordContainer.reverse(),
             {
-              y: '-100%',
+              y: "-100%",
               duration: 0.25,
-              ease: 'power2.in',
+              ease: "power2.in",
               stagger: 0.125,
             },
-            '<0'
+            "<0"
           )
           .to(
             rdPlaceholderTextContainer,
             {
-              y: '100%',
+              y: "100%",
               duration: 0.25,
-              ease: 'power2.in',
+              ease: "power2.in",
             },
-            '<0.25'
+            "<0.25"
           )
           .to(
             rdPlaceholderText,
             {
-              y: '-100%',
+              y: "-100%",
               duration: 0.25,
-              ease: 'power2.in',
+              ease: "power2.in",
             },
-            '<0'
-          )
+            "<0"
+          );
       }
 
       if (nextProject) {
         tl.to(rdActionTextContainer, {
-          x: '100%',
+          x: "100%",
           duration: 0.25,
-          ease: 'power2.in',
-        }).to(rdActionText, {
-          x: '-100%',
-          duration: 0.25,
-          ease: 'power2.in',
-        }, '<0')
+          ease: "power2.in",
+        }).to(
+          rdActionText,
+          {
+            x: "-100%",
+            duration: 0.25,
+            ease: "power2.in",
+          },
+          "<0"
+        );
 
-        if (mode === 'desktop') {
-          tl.to(rdActionButton.children[1].children[1], {
-            opacity: 0,
-            duration: 0.25,
-            ease: 'power2.in',
-          }, '<0')
-          .to(rdActionButton.children[1].children[0], {
-            strokeDashoffset: 146.51326206513048,
-            duration: 0.25,
-            ease: 'power2.inOut',
-          }, '<0.25')
+        if (mode === "desktop") {
+          tl.to(
+            rdActionButton.children[1].children[1],
+            {
+              opacity: 0,
+              duration: 0.25,
+              ease: "power2.in",
+            },
+            "<0"
+          ).to(
+            rdActionButton.children[1].children[0],
+            {
+              strokeDashoffset: 146.51326206513048,
+              duration: 0.25,
+              ease: "power2.inOut",
+            },
+            "<0.25"
+          );
         } else {
-          tl.to(rdActionButton.children[1], {
-            scaleY: 0,
-            transformOrigin: 'center bottom',
-            ease: 'power2.in',
-          },'<0').to(rdActionButton.children[2].children[1], {
-            opacity: 0,
-            duration: 0.25,
-            ease: 'power2.in',
-          }, '<0')
-          .to(rdActionButton.children[2].children[0], {
-            strokeDashoffset: 146.51326206513048,
-            duration: 0.25,
-            ease: 'power2.inOut',
-          }, '<0.25')
+          tl.to(
+            rdActionButton.children[1],
+            {
+              scaleY: 0,
+              transformOrigin: "center bottom",
+              ease: "power2.in",
+            },
+            "<0"
+          )
+            .to(
+              rdActionButton.children[2].children[1],
+              {
+                opacity: 0,
+                duration: 0.25,
+                ease: "power2.in",
+              },
+              "<0"
+            )
+            .to(
+              rdActionButton.children[2].children[0],
+              {
+                strokeDashoffset: 146.51326206513048,
+                duration: 0.25,
+                ease: "power2.inOut",
+              },
+              "<0.25"
+            );
         }
 
-        if (nextProject === 'redian') {
+        if (nextProject === "redian") {
           tl.to(rdBackground, {
-            background: '#26191f',
+            background: "#26191f",
             duration: 0.5,
             onStart() {
-              document.documentElement.style.setProperty("--font-color", '#ede0e6')
-              document.documentElement.style.setProperty("--background-color", '#26191f')
-              document.documentElement.style.setProperty("--menu-color", '#21161b')
-            }
-          })
-        } else if (nextProject === 'pezen') {
+              document.documentElement.style.setProperty(
+                "--font-color",
+                "#ede0e6"
+              );
+              document.documentElement.style.setProperty(
+                "--background-color",
+                "#26191f"
+              );
+              document.documentElement.style.setProperty(
+                "--menu-color",
+                "#21161b"
+              );
+            },
+          });
+        } else if (nextProject === "pezen") {
           tl.to(rdBackground, {
-            background: '#ffa84c',
+            background: "#ffa84c",
             duration: 0.5,
             onStart() {
-              document.documentElement.style.setProperty("--font-color", '#9d5524')
-              document.documentElement.style.setProperty("--background-color", '#ffa84c')
-              document.documentElement.style.setProperty("--menu-color", '#ffa84c')
-            }
-          })
+              document.documentElement.style.setProperty(
+                "--font-color",
+                "#9d5524"
+              );
+              document.documentElement.style.setProperty(
+                "--background-color",
+                "#ffa84c"
+              );
+              document.documentElement.style.setProperty(
+                "--menu-color",
+                "#ffa84c"
+              );
+            },
+          });
         }
       }
 
-      return tl
-    }
+      return tl;
+    },
   };
 
-  function count(val: number, trackLength: number, outMin: number, outMax: number): number {
-    return (val / trackLength) * (outMax - outMin) + outMin
+  function count(
+    val: number,
+    trackLength: number,
+    outMin: number,
+    outMax: number
+  ): number {
+    return (val / trackLength) * (outMax - outMin) + outMin;
   }
 
   function mouseMove({ x, y }: MouseEvent): void {
-    const dx = count(x, window.innerWidth, -12, 12)
-    const dy = count(y, window.innerHeight, -12, 12)
+    const dx = count(x, window.innerWidth, -12, 12);
+    const dy = count(y, window.innerHeight, -12, 12);
     gsap.to(rdLogoContainer.value, {
       rotateX: -dy,
       rotateY: dx,
-    })
+    });
     gsap.to(rdTitle.value, {
       x: 1.25 * -dx,
       y: 1.25 * -dy,
-    })
+    });
     gsap.to(rdPlaceholder.value, {
       x: -dx,
       y: -dy,
-    })
+    });
     gsap.to(rdActionButton.value, {
       x: dx,
       y: dy,
-    })
+    });
   }
   function mouseLeave(): void {
     gsap.to(rdLogoContainer.value, {
       rotateX: 0,
       rotateY: 0,
-    })
+    });
     gsap.to(rdTitle.value, {
       x: 0,
       y: 0,
-    })
+    });
     gsap.to(rdPlaceholder.value, {
       x: 0,
       y: 0,
-    })
+    });
     gsap.to(rdActionButton.value, {
       x: 0,
       y: 0,
-    })
+    });
   }
 
   function shuffleArray<T>(arrayOne: T[], arrayTwo: T[]): void {
@@ -936,37 +1094,50 @@
   }
 
   function startTimeout(): void {
-    projectChanging = false
-    const nextProject = Object.keys(projects).indexOf(activeProject.value) + 1
-    projectTimeout = gsap.to(rdBarContainer.value.querySelector('.rd-bar-filled'), {
-      width: '100%',
-      duration: 10,
-      ease: 'linear',
-      onComplete() {
-        selectProject(Object.keys(projects)[nextProject] || Object.keys(projects)[0])
+    projectChanging = false;
+    const nextProject = Object.keys(projects).indexOf(activeProject.value) + 1;
+    projectTimeout = gsap.to(
+      rdBarContainer.value.querySelector(".rd-bar-filled"),
+      {
+        width: "100%",
+        duration: 10,
+        ease: "linear",
+        onComplete() {
+          selectProject(
+            Object.keys(projects)[nextProject] || Object.keys(projects)[0]
+          );
+        },
       }
-    })
+    );
   }
   function selectProject(project: string): void {
-    if (Object.keys(projects).includes(project) && !projectChanging && project !== activeProject.value) {
-      projectChanging = true
-      mouseLeave()
-      window.removeEventListener('mousemove', mouseMove)
-      window.removeEventListener('mouseleave', mouseLeave)
+    if (
+      Object.keys(projects).includes(project) &&
+      !projectChanging &&
+      project !== activeProject.value
+    ) {
+      projectChanging = true;
+      mouseLeave();
+      window.removeEventListener("mousemove", mouseMove);
+      window.removeEventListener("mouseleave", mouseLeave);
       if (projectTimeout?.isActive) {
-        projectTimeout.kill()
-        projectTimeout = null
+        projectTimeout.kill();
+        projectTimeout = null;
       }
-      animate.exitProject(baseState.viewMode, activeProject.value, rdLogo.value,
+      animate.exitProject(
+        baseState.viewMode,
+        activeProject.value,
+        rdLogo.value,
         rdBackground.value,
         rdPlaceholder.value,
         rdTitle.value,
-        rdActionButton.value, 
+        rdActionButton.value,
         () => {
-          activeProject.value = project
-          setTimeout(init, 100)
+          activeProject.value = project;
+          setTimeout(init, 100);
         },
-        project)
+        project
+      );
     }
   }
 
@@ -981,56 +1152,67 @@
       rdActionButton.value,
       () => {
         if (init) {
-          emit('pin-elements')
-          animate.init(rdHeaderTitle.value, rdBarContainer.value);
+          emit("pin-elements");
+          animate.init(
+            rdHeaderTitle.value,
+            rdBarContainer.value,
+            rdSocials.value
+          );
         }
-        if (baseState.viewMode === 'desktop') {
-          window.addEventListener('mousemove', mouseMove)
-          window.addEventListener('mouseleave', mouseLeave)
+        if (baseState.viewMode === "desktop") {
+          window.addEventListener("mousemove", mouseMove);
+          window.addEventListener("mouseleave", mouseLeave);
         }
-        startTimeout()
+        startTimeout();
       }
     );
   }
   function exit(path: string) {
-    projectChanging = true
-    mouseLeave()
-    window.removeEventListener('mousemove', mouseMove)
-    window.removeEventListener('mouseleave', mouseLeave)
+    projectChanging = true;
+    mouseLeave();
+    window.removeEventListener("mousemove", mouseMove);
+    window.removeEventListener("mouseleave", mouseLeave);
     if (projectTimeout?.isActive) {
-      projectTimeout.kill()
-      projectTimeout = null
+      projectTimeout.kill();
+      projectTimeout = null;
     }
-    animate.exitProject(baseState.viewMode, activeProject.value, rdLogo.value,
+    animate.exitProject(
+      baseState.viewMode,
+      activeProject.value,
+      rdLogo.value,
       rdBackground.value,
       rdPlaceholder.value,
       rdTitle.value,
-      rdActionButton.value, 
+      rdActionButton.value,
       () => {
         animate.exit(rdHeaderTitle.value, rdBarContainer.value, () => {
-          router.push(path)
-          emit('exit-page')
-        })
-      })
+          router.push(path);
+          emit("exit-page");
+        });
+      }
+    );
   }
 
-  watch(() => props.pageState, (val: string) => {
-    if (val !== 'idle') {
-      exit(val)
+  watch(
+    () => props.pageState,
+    (val: string) => {
+      if (val !== "idle") {
+        exit(val);
+      }
     }
-  })
+  );
 
   onMounted(() => {
     setTimeout(() => {
-      init(true)
+      init(true);
     }, 500);
   });
 
   onBeforeUnmount(() => {
-    emit('unpin-elements')
-    window.removeEventListener('mousemove', mouseMove)
-    window.removeEventListener('mouseleave', mouseLeave)
-  })
+    emit("unpin-elements");
+    window.removeEventListener("mousemove", mouseMove);
+    window.removeEventListener("mouseleave", mouseLeave);
+  });
 </script>
 
 <style lang="scss" scoped>
@@ -1147,7 +1329,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .rd-title-section { 
+        .rd-title-section {
           position: relative;
           display: flex;
           flex-direction: column;
@@ -1222,6 +1404,24 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      .rd-social-container {
+        position: relative;
+        height: 1rem;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .rd-social {
+          cursor: pointer;
+          position: relative;
+          width: 2rem;
+          height: 2rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: 0.2s opacity linear;
+          overflow: hidden;
+        }
+      }
       .rd-bar-container {
         position: absolute;
         left: 37.5vw;
@@ -1254,7 +1454,7 @@
             background: var(--font-color);
           }
           &::before {
-            content: '';
+            content: "";
             position: relative;
             width: 100%;
             height: 2px;

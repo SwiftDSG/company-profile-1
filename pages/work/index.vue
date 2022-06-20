@@ -51,39 +51,70 @@
         </div>
       </div>
       <div class="rd-work-details">
-        <div ref="rdWorkTags" class="rd-work-tags">
-          <div class="rd-work-tags-row">
-            <div class="rd-work-tag rd-placeholder-text">
-              <span class="rd-text-wrapper">
-                <span class="rd-text-container rd-text-container-down">
-                  <span class="rd-text">Website</span>
+        <div class="rd-work-tags">
+          <div
+            ref="rdWorkTags"
+            class="rd-work-tags-wrapper"
+            v-for="(project, i) in projects"
+            :key="i"
+          >
+            <div class="rd-work-tags-row">
+              <div
+                :class="
+                  project.tags.includes('website') ? 'rd-work-tag-active' : ''
+                "
+                class="rd-work-tag rd-placeholder-text"
+              >
+                <span class="rd-text-wrapper">
+                  <span class="rd-text-container rd-text-container-down">
+                    <span class="rd-text">Website</span>
+                  </span>
                 </span>
-              </span>
+              </div>
+              <div class="rd-work-tag-divider"></div>
+              <div
+                :class="
+                  project.tags.includes('application')
+                    ? 'rd-work-tag-active'
+                    : ''
+                "
+                class="rd-work-tag rd-placeholder-text"
+              >
+                <span class="rd-text-wrapper">
+                  <span class="rd-text-container rd-text-container-down">
+                    <span class="rd-text">Application</span>
+                  </span>
+                </span>
+              </div>
             </div>
-            <div class="rd-work-tag-divider"></div>
-            <div class="rd-work-tag rd-placeholder-text">
-              <span class="rd-text-wrapper">
-                <span class="rd-text-container rd-text-container-down">
-                  <span class="rd-text">Application</span>
+            <div class="rd-work-tags-row">
+              <div
+                :class="
+                  project.tags.includes('branding') ? 'rd-work-tag-active' : ''
+                "
+                class="rd-work-tag rd-placeholder-text"
+              >
+                <span class="rd-text-wrapper">
+                  <span class="rd-text-container rd-text-container-down">
+                    <span class="rd-text">Branding</span>
+                  </span>
                 </span>
-              </span>
-            </div>
-          </div>
-          <div class="rd-work-tags-row">
-            <div class="rd-work-tag rd-placeholder-text">
-              <span class="rd-text-wrapper">
-                <span class="rd-text-container rd-text-container-down">
-                  <span class="rd-text">Branding</span>
+              </div>
+              <div class="rd-work-tag-divider"></div>
+              <div
+                :class="
+                  project.tags.includes('advertising')
+                    ? 'rd-work-tag-active'
+                    : ''
+                "
+                class="rd-work-tag rd-placeholder-text"
+              >
+                <span class="rd-text-wrapper">
+                  <span class="rd-text-container rd-text-container-down">
+                    <span class="rd-text">Advertising</span>
+                  </span>
                 </span>
-              </span>
-            </div>
-            <div class="rd-work-tag-divider"></div>
-            <div class="rd-work-tag rd-placeholder-text">
-              <span class="rd-text-wrapper">
-                <span class="rd-text-container rd-text-container-down">
-                  <span class="rd-text">Advertising</span>
-                </span>
-              </span>
+              </div>
             </div>
           </div>
         </div>
@@ -242,7 +273,6 @@
     init(
       mode: "desktop" | "mobile",
       rdWorkSlider: Element,
-      rdWorkTags: Element,
       cb?: () => void
     ): void {
       const tl = gsap.timeline({
@@ -258,68 +288,29 @@
       const rdImage: Element[] = gsap.utils.toArray(
         rdWorkSlider.querySelectorAll(".rd-image")
       );
-      const rdTagsDivider: Element[] = gsap.utils.toArray(
-        rdWorkTags.querySelectorAll(".rd-work-tag-divider")
-      );
-      const rdTagsContainer: Element[] = gsap.utils.toArray(
-        rdWorkTags.querySelectorAll(".rd-text-container")
-      );
-      const rdTags: Element[] = gsap.utils.toArray(
-        rdWorkTags.querySelectorAll(".rd-text")
-      );
 
       tl.to(rdImageContainer, {
         y: 0,
         duration: 0.5,
         ease: "power2.out",
         stagger: mode === "desktop" ? 0.125 : 0,
-      })
-        .to(
-          rdImage,
-          {
-            y: 0,
-            scale: 1.25,
-            duration: 0.5,
-            ease: "power2.out",
-            stagger: mode === "desktop" ? 0.125 : 0,
-          },
-          "<0"
-        )
-        .to(
-          rdTagsDivider,
-          {
-            scaleX: 1,
-            duration: 0.5,
-            ease: "power2.out",
-            stagger: 0.125,
-          },
-          "<0"
-        )
-        .to(
-          rdTagsContainer,
-          {
-            y: 0,
-            duration: 0.5,
-            ease: "power2.out",
-            stagger: 0.125,
-          },
-          "<0"
-        )
-        .to(
-          rdTags,
-          {
-            y: 0,
-            duration: 0.5,
-            ease: "power2.out",
-            stagger: 0.125,
-          },
-          "<0"
-        );
+      }).to(
+        rdImage,
+        {
+          y: 0,
+          scale: 1.25,
+          duration: 0.5,
+          ease: "power2.out",
+          stagger: mode === "desktop" ? 0.125 : 0,
+        },
+        "<0"
+      );
     },
     initProject(
       rdWorkType: Element,
       rdWorkTitle: Element,
       rdWorkAction: Element,
+      rdWorkTags: Element,
       rdWorkCaptions: Element,
       cb?: () => void
     ): GSAPTimeline {
@@ -346,6 +337,15 @@
       );
       const rdActionText: Element[] = gsap.utils.toArray(
         rdWorkAction.querySelectorAll(".rd-text")
+      );
+      const rdTagsDivider: Element[] = gsap.utils.toArray(
+        rdWorkTags.querySelectorAll(".rd-work-tag-divider")
+      );
+      const rdTagsContainer: Element[] = gsap.utils.toArray(
+        rdWorkTags.querySelectorAll(".rd-text-container")
+      );
+      const rdTags: Element[] = gsap.utils.toArray(
+        rdWorkTags.querySelectorAll(".rd-text")
       );
       const rdCaptionTextContainer: Element[] = gsap.utils.toArray(
         rdWorkCaptions.querySelectorAll(".rd-text-container")
@@ -417,6 +417,36 @@
           "<0"
         )
         .to(
+          rdTagsDivider,
+          {
+            scaleX: 1,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          rdTagsContainer,
+          {
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          rdTags,
+          {
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
           rdWordContainer,
           {
             y: 0,
@@ -461,6 +491,7 @@
       rdWorkType: Element,
       rdWorkTitle: Element,
       rdWorkAction: Element,
+      rdWorkTags: Element,
       rdWorkCaptions: Element,
       cb?: () => void
     ): GSAPTimeline {
@@ -472,14 +503,28 @@
               ...rdLetterContainer,
               ...rdActionTextContainer,
               ...rdCaptionTextContainer,
+              ...rdTagsContainer,
             ],
             {
               y: "100%",
               duration: 0,
             }
           );
-          gsap.to([...rdWord, ...rdLetter, ...rdActionText, ...rdCaptionText], {
-            y: "-100%",
+          gsap.to(
+            [
+              ...rdWord,
+              ...rdLetter,
+              ...rdActionText,
+              ...rdCaptionText,
+              ...rdTags,
+            ],
+            {
+              y: "-100%",
+              duration: 0,
+            }
+          );
+          gsap.to(rdTagsDivider, {
+            x: 0,
             duration: 0,
           });
           gsap.to(rdWorkAction.children[2], {
@@ -504,6 +549,15 @@
       );
       const rdActionTextContainer: Element[] = gsap.utils.toArray(
         rdWorkAction.querySelectorAll(".rd-text-container")
+      );
+      const rdTagsDivider: Element[] = gsap.utils.toArray(
+        rdWorkTags.querySelectorAll(".rd-work-tag-divider")
+      );
+      const rdTagsContainer: Element[] = gsap.utils.toArray(
+        rdWorkTags.querySelectorAll(".rd-text-container")
+      );
+      const rdTags: Element[] = gsap.utils.toArray(
+        rdWorkTags.querySelectorAll(".rd-text")
       );
       const rdActionText: Element[] = gsap.utils.toArray(
         rdWorkAction.querySelectorAll(".rd-text")
@@ -582,6 +636,37 @@
             duration: 0.5,
             stagger: 0.25,
             ease: "power2.out",
+          },
+          "<0"
+        )
+        .to(
+          rdTagsDivider,
+          {
+            scaleX: 0,
+            x: "100%",
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          rdTagsContainer,
+          {
+            y: "-100%",
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          rdTags,
+          {
+            y: "100%",
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
           },
           "<0"
         )
@@ -805,6 +890,7 @@
         rdWorkType.value[index],
         rdWorkTitle.value[index],
         rdWorkAction.value[activeIndex.value],
+        rdWorkTags.value[activeIndex.value],
         rdWorkCaptions.value[activeIndex.value],
         () => {
           activeAnim.value = null;
@@ -828,6 +914,7 @@
         rdWorkType.value[activeIndex.value],
         rdWorkTitle.value[activeIndex.value],
         rdWorkAction.value[activeIndex.value],
+        rdWorkTags.value[activeIndex.value],
         rdWorkCaptions.value[activeIndex.value],
         () => {
           activeAnim.value = null;
@@ -881,24 +968,19 @@
 
   onMounted(() => {
     setTimeout(() => {
-      animate.init(
-        baseState.viewMode,
-        rdWorkSlider.value,
-        rdWorkTags.value,
-        () => {
-          initProject(0);
-          if (baseState.viewMode === "desktop") {
-            rdWorkSlider.value.addEventListener("mousedown", slideStart);
-            document.documentElement.addEventListener("mouseup", slideStop);
-            window.addEventListener("mousemove", mouseMove);
-            window.addEventListener("mouseleave", mouseLeave);
-            emit("pin-elements");
-          } else {
-            rdWorkSlider.value.addEventListener("touchstart", slideStart);
-            document.documentElement.addEventListener("touchend", slideStop);
-          }
+      animate.init(baseState.viewMode, rdWorkSlider.value, () => {
+        initProject(0);
+        if (baseState.viewMode === "desktop") {
+          rdWorkSlider.value.addEventListener("mousedown", slideStart);
+          document.documentElement.addEventListener("mouseup", slideStop);
+          window.addEventListener("mousemove", mouseMove);
+          window.addEventListener("mouseleave", mouseLeave);
+          emit("pin-elements");
+        } else {
+          rdWorkSlider.value.addEventListener("touchstart", slideStart);
+          document.documentElement.addEventListener("touchend", slideStop);
         }
-      );
+      });
     }, 500);
   });
 </script>
@@ -1013,25 +1095,37 @@
           height: 2rem;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
+          justify-content: center;
           align-items: flex-start;
-          .rd-work-tags-row {
-            position: relative;
+          .rd-work-tags-wrapper {
+            position: absolute;
+            height: 100%;
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            .rd-work-tag {
-              text-transform: uppercase;
-            }
-            .rd-work-tag-divider {
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            .rd-work-tags-row {
               position: relative;
-              width: 1rem;
-              height: 2px;
-              margin: 0 0.75rem;
-              background: var(--font-color);
-              opacity: 0.5;
-              transform: scaleX(0);
-              transform-origin: center left;
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              .rd-work-tag {
+                opacity: 0.5;
+                text-transform: uppercase;
+                &.rd-work-tag-active {
+                  opacity: 1;
+                }
+              }
+              .rd-work-tag-divider {
+                position: relative;
+                width: 1rem;
+                height: 2px;
+                margin: 0 0.75rem;
+                background: var(--font-color);
+                opacity: 0.5;
+                transform: scaleX(0);
+                transform-origin: center left;
+              }
             }
           }
         }
