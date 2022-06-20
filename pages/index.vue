@@ -1185,10 +1185,15 @@
       rdTitle.value,
       rdActionButton.value,
       () => {
-        animate.exit(rdHeaderTitle.value, rdBarContainer.value, () => {
-          router.push(path);
-          emit("exit-page");
-        });
+        animate.exit(
+          rdHeaderTitle.value,
+          rdBarContainer.value,
+          rdSocials.value,
+          () => {
+            router.push(path);
+            emit("exit-page");
+          }
+        );
       }
     );
   }
