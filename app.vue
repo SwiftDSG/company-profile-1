@@ -817,7 +817,7 @@
     }
     @media screen and (max-width: 1024px) {
       .rd-header {
-        padding: 0 1rem;
+        padding: 0 1rem 0 2rem;
       }
       .rd-navigation {
         .rd-navigation-container {

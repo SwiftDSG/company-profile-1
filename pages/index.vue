@@ -1169,9 +1169,11 @@
   }
   function exit(path: string) {
     projectChanging = true;
-    mouseLeave();
-    window.removeEventListener("mousemove", mouseMove);
-    window.removeEventListener("mouseleave", mouseLeave);
+    if (baseState.viewMode === 'desktop') {
+      mouseLeave();
+      window.removeEventListener("mousemove", mouseMove);
+      window.removeEventListener("mouseleave", mouseLeave);
+    }
     if (projectTimeout?.isActive) {
       projectTimeout.kill();
       projectTimeout = null;
@@ -1479,15 +1481,23 @@
         .rd-logo-container {
           width: 100vw;
           svg.rd-logo {
-            width: 17.80193145vh;
-            height: 25vh;
+            width: 21.36231774vh;
+            height: 30vh;
           }
         }
         .rd-details-container {
-          height: 65vh;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100vh;
+          height: calc((var(--vh, 1vh) * 100));
+          padding-top: 4rem;
+          box-sizing: border-box;
           flex-direction: column;
           align-items: center;
           .rd-title-section {
+            height: calc(27.5vh - 4rem);
+            justify-content: center;
             align-items: center;
             p.rd-placeholder {
               left: 0;
@@ -1501,6 +1511,10 @@
             }
           }
           .rd-action-section {
+            height: 27.5vh;
+            padding-bottom: 2rem;
+            box-sizing: border-box;
+            justify-content: center;
             .rd-action-button {
               flex-direction: column;
               justify-content: flex-start;
@@ -1526,6 +1540,9 @@
       }
       .rd-footer {
         bottom: 0.5rem;
+        .rd-social-container {
+          display: none;
+        }
         .rd-bar-container {
           left: 25vw;
           width: 50vw;

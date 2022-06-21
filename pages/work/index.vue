@@ -419,6 +419,7 @@
         .to(
           rdTagsDivider,
           {
+            transformOrigin: 'left center',
             scaleX: 1,
             duration: 0.5,
             ease: "power2.out",
@@ -523,10 +524,6 @@
               duration: 0,
             }
           );
-          gsap.to(rdTagsDivider, {
-            x: 0,
-            duration: 0,
-          });
           gsap.to(rdWorkAction.children[2], {
             rotateX: 0,
             duration: 0,
@@ -642,8 +639,8 @@
         .to(
           rdTagsDivider,
           {
+            transformOrigin: 'right center',
             scaleX: 0,
-            x: "100%",
             duration: 0.5,
             ease: "power2.out",
             stagger: 0.125,
@@ -799,7 +796,7 @@
     }, 50 / 3);
   }
 
-  function slideStop() {
+  function slideStop(): void {
     slide.isSliding = false;
     slide.currEvent = null;
     slide.lastEvent = null;
@@ -822,8 +819,8 @@
     if (!slide.isSliding) {
       const { x } = rdWorkSlider.value.getBoundingClientRect();
       if (slide.totalMovementX) {
-        if (!slide.snapPos) {
-          const dist = x + slide.velocity * 0.208623872;
+        if (slide.snapPos === null) {
+          const dist = x + (baseState.viewMode === 'desktop' ? slide.velocity : slide.rawVelocity) * 0.208623872;
           let index = -1;
           if (dist >= 0) {
             index = 0;
@@ -833,7 +830,7 @@
             slide.snapPos = -trackLength.value;
           } else if (!slide.timedOut) {
             index =
-              slide.velocity < 0
+              (baseState.viewMode === 'desktop' ? slide.velocity : slide.rawVelocity) < 0
                 ? Math.floor(dist / step.value)
                 : Math.ceil(dist / step.value);
             slide.snapPos = index * step.value;
@@ -901,14 +898,16 @@
 
   function exitProject(): void {
     if (activeIndex.value !== -1) {
-      gsap.to(rdWork.value[activeIndex.value], {
-        rotateX: 0,
-        rotateY: 0,
-      });
-      gsap.to(rdWorkAction.value[activeIndex.value], {
-        x: 0,
-        y: 0,
-      });
+      if (baseState.viewMode === 'desktop') {
+        gsap.to(rdWork.value[activeIndex.value], {
+          rotateX: 0,
+          rotateY: 0,
+        });
+        gsap.to(rdWorkAction.value[activeIndex.value], {
+          x: 0,
+          y: 0,
+        });
+      }
       if (activeAnim.value) activeAnim.value.kill();
       activeAnim.value = animate.exitProject(
         rdWorkType.value[activeIndex.value],
@@ -1217,9 +1216,11 @@
           }
         }
         .rd-work-slider {
+          height: 35vh;
           padding: 0 1rem;
           .rd-work {
             width: calc(100vw - 4rem);
+            height: 35vh;
             margin: 0 1rem;
           }
         }
