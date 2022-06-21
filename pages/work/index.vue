@@ -37,7 +37,12 @@
           </span>
         </div>
       </div>
-      <div class="rd-work-slider" ref="rdWorkSlider">
+      <div
+        class="rd-work-slider"
+        ref="rdWorkSlider"
+        data-pin="text"
+        data-text="drag"
+      >
         <div v-for="(n, i) in projects" :key="i" class="rd-work" ref="rdWork">
           <span class="rd-image-wrapper">
             <span class="rd-image-container rd-image-container-down">
@@ -306,6 +311,11 @@
         "<0"
       );
     },
+    exit(
+      mode: "desktop" | "mobile",
+      rdWorkSlider: Element,
+      cb?: () => void
+    ): void {},
     initProject(
       rdWorkType: Element,
       rdWorkTitle: Element,
@@ -419,7 +429,7 @@
         .to(
           rdTagsDivider,
           {
-            transformOrigin: 'left center',
+            transformOrigin: "left center",
             scaleX: 1,
             duration: 0.5,
             ease: "power2.out",
@@ -639,7 +649,7 @@
         .to(
           rdTagsDivider,
           {
-            transformOrigin: 'right center',
+            transformOrigin: "right center",
             scaleX: 0,
             duration: 0.5,
             ease: "power2.out",
@@ -820,17 +830,24 @@
       const { x } = rdWorkSlider.value.getBoundingClientRect();
       if (slide.totalMovementX) {
         if (slide.snapPos === null) {
-          const dist = x + (baseState.viewMode === 'desktop' ? slide.velocity : slide.rawVelocity) * 0.208623872;
+          const dist =
+            x +
+            (baseState.viewMode === "desktop"
+              ? slide.velocity
+              : slide.rawVelocity) *
+              0.208623872;
           let index = -1;
           if (dist >= 0) {
             index = 0;
             slide.snapPos = 0;
           } else if (dist <= -trackLength.value) {
-            index = Math.round(dist / step.value);
+            index = Math.ceil(dist / step.value);
             slide.snapPos = -trackLength.value;
           } else if (!slide.timedOut) {
             index =
-              (baseState.viewMode === 'desktop' ? slide.velocity : slide.rawVelocity) < 0
+              (baseState.viewMode === "desktop"
+                ? slide.velocity
+                : slide.rawVelocity) < 0
                 ? Math.floor(dist / step.value)
                 : Math.ceil(dist / step.value);
             slide.snapPos = index * step.value;
@@ -898,7 +915,7 @@
 
   function exitProject(): void {
     if (activeIndex.value !== -1) {
-      if (baseState.viewMode === 'desktop') {
+      if (baseState.viewMode === "desktop") {
         gsap.to(rdWork.value[activeIndex.value], {
           rotateX: 0,
           rotateY: 0,
@@ -964,6 +981,16 @@
       y: 0,
     });
   }
+
+  watch(
+    () => props.pageState,
+    (val: string) => {
+      if (val !== "idle") {
+        // exit(val);
+        console.log(val);
+      }
+    }
+  );
 
   onMounted(() => {
     setTimeout(() => {
@@ -1046,6 +1073,7 @@
         }
       }
       .rd-work-slider {
+        cursor: grab;
         position: absolute;
         top: 27.5vh;
         left: 0;
@@ -1076,6 +1104,9 @@
           //     transform: scale(1);
           //   }
           // }
+        }
+        &:active {
+          cursor: grabbing;
         }
       }
       .rd-work-details {

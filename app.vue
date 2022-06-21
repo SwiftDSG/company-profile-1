@@ -1,5 +1,9 @@
 <template>
-  <div ref="rdLayout" class="rd-layout" :class="cursorVisible ? 'rd-cursor-visible' : ''">
+  <div
+    ref="rdLayout"
+    class="rd-layout"
+    :class="cursorVisible ? 'rd-cursor-visible' : ''"
+  >
     <div class="rd-header">
       <div class="rd-home-button">
         <svg
@@ -55,13 +59,23 @@
           ></path>
         </svg>
       </div>
-      <div ref="rdNavBtn" data-default-pin="button" class="rd-navigation-button" @click="navHandler(navOpened ? 'close' : 'open')">
+      <div
+        ref="rdNavBtn"
+        data-default-pin="button"
+        class="rd-navigation-button"
+        @click="navHandler(navOpened ? 'close' : 'open')"
+      >
         <div class="rd-navigation-button-bar"></div>
         <div class="rd-navigation-button-bar"></div>
       </div>
     </div>
     <div ref="rdBody" class="rd-body">
-      <NuxtPage :page-state="pageState" @pin-elements="pinElements" @unpin-elements="unpinElements" @exit-page="pageState = 'idle'" />
+      <NuxtPage
+        :page-state="pageState"
+        @pin-elements="pinElements"
+        @unpin-elements="unpinElements"
+        @exit-page="pageState = 'idle'"
+      />
     </div>
     <div ref="rdNav" class="rd-navigation">
       <div class="rd-navigation-overlay"></div>
@@ -73,7 +87,9 @@
             :key="link.to"
             class="rd-navigation-link rd-headline-2"
             :href="link.to"
-            :class="navOpened && route === link.to ? 'rd-navigation-link-active' : ''"
+            :class="
+              navOpened && route === link.to ? 'rd-navigation-link-active' : ''
+            "
             @click.prevent="changePage"
             data-default-pin="link"
           >
@@ -101,7 +117,12 @@
           </a>
         </div>
         <div class="rd-navigation-row">
-          <a ref="rdNavEmail" data-default-pin="link" href="mailto:hello@redian.id" class="rd-navigation-email rd-body-text">
+          <a
+            ref="rdNavEmail"
+            data-default-pin="link"
+            href="mailto:hello@redian.id"
+            class="rd-navigation-email rd-body-text"
+          >
             <span class="rd-word-wrapper">
               <span class="rd-word-container rd-word-container-down">
                 <span class="rd-word">hello@redian.id</span>
@@ -111,7 +132,16 @@
         </div>
       </div>
     </div>
-    <div ref="rdCursor" v-if="baseState.viewMode === 'desktop'" class="rd-cursor" :class="cursorHover || cursorPinned ? 'rd-cursor-grow' : ''"></div>
+    <div
+      ref="rdCursor"
+      v-if="baseState.viewMode === 'desktop'"
+      class="rd-cursor"
+      :class="cursorHover || cursorPinned || cursorText ? 'rd-cursor-grow' : ''"
+    >
+      <div v-if="cursorText" class="rd-cursor-text rd-headline-6">
+        {{ cursorText }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -122,62 +152,68 @@
   import { baseStore } from "./store/base";
 
   const baseState = baseStore.getState();
-  const pageState = ref('idle')
+  const pageState = ref("idle");
 
-  const rdLayout = ref<HTMLDivElement>(null)
-  const rdCursor = ref<HTMLDivElement>(null)
+  const rdLayout = ref<HTMLDivElement>(null);
+  const rdCursor = ref<HTMLDivElement>(null);
   const rdLogo = ref<SVGElement>(null);
-  const rdBody = ref<HTMLDivElement>(null)
-  const rdNav = ref<HTMLDivElement>(null)
+  const rdBody = ref<HTMLDivElement>(null);
+  const rdNav = ref<HTMLDivElement>(null);
   const rdNavBtn = ref<HTMLDivElement>(null);
   const rdNavLinks = ref<HTMLAnchorElement[]>(null);
   const rdNavSocials = ref<HTMLAnchorElement[]>(null);
   const rdNavEmail = ref<HTMLAnchorElement>(null);
 
-  const rdPinnedButtons = ref([])
-  const rdPinnedLinks = ref([])
+  const rdPinnedButtons = ref([]);
+  const rdPinnedLinks = ref([]);
+  const rdPinnedTexts = ref([]);
 
-  const cursorPinned = ref(false)
-  const cursorHover = ref(false)
-  const cursorVisible = ref(false)
+  const cursorText = ref<string>("");
+  const cursorPinned = ref(false);
+  const cursorHover = ref(false);
+  const cursorVisible = ref(false);
 
-  const navOpened = ref(false)
-  const navAnim = ref<GSAPTimeline>(null)
+  const navOpened = ref(false);
+  const navAnim = ref<GSAPTimeline>(null);
   const navSocials = [
     {
-      name: 'Fb',
-      to: '',
+      name: "Fb",
+      to: "",
     },
     {
-      name: 'Ig',
-      to: '',
+      name: "Ig",
+      to: "",
     },
     {
-      name: 'Tw',
-      to: '',
-    }
-  ]
+      name: "Tw",
+      to: "",
+    },
+  ];
   const navLinks = [
     {
-      name: 'home',
-      to: '/',
+      name: "home",
+      to: "/",
     },
     {
-      name: 'about',
-      to: '/about',
+      name: "about",
+      to: "/about",
     },
     {
-      name: 'work',
-      to: '/work',
+      name: "work",
+      to: "/work",
     },
     {
-      name: 'contact',
-      to: '/contact',
+      name: "contact",
+      to: "/contact",
     },
-  ]
+  ];
 
-  const route: ComputedRef<string> = computed((): string => useRoute().path)
-  const rem: ComputedRef<number> = computed((): number => typeof getComputedStyle === 'function' ? parseInt(getComputedStyle(document.body).fontSize) : 0)
+  const route: ComputedRef<string> = computed((): string => useRoute().path);
+  const rem: ComputedRef<number> = computed((): number =>
+    typeof getComputedStyle === "function"
+      ? parseInt(getComputedStyle(document.body).fontSize)
+      : 0
+  );
 
   const animate = {
     init(rdNavBtn: Element) {
@@ -189,123 +225,203 @@
         duration: 0.25,
       });
     },
-    navHandler(rdNav: Element, rdNavLinks: Element[], rdNavSocials: Element[], rdNavEmail: Element, rdNavBtn: Element, cb?: () => void, rcb?: () => void): GSAPTimeline {
+    navHandler(
+      rdNav: Element,
+      rdNavLinks: Element[],
+      rdNavSocials: Element[],
+      rdNavEmail: Element,
+      rdNavBtn: Element,
+      cb?: () => void,
+      rcb?: () => void
+    ): GSAPTimeline {
       const tl: GSAPTimeline = gsap.timeline({
         onComplete() {
-          if (cb) cb()
+          if (cb) cb();
         },
         onReverseComplete() {
-          if (rcb) rcb()
+          if (rcb) rcb();
         },
-        paused: true
-      })
+        paused: true,
+      });
 
-      const rdNavOverlay: Element = rdNav.children[0]
-      const rdNavContainer: Element = rdNav.children[1]
+      const rdNavOverlay: Element = rdNav.children[0];
+      const rdNavContainer: Element = rdNav.children[1];
       const rdNavLinksWordContainer: Element[] = gsap.utils.toArray(
         rdNavContainer.children[0].querySelectorAll(".rd-word-container")
-      )
+      );
       const rdNavLinksWord: Element[] = gsap.utils.toArray(
         rdNavContainer.children[0].querySelectorAll(".rd-word")
-      )
+      );
       const rdNavSocialsWordContainer: Element[] = gsap.utils.toArray(
         rdNavContainer.children[1].querySelectorAll(".rd-word-container")
-      )
+      );
       const rdNavSocialsWord: Element[] = gsap.utils.toArray(
         rdNavContainer.children[1].querySelectorAll(".rd-word")
-      )
+      );
       const rdNavEmailWordContainer: Element[] = gsap.utils.toArray(
         rdNavContainer.children[2].querySelectorAll(".rd-word-container")
-      )
+      );
       const rdNavEmailWord: Element[] = gsap.utils.toArray(
         rdNavContainer.children[2].querySelectorAll(".rd-word")
+      );
+      const barOne: Element = rdNavBtn.children[0];
+      const barTwo: Element = rdNavBtn.children[1];
+
+      tl.to(
+        barOne,
+        {
+          x: "-0.5rem",
+          width: 0,
+          duration: 0.25,
+        },
+        "<0"
       )
-      const barOne: Element = rdNavBtn.children[0]
-      const barTwo: Element = rdNavBtn.children[1]
+        .to(
+          barTwo,
+          {
+            x: "0.5rem",
+            width: 0,
+            duration: 0.25,
+          },
+          "<0"
+        )
+        .to(barOne, {
+          y: "-0.5rem",
+          rotateZ: 45,
+          duration: 0,
+        })
+        .to(barTwo, {
+          y: "-0.5rem",
+          rotateZ: -45,
+          duration: 0,
+        })
+        .to(rdNavContainer, {
+          x: 0,
+          duration: 0.5,
+          ease: "power4.out",
+        })
+        .to(
+          rdNavOverlay,
+          {
+            opacity: 1,
+            duration: 0.5,
+          },
+          "<0"
+        )
+        .to(
+          rdNavLinks,
+          {
+            opacity: 0.4,
+            duration: 0.25,
+            ease: "expo.out",
+            stagger: 0.125,
+          },
+          "<0.25"
+        )
+        .to(
+          rdNavLinksWordContainer,
+          {
+            x: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          rdNavLinksWord,
+          {
+            x: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          rdNavSocials,
+          {
+            opacity: 0.4,
+            duration: 0.25,
+            ease: "expo.out",
+            stagger: 0.125,
+          },
+          "<0.25"
+        )
+        .to(
+          rdNavSocialsWordContainer,
+          {
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          rdNavSocialsWord,
+          {
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          rdNavEmail,
+          {
+            opacity: 0.4,
+            duration: 0.25,
+            ease: "expo.out",
+            stagger: 0.125,
+          },
+          "<0.25"
+        )
+        .to(
+          rdNavEmailWordContainer,
+          {
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          rdNavEmailWord,
+          {
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          barOne,
+          {
+            x: 0,
+            y: 0,
+            width: "1rem",
+            duration: 0.25,
+          },
+          "<0"
+        )
+        .to(
+          barTwo,
+          {
+            x: 0,
+            y: 0,
+            width: "1rem",
+            duration: 0.25,
+          },
+          "<0"
+        );
 
-      tl.to(barOne, {
-        x: '-0.5rem',
-        width: 0,
-        duration: 0.25,
-      }, '<0').to(barTwo, {
-        x: '0.5rem',
-        width: 0,
-        duration: 0.25,
-      }, '<0').to(barOne, {
-        y: '-0.5rem',
-        rotateZ: 45,
-        duration: 0,
-      }).to(barTwo, {
-        y: '-0.5rem',
-        rotateZ: -45,
-        duration: 0,
-      }).to(rdNavContainer, {
-        x: 0,
-        duration: 0.5,
-        ease: 'power4.out'
-      }).to(rdNavOverlay, {
-        opacity: 1,
-        duration: 0.5
-      }, '<0').to(rdNavLinks, {
-        opacity: 0.4,
-        duration: 0.25,
-        ease: 'expo.out',
-        stagger: 0.125
-      }, '<0.25').to(rdNavLinksWordContainer, {
-        x: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-        stagger: 0.125,
-      }, '<0').to(rdNavLinksWord, {
-        x: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-        stagger: 0.125,
-      }, '<0').to(rdNavSocials, {
-        opacity: 0.4,
-        duration: 0.25,
-        ease: 'expo.out',
-        stagger: 0.125
-      }, '<0.25').to(rdNavSocialsWordContainer, {
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-        stagger: 0.125,
-      }, '<0').to(rdNavSocialsWord, {
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-        stagger: 0.125,
-      }, '<0').to(rdNavEmail, {
-        opacity: 0.4,
-        duration: 0.25,
-        ease: 'expo.out',
-        stagger: 0.125
-      }, '<0.25').to(rdNavEmailWordContainer, {
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-        stagger: 0.125,
-      }, '<0').to(rdNavEmailWord, {
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-        stagger: 0.125,
-      }, '<0').to(barOne, {
-        x: 0,
-        y: 0,
-        width: '1rem',
-        duration: 0.25,
-      }, '<0').to(barTwo, {
-        x: 0,
-        y: 0,
-        width: '1rem',
-        duration: 0.25,
-      }, '<0')
-
-      return tl
-    }
-  }
+      return tl;
+    },
+  };
 
   function resizeHandler(e: MediaQueryList | MediaQueryListEvent) {
     if (e.matches) baseStore.setViewMode("mobile");
@@ -314,14 +430,13 @@
 
   function changePage({ target }: TouchEvent | MouseEvent) {
     if (target instanceof Element) {
-      navHandler('close')
-      pageState.value = target.getAttribute('href')
-      target.classList.add('rd-navigation-link-blink')
+      navHandler("close");
+      pageState.value = target.getAttribute("href");
+      target.classList.add("rd-navigation-link-blink");
       setTimeout(() => {
-        target.classList.remove('rd-navigation-link-blink')
-      }, 500)
+        target.classList.remove("rd-navigation-link-blink");
+      }, 500);
     }
-    
   }
 
   function logoHandler(rdLogo: Element, state: "show" | "hide") {
@@ -383,142 +498,177 @@
   }
 
   function moveCursor({ clientX, clientY }: MouseEvent) {
-    if (!cursorVisible.value) cursorVisible.value = true
+    if (!cursorVisible.value) cursorVisible.value = true;
     if (!cursorPinned.value && !cursorHover.value) {
       gsap.to(rdCursor.value, {
         x: `${clientX - 0.25 * rem.value}`,
         y: `${clientY - 0.25 * rem.value}`,
-      })
+      });
     }
   }
 
   function pinCursorButton() {
-    cursorPinned.value = true
+    cursorPinned.value = true;
   }
   function unpinCursorButton({ target }: MouseEvent) {
     if (target instanceof Element) {
-      cursorPinned.value = false
+      cursorPinned.value = false;
       gsap.to(target, {
         x: 0,
-        y: 0
-      })
+        y: 0,
+      });
     }
   }
   function dragCursorButton({ target, clientX, clientY }: MouseEvent) {
     if (target instanceof Element) {
-      const { top, left, height, width }: DOMRect = target.getBoundingClientRect()
-      const cx = left + 0.5 * width
-      const cy = top + 0.5 * height
-      const dx = clientX - cx
-      const dy = clientY - cy
+      const { top, left, height, width }: DOMRect =
+        target.getBoundingClientRect();
+      const cx = left + 0.5 * width;
+      const cy = top + 0.5 * height;
+      const dx = clientX - cx;
+      const dy = clientY - cy;
       gsap.to(rdCursor.value, {
         x: `${cx - 1.25 * rem.value + dx * 0.25}`,
         y: `${cy - 1.25 * rem.value + dy * 0.25}`,
-      })
+      });
       gsap.to(target, {
         x: `${dx * 0.25}`,
-        y: `${dy * 0.25}`
-      })
+        y: `${dy * 0.25}`,
+      });
     }
   }
 
   function pinCursorLink() {
-    cursorHover.value = true
+    cursorHover.value = true;
   }
   function unpinCursorLink({ target }: MouseEvent) {
     if (target instanceof Element) {
-      cursorHover.value = false
+      cursorHover.value = false;
       gsap.to(target, {
         x: 0,
-        y: 0
-      })
+        y: 0,
+      });
     }
   }
   function dragCursorLink({ target, clientX, clientY }: MouseEvent) {
     if (target instanceof Element) {
-      const { top, left, height, width }: DOMRect = target.getBoundingClientRect()
-      const cx = left + 0.5 * width
-      const cy = top + 0.5 * height
-      const dx = clientX - cx
-      const dy = clientY - cy
+      const { top, left, height, width }: DOMRect =
+        target.getBoundingClientRect();
+      const cx = left + 0.5 * width;
+      const cy = top + 0.5 * height;
+      const dx = clientX - cx;
+      const dy = clientY - cy;
       gsap.to(rdCursor.value, {
         x: `${clientX - 1.25 * rem.value}`,
         y: `${clientY - 1.25 * rem.value}`,
-      })
+      });
       gsap.to(target, {
         x: `${dx * 0.25}`,
-        y: `${dy * 0.25}`
-      })
+        y: `${dy * 0.25}`,
+      });
     }
   }
 
-  function navHandler(state: 'open' | 'close') {
-    if (!navAnim.value) {
-      navAnim.value = animate.navHandler(rdNav.value, rdNavLinks.value, rdNavSocials.value, rdNavEmail.value, rdNavBtn.value, () => {
-        navOpened.value = true
-      }, () => {
-        rdNav.value.style.zIndex = '-1'
-      })
+  function pinCursorText({ target }: MouseEvent) {
+    if (target instanceof HTMLElement) {
+      cursorText.value = target.dataset.text;
     }
-    if (state === 'open') {
-      rdNav.value.style.zIndex = '1'
-      navAnim.value.play()
+  }
+  function unpinCursorText() {
+    setTimeout(() => {
+      cursorText.value = "";
+    }, 250);
+  }
+
+  function navHandler(state: "open" | "close") {
+    if (!navAnim.value) {
+      navAnim.value = animate.navHandler(
+        rdNav.value,
+        rdNavLinks.value,
+        rdNavSocials.value,
+        rdNavEmail.value,
+        rdNavBtn.value,
+        () => {
+          navOpened.value = true;
+        },
+        () => {
+          rdNav.value.style.zIndex = "-1";
+        }
+      );
+    }
+    if (state === "open") {
+      rdNav.value.style.zIndex = "1";
+      navAnim.value.play();
     } else {
-      navOpened.value = false
-      navAnim.value.reverse()
+      navOpened.value = false;
+      navAnim.value.reverse();
     }
   }
 
   function pinElements(): void {
-    if (baseState.viewMode === 'desktop') {
+    if (baseState.viewMode === "desktop") {
       rdPinnedButtons.value = gsap.utils.toArray(
-        rdBody.value.querySelectorAll('[data-pin=button]')
-      )
+        rdBody.value.querySelectorAll("[data-pin=button]")
+      );
       for (const rdButton of rdPinnedButtons.value) {
-        rdButton.addEventListener('mouseenter', pinCursorButton)
-        rdButton.addEventListener('mouseleave', unpinCursorButton)
-        rdButton.addEventListener('mousemove', dragCursorButton)
+        rdButton.addEventListener("mouseenter", pinCursorButton);
+        rdButton.addEventListener("mouseleave", unpinCursorButton);
+        rdButton.addEventListener("mousemove", dragCursorButton);
       }
-      
+
       rdPinnedLinks.value = gsap.utils.toArray(
-        rdBody.value.querySelectorAll('[data-pin=link]')
-      )
+        rdBody.value.querySelectorAll("[data-pin=link]")
+      );
       for (const rdLink of rdPinnedLinks.value) {
-        rdLink.addEventListener('mouseenter', pinCursorLink)
-        rdLink.addEventListener('mouseleave', unpinCursorLink)
-        rdLink.addEventListener('mousemove', dragCursorLink)
+        rdLink.addEventListener("mouseenter", pinCursorLink);
+        rdLink.addEventListener("mouseleave", unpinCursorLink);
+        rdLink.addEventListener("mousemove", dragCursorLink);
+      }
+
+      rdPinnedTexts.value = gsap.utils.toArray(
+        rdBody.value.querySelectorAll("[data-pin=text]")
+      );
+      for (const rdText of rdPinnedTexts.value) {
+        rdText.addEventListener("mouseenter", pinCursorText);
+        rdText.addEventListener("mouseleave", unpinCursorText);
       }
     }
   }
   function unpinElements(): void {
-    if (baseState.viewMode === 'desktop') {
+    if (baseState.viewMode === "desktop") {
       for (const rdButton of rdPinnedButtons.value) {
-        rdButton.removeEventListener('mouseenter', pinCursorButton)
-        rdButton.removeEventListener('mouseleave', unpinCursorButton)
-        rdButton.removeEventListener('mousemove', dragCursorButton)
+        rdButton.removeEventListener("mouseenter", pinCursorButton);
+        rdButton.removeEventListener("mouseleave", unpinCursorButton);
+        rdButton.removeEventListener("mousemove", dragCursorButton);
       }
-      rdPinnedButtons.value = []
-      
+      rdPinnedButtons.value = [];
+
       for (const rdLink of rdPinnedLinks.value) {
-        rdLink.removeEventListener('mouseenter', pinCursorLink)
-        rdLink.removeEventListener('mouseleave', unpinCursorLink)
-        rdLink.removeEventListener('mousemove', dragCursorLink)
+        rdLink.removeEventListener("mouseenter", pinCursorLink);
+        rdLink.removeEventListener("mouseleave", unpinCursorLink);
+        rdLink.removeEventListener("mousemove", dragCursorLink);
       }
-      rdPinnedLinks.value = []
+      rdPinnedLinks.value = [];
+
+      for (const rdText of rdPinnedTexts.value) {
+        rdText.removeEventListener("mouseenter", pinCursorText);
+        rdText.removeEventListener("mouseleave", unpinCursorText);
+      }
+      rdPinnedTexts.value = [];
     }
   }
 
   watch(
     () => baseState.viewMode,
     (val, oldVal) => {
-      if (val && oldVal) location.reload()
+      if (val && oldVal) location.reload();
     }
   );
   watch(
     () => route.value,
     (val, oldVal) => {
-      if (val !== '/') logoHandler(rdLogo.value, "show")
-      else logoHandler(rdLogo.value, "hide")
+      if (val !== "/") logoHandler(rdLogo.value, "show");
+      else logoHandler(rdLogo.value, "hide");
     }
   );
 
@@ -532,27 +682,37 @@
 
     const mediaQuery = window.matchMedia("(max-width: 1024px)");
     mediaQuery.addEventListener("change", resizeHandler);
-    resizeHandler(mediaQuery)
+    resizeHandler(mediaQuery);
 
-    if (route.value !== '/') logoHandler(rdLogo.value, "show")
+    if (route.value !== "/") logoHandler(rdLogo.value, "show");
 
-    if (baseState.viewMode === 'desktop') {
-      rdLayout.value.addEventListener('mousemove', moveCursor)
-      rdLayout.value.addEventListener('mouseenter', () => cursorVisible.value = true)
-      rdLayout.value.addEventListener('mouseleave', () => cursorVisible.value = false)
+    if (baseState.viewMode === "desktop") {
+      rdLayout.value.addEventListener("mousemove", moveCursor);
+      rdLayout.value.addEventListener(
+        "mouseenter",
+        () => (cursorVisible.value = true)
+      );
+      rdLayout.value.addEventListener(
+        "mouseleave",
+        () => (cursorVisible.value = false)
+      );
 
-      const rdButtonPins: Element[] = gsap.utils.toArray('[data-default-pin=button]')
+      const rdButtonPins: Element[] = gsap.utils.toArray(
+        "[data-default-pin=button]"
+      );
       for (const rdButton of rdButtonPins) {
-        rdButton.addEventListener('mouseenter', pinCursorButton)
-        rdButton.addEventListener('mouseleave', unpinCursorButton)
-        rdButton.addEventListener('mousemove', dragCursorButton)
+        rdButton.addEventListener("mouseenter", pinCursorButton);
+        rdButton.addEventListener("mouseleave", unpinCursorButton);
+        rdButton.addEventListener("mousemove", dragCursorButton);
       }
-      
-      const rdLinkPins: Element[] = gsap.utils.toArray('[data-default-pin=link')
+
+      const rdLinkPins: Element[] = gsap.utils.toArray(
+        "[data-default-pin=link"
+      );
       for (const rdLink of rdLinkPins) {
-        rdLink.addEventListener('mouseenter', pinCursorLink)
-        rdLink.addEventListener('mouseleave', unpinCursorLink)
-        rdLink.addEventListener('mousemove', dragCursorLink)
+        rdLink.addEventListener("mouseenter", pinCursorLink);
+        rdLink.addEventListener("mouseleave", unpinCursorLink);
+        rdLink.addEventListener("mousemove", dragCursorLink);
       }
     }
 
@@ -762,7 +922,7 @@
               pointer-events: none;
             }
             &::before {
-              content: '';
+              content: "";
               position: absolute;
               top: 100%;
               width: 100%;
@@ -771,7 +931,7 @@
               opacity: 0.4;
             }
             &::after {
-              content: '';
+              content: "";
               position: absolute;
               left: 0;
               top: 100%;
@@ -802,11 +962,25 @@
         0.25s height ease-in-out;
       backdrop-filter: invert(100%) hue-rotate(180deg);
       background: rgba(#fff, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .rd-cursor-text {
+        position: relative;
+        line-height: 1;
+        text-transform: uppercase;
+        color: var(--background-color);
+        opacity: 0;
+        transition: 0.25s opacity ease-in-out;
+      }
       &.rd-cursor-grow {
         width: 2.5rem !important;
         height: 2.5rem !important;
         transition: 0.06125s transform ease-out, 0.5s width ease-out,
           0.5s height ease-out;
+        .rd-cursor-text {
+          opacity: 1;
+        }
       }
     }
     &.rd-cursor-visible {
@@ -844,6 +1018,9 @@
 
 <style lang="scss">
   :root {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
     --var: 1vh;
     --font-color: #ede0e6;
@@ -853,8 +1030,8 @@
 
   html,
   body {
-    font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      "Helvetica Neue", Arial, sans-serif;
+    font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: 24px;
     color: var(--font-color);
     word-spacing: 1px;
@@ -891,9 +1068,12 @@
         font-size: 1.25rem;
         letter-spacing: 0.1rem;
       }
-      .rd-headline-3 {}
-      .rd-headline-4 {}
-      .rd-headline-5 {}
+      .rd-headline-3 {
+      }
+      .rd-headline-4 {
+      }
+      .rd-headline-5 {
+      }
       .rd-caption-text {
         font-size: 0.65rem;
         letter-spacing: 0.05rem;
@@ -901,7 +1081,6 @@
       .rd-body-text {
         font-size: 0.75rem;
       }
-
     }
     @media only screen and (max-width: 410px) and (min-width: 321px) {
       font-size: 18px;
@@ -911,13 +1090,19 @@
     }
   }
 
-  h1, h2, h3, h4, h5, h5, p {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h5,
+  p {
     margin: 0;
     padding: 0;
   }
 
   .rd-headline-1 {
-    font-family: 'Exo';
+    font-family: "Exo";
     font-weight: 500;
     font-size: 3rem;
     letter-spacing: 0.2rem;
@@ -926,41 +1111,41 @@
   }
   .rd-headline-2 {
     font-size: 2rem;
-    font-family: 'Exo';
+    font-family: "Exo";
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0.15rem;
   }
   .rd-headline-3 {
     font-size: 1.25rem;
-    font-family: 'Exo';
+    font-family: "Exo";
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0.125rem;
   }
   .rd-headline-4 {
     font-size: 1rem;
-    font-family: 'Exo';
+    font-family: "Exo";
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0.1rem;
   }
   .rd-headline-5 {
     font-size: 0.75rem;
-    font-family: 'Exo';
+    font-family: "Exo";
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0.075rem;
   }
   .rd-headline-6 {
     font-size: 0.55rem;
-    font-family: 'Exo';
+    font-family: "Exo";
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0.075rem;
   }
   .rd-caption-text {
-    font-family: 'Raleway';
+    font-family: "Raleway";
     font-size: 0.65rem;
     font-weight: 500;
     line-height: 1;
@@ -968,11 +1153,11 @@
     text-transform: uppercase;
   }
   .rd-body-text {
-    font-family: 'Quicksand';
+    font-family: "Quicksand";
     font-size: 0.75rem;
   }
   .rd-placeholder-text {
-    font-family: 'Raleway';
+    font-family: "Raleway";
     font-size: 0.55rem;
     font-weight: 400;
     line-height: 1;
@@ -1066,7 +1251,7 @@
       }
     }
   }
-  
+
   @keyframes blink {
     0% {
       opacity: 0.5;

@@ -138,7 +138,7 @@
           <p ref="rdPlaceholder" class="rd-placeholder rd-caption-text">
             <span class="rd-text-wrapper">
               <span class="rd-text-container rd-text-container-down">
-                <span class="text">{{
+                <span class="rd-text">{{
                   projects[activeProject].placeholder
                 }}</span>
               </span>
@@ -194,7 +194,7 @@
       </div>
     </div>
     <div class="rd-footer">
-      <div ref="rdSocials" class="rd-social-container">
+      <div ref="rdSocialsContainer" class="rd-social-container">
         <a
           v-for="(social, i) in socials"
           :key="i"
@@ -219,6 +219,15 @@
           <div v-if="activeProject === project" class="rd-bar-filled"></div>
         </div>
       </div>
+      <div ref="rdWorksContainer" class="rd-works-container">
+        <a class="rd-works rd-caption-text" data-pin="link">
+          <span class="rd-word-wrapper">
+            <span class="rd-word-container rd-word-container-down">
+              <span class="rd-word">Karya Kami</span>
+            </span>
+          </span>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -241,7 +250,8 @@
   const rdPlaceholder = ref(null);
   const rdTitle = ref(null);
   const rdActionButton = ref(null);
-  const rdSocials = ref(null);
+  const rdSocialsContainer = ref(null);
+  const rdWorksContainer = ref(null);
 
   let projectTimeout: GSAPTween = null;
   let projectChanging: boolean = false;
@@ -279,7 +289,8 @@
     init(
       rdHeaderTitle: Element,
       rdBarContainer: Element,
-      rdSocials: Element,
+      rdSocialsContainer: Element,
+      rdWorksContainer: Element,
       cb?: () => void
     ) {
       const tl: GSAPTimeline = gsap.timeline({
@@ -297,10 +308,16 @@
         rdBarContainer.querySelectorAll(".rd-bar")
       );
       const rdSocialWordContainer: Element[] = gsap.utils.toArray(
-        rdSocials.querySelectorAll(".rd-word-container")
+        rdSocialsContainer.querySelectorAll(".rd-word-container")
       );
       const rdSocialWord: Element[] = gsap.utils.toArray(
-        rdSocials.querySelectorAll(".rd-word")
+        rdSocialsContainer.querySelectorAll(".rd-word")
+      );
+      const rdWorkWordContainer: Element[] = gsap.utils.toArray(
+        rdWorksContainer.querySelectorAll(".rd-word-container")
+      );
+      const rdWorkWord: Element[] = gsap.utils.toArray(
+        rdWorksContainer.querySelectorAll(".rd-word")
       );
 
       shuffleArray(rdLettersContainer, rdLetters);
@@ -335,7 +352,7 @@
           "<0"
         )
         .to(
-          rdSocialWordContainer,
+          [...rdSocialWordContainer, ...rdWorkWordContainer],
           {
             y: 0,
             duration: 0.5,
@@ -345,7 +362,7 @@
           "<0"
         )
         .to(
-          rdSocialWord,
+          [...rdSocialWord, ...rdWorkWord],
           {
             y: 0,
             duration: 0.5,
@@ -358,7 +375,8 @@
     exit(
       rdHeaderTitle: Element,
       rdBarContainer: Element,
-      rdSocials: Element,
+      rdSocialsContainer: Element,
+      rdWorksContainer: Element,
       cb?: () => void
     ) {
       const tl: GSAPTimeline = gsap.timeline({
@@ -374,6 +392,18 @@
       );
       const rdBars: Element[] = gsap.utils.toArray(
         rdBarContainer.querySelectorAll(".rd-bar")
+      );
+      const rdSocialWordContainer: Element[] = gsap.utils.toArray(
+        rdSocialsContainer.querySelectorAll(".rd-word-container")
+      );
+      const rdSocialWord: Element[] = gsap.utils.toArray(
+        rdSocialsContainer.querySelectorAll(".rd-word")
+      );
+      const rdWorkWordContainer: Element[] = gsap.utils.toArray(
+        rdWorksContainer.querySelectorAll(".rd-word-container")
+      );
+      const rdWorkWord: Element[] = gsap.utils.toArray(
+        rdWorksContainer.querySelectorAll(".rd-word")
       );
 
       tl.to(
@@ -401,6 +431,26 @@
           {
             opacity: 0,
             duration: 0.25,
+          },
+          "<0"
+        )
+        .to(
+          [...rdSocialWordContainer, ...rdWorkWordContainer],
+          {
+            y: "100%",
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
+          },
+          "<0"
+        )
+        .to(
+          [...rdSocialWord, ...rdWorkWord],
+          {
+            y: "-100%",
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.125,
           },
           "<0"
         );
@@ -1156,7 +1206,8 @@
           animate.init(
             rdHeaderTitle.value,
             rdBarContainer.value,
-            rdSocials.value
+            rdSocialsContainer.value,
+            rdWorksContainer.value
           );
         }
         if (baseState.viewMode === "desktop") {
@@ -1169,7 +1220,7 @@
   }
   function exit(path: string) {
     projectChanging = true;
-    if (baseState.viewMode === 'desktop') {
+    if (baseState.viewMode === "desktop") {
       mouseLeave();
       window.removeEventListener("mousemove", mouseMove);
       window.removeEventListener("mouseleave", mouseLeave);
@@ -1190,7 +1241,8 @@
         animate.exit(
           rdHeaderTitle.value,
           rdBarContainer.value,
-          rdSocials.value,
+          rdSocialsContainer.value,
+          rdWorksContainer.value,
           () => {
             router.push(path);
             emit("exit-page");
@@ -1411,13 +1463,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .rd-social-container {
+      .rd-social-container,
+      .rd-works-container {
         position: relative;
         height: 1rem;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        .rd-social {
+        .rd-social,
+        .rd-works {
           cursor: pointer;
           position: relative;
           width: 2rem;
@@ -1427,6 +1481,11 @@
           align-items: center;
           transition: 0.2s opacity linear;
           overflow: hidden;
+        }
+        .rd-works {
+          width: auto;
+          height: 1rem;
+          justify-content: flex-end;
         }
       }
       .rd-bar-container {
