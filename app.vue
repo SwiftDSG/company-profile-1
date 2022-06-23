@@ -148,12 +148,9 @@
 <script lang="ts" setup>
   import { gsap } from "gsap";
   import { ComputedRef } from "vue";
-
   import { baseStore } from "./store/base";
-
   const baseState = baseStore.getState();
   const pageState = ref("idle");
-
   const rdLayout = ref<HTMLDivElement>(null);
   const rdCursor = ref<HTMLDivElement>(null);
   const rdLogo = ref<SVGElement>(null);
@@ -163,16 +160,13 @@
   const rdNavLinks = ref<HTMLAnchorElement[]>(null);
   const rdNavSocials = ref<HTMLAnchorElement[]>(null);
   const rdNavEmail = ref<HTMLAnchorElement>(null);
-
   const rdPinnedButtons = ref([]);
   const rdPinnedLinks = ref([]);
   const rdPinnedTexts = ref([]);
-
   const cursorText = ref<string>("");
   const cursorPinned = ref(false);
   const cursorHover = ref(false);
   const cursorVisible = ref(false);
-
   const navOpened = ref(false);
   const navAnim = ref<GSAPTimeline>(null);
   const navSocials = [
@@ -207,18 +201,15 @@
       to: "/contact",
     },
   ];
-
   const route: ComputedRef<string> = computed((): string => useRoute().path);
   const rem: ComputedRef<number> = computed((): number =>
     typeof getComputedStyle === "function"
       ? parseInt(getComputedStyle(document.body).fontSize)
       : 0
   );
-
   const animate = {
     init(rdNavBtn: Element) {
       const tl: GSAPTimeline = gsap.timeline();
-
       tl.to(rdNavBtn.children, {
         width: "1rem",
         x: 0,
@@ -243,7 +234,6 @@
         },
         paused: true,
       });
-
       const rdNavOverlay: Element = rdNav.children[0];
       const rdNavContainer: Element = rdNav.children[1];
       const rdNavLinksWordContainer: Element[] = gsap.utils.toArray(
@@ -266,7 +256,6 @@
       );
       const barOne: Element = rdNavBtn.children[0];
       const barTwo: Element = rdNavBtn.children[1];
-
       tl.to(
         barOne,
         {
@@ -418,16 +407,13 @@
           },
           "<0"
         );
-
       return tl;
     },
   };
-
   function resizeHandler(e: MediaQueryList | MediaQueryListEvent) {
     if (e.matches) baseStore.setViewMode("mobile");
     else baseStore.setViewMode("desktop");
   }
-
   function changePage({ target }: TouchEvent | MouseEvent) {
     if (target instanceof Element) {
       navHandler("close");
@@ -438,14 +424,11 @@
       }, 500);
     }
   }
-
   function logoHandler(rdLogo: Element, state: "show" | "hide") {
     const tl: GSAPTimeline = gsap.timeline();
-
     const pathOne: Element = rdLogo.children[1];
     const pathTwo: Element = rdLogo.children[2];
     const pathThree: Element = rdLogo.children[3];
-
     if (state === "show") {
       tl.to(pathOne, {
         strokeDashoffset: 543.9750366210938,
@@ -496,7 +479,6 @@
         );
     }
   }
-
   function moveCursor({ clientX, clientY }: MouseEvent) {
     if (!cursorVisible.value) cursorVisible.value = true;
     if (!cursorPinned.value && !cursorHover.value) {
@@ -506,7 +488,6 @@
       });
     }
   }
-
   function pinCursorButton() {
     cursorPinned.value = true;
   }
@@ -537,7 +518,6 @@
       });
     }
   }
-
   function pinCursorLink() {
     cursorHover.value = true;
   }
@@ -568,7 +548,6 @@
       });
     }
   }
-
   function pinCursorText({ target }: MouseEvent) {
     if (target instanceof HTMLElement) {
       cursorText.value = target.dataset.text;
@@ -579,7 +558,6 @@
       cursorText.value = "";
     }, 250);
   }
-
   function navHandler(state: "open" | "close") {
     if (!navAnim.value) {
       navAnim.value = animate.navHandler(
@@ -604,7 +582,6 @@
       navAnim.value.reverse();
     }
   }
-
   function pinElements(): void {
     if (baseState.viewMode === "desktop") {
       rdPinnedButtons.value = gsap.utils.toArray(
@@ -615,7 +592,6 @@
         rdButton.addEventListener("mouseleave", unpinCursorButton);
         rdButton.addEventListener("mousemove", dragCursorButton);
       }
-
       rdPinnedLinks.value = gsap.utils.toArray(
         rdBody.value.querySelectorAll("[data-pin=link]")
       );
@@ -624,7 +600,6 @@
         rdLink.addEventListener("mouseleave", unpinCursorLink);
         rdLink.addEventListener("mousemove", dragCursorLink);
       }
-
       rdPinnedTexts.value = gsap.utils.toArray(
         rdBody.value.querySelectorAll("[data-pin=text]")
       );
@@ -642,23 +617,20 @@
         rdButton.removeEventListener("mousemove", dragCursorButton);
       }
       rdPinnedButtons.value = [];
-
       for (const rdLink of rdPinnedLinks.value) {
         rdLink.removeEventListener("mouseenter", pinCursorLink);
         rdLink.removeEventListener("mouseleave", unpinCursorLink);
         rdLink.removeEventListener("mousemove", dragCursorLink);
       }
       rdPinnedLinks.value = [];
-
       for (const rdText of rdPinnedTexts.value) {
-        unpinCursorText()
+        unpinCursorText();
         rdText.removeEventListener("mouseenter", pinCursorText);
         rdText.removeEventListener("mouseleave", unpinCursorText);
       }
       rdPinnedTexts.value = [];
     }
   }
-
   watch(
     () => baseState.viewMode,
     (val, oldVal) => {
@@ -672,21 +644,17 @@
       else logoHandler(rdLogo.value, "hide");
     }
   );
-
   onMounted(() => {
     const mediaQuery = window.matchMedia("(max-width: 1024px)");
     mediaQuery.addEventListener("change", resizeHandler);
     resizeHandler(mediaQuery);
-
     const event = new Event("resize");
     window.addEventListener("resize", () => {
       const vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty("--vh", `${vh}px`);
     });
     window.dispatchEvent(event);
-
     if (route.value !== "/") logoHandler(rdLogo.value, "show");
-
     if (baseState.viewMode === "desktop") {
       rdLayout.value.addEventListener("mousemove", moveCursor);
       rdLayout.value.addEventListener(
@@ -697,7 +665,6 @@
         "mouseleave",
         () => (cursorVisible.value = false)
       );
-
       const rdButtonPins: Element[] = gsap.utils.toArray(
         "[data-default-pin=button]"
       );
@@ -706,7 +673,6 @@
         rdButton.addEventListener("mouseleave", unpinCursorButton);
         rdButton.addEventListener("mousemove", dragCursorButton);
       }
-
       const rdLinkPins: Element[] = gsap.utils.toArray(
         "[data-default-pin=link"
       );
@@ -716,7 +682,6 @@
         rdLink.addEventListener("mousemove", dragCursorLink);
       }
     }
-
     animate.init(rdNavBtn.value);
   });
 </script>
@@ -1029,7 +994,6 @@
     --background-color: #26191f;
     --menu-color: #21161b;
   }
-
   html,
   body {
     font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -1091,7 +1055,6 @@
       font-size: 17px;
     }
   }
-
   h1,
   h2,
   h3,
@@ -1102,7 +1065,6 @@
     margin: 0;
     padding: 0;
   }
-
   .rd-headline-1 {
     font-family: "Exo";
     font-weight: 500;
@@ -1153,11 +1115,13 @@
     line-height: 1;
     letter-spacing: 0.05rem;
     text-transform: uppercase;
+    opacity: 0.85;
   }
   .rd-body-text {
     font-family: "Quicksand";
     font-size: 0.75rem;
     line-height: 1.5;
+    opacity: 0.85;
   }
   .rd-placeholder-text {
     font-family: "Raleway";
@@ -1167,13 +1131,11 @@
     letter-spacing: 0.05rem;
     text-transform: uppercase;
   }
-
   span.rd-letter,
   span.rd-text,
   span.rd-word {
     transition: 0.25s color;
   }
-
   span.rd-letter-wrapper,
   span.rd-text-wrapper,
   span.rd-word-wrapper,
@@ -1243,7 +1205,6 @@
       }
     }
   }
-
   span.rd-image-wrapper {
     width: 100%;
     height: 100%;
@@ -1261,9 +1222,7 @@
     }
   }
 
-  
-  div.rd-layout
-    div.scrollbar-track.scrollbar-track {
+  div.rd-layout div.scrollbar-track.scrollbar-track {
     width: 11px;
     opacity: 0;
     background: rgba(#fff, 0);
@@ -1275,14 +1234,12 @@
       opacity: 1;
     }
   }
-  div.rd-layout
-    div.scrollbar-track.scrollbar-track
-    > div.scrollbar-thumb {
+  div.rd-layout div.scrollbar-track.scrollbar-track > div.scrollbar-thumb {
     background: transparent;
     cursor: grab;
     width: 100%;
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
@@ -1304,7 +1261,6 @@
       }
     }
   }
-
   @keyframes blink {
     0% {
       opacity: 0.5;
@@ -1316,7 +1272,6 @@
       opacity: 0.5;
     }
   }
-
   @keyframes pulse {
     0% {
       transform: scale(0.85);
