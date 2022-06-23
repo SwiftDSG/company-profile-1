@@ -651,6 +651,7 @@
       rdPinnedLinks.value = [];
 
       for (const rdText of rdPinnedTexts.value) {
+        unpinCursorText()
         rdText.removeEventListener("mouseenter", pinCursorText);
         rdText.removeEventListener("mouseleave", unpinCursorText);
       }
@@ -673,16 +674,16 @@
   );
 
   onMounted(() => {
+    const mediaQuery = window.matchMedia("(max-width: 1024px)");
+    mediaQuery.addEventListener("change", resizeHandler);
+    resizeHandler(mediaQuery);
+
     const event = new Event("resize");
     window.addEventListener("resize", () => {
       const vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty("--vh", `${vh}px`);
     });
     window.dispatchEvent(event);
-
-    const mediaQuery = window.matchMedia("(max-width: 1024px)");
-    mediaQuery.addEventListener("change", resizeHandler);
-    resizeHandler(mediaQuery);
 
     if (route.value !== "/") logoHandler(rdLogo.value, "show");
 
@@ -728,6 +729,7 @@
     height: calc((var(--vh, 1vh) * 100));
     overflow: hidden;
     background: var(--background-color);
+    transition: 0.25s background-color;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
@@ -1155,6 +1157,7 @@
   .rd-body-text {
     font-family: "Quicksand";
     font-size: 0.75rem;
+    line-height: 1.5;
   }
   .rd-placeholder-text {
     font-family: "Raleway";
@@ -1163,6 +1166,12 @@
     line-height: 1;
     letter-spacing: 0.05rem;
     text-transform: uppercase;
+  }
+
+  span.rd-letter,
+  span.rd-text,
+  span.rd-word {
+    transition: 0.25s color;
   }
 
   span.rd-letter-wrapper,
@@ -1248,6 +1257,50 @@
         height: 100%;
         object-fit: cover;
         transform: scale(1.25);
+      }
+    }
+  }
+
+  
+  div.rd-layout
+    div.scrollbar-track.scrollbar-track {
+    width: 11px;
+    opacity: 0;
+    background: rgba(#fff, 0);
+    &:hover,
+    &.show {
+      opacity: 1;
+    }
+    &.show > div.scrollbar-thumb::before {
+      opacity: 1;
+    }
+  }
+  div.rd-layout
+    div.scrollbar-track.scrollbar-track
+    > div.scrollbar-thumb {
+    background: transparent;
+    cursor: grab;
+    width: 100%;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 100%;
+      border-radius: 4px;
+      backdrop-filter: invert(100%) hue-rotate(180deg);
+      background: rgba(#fff, 0.1);
+      opacity: 0.5;
+      transition: opacity 0.25s;
+    }
+    &:hover::before {
+      opacity: 0.75;
+    }
+    &:active {
+      cursor: grabbing;
+      &::before {
+        opacity: 1;
       }
     }
   }

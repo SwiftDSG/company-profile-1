@@ -129,6 +129,7 @@
           ref="rdWorkAction"
           class="rd-action-button"
           :style="activeIndex !== i ? 'pointer-events: none' : ''"
+          @click="exit(projects[activeIndex].route)"
         >
           <span class="rd-action-name rd-caption-text">
             <span class="rd-text-wrapper">
@@ -182,6 +183,7 @@
   const baseState = baseStore.getState();
   const props = defineProps<{ pageState: string }>();
   const emit = defineEmits(["pin-elements", "unpin-elements", "exit-page"]);
+  const router = useRouter();
 
   const prevIndex = ref<number>(-1);
   const activeIndex = ref<number>(-1);
@@ -205,6 +207,11 @@
         "Lorem ipsum dolor sit amet",
         "adipiscing elit. Proin gravida ac dui",
       ],
+      colors: {
+        font: "#ede0e6",
+        background: "#26191f",
+        menu: "#21161b"
+      }
     },
     {
       route: "/work/pezen",
@@ -215,6 +222,11 @@
         "ut congue. Donec a tellus ligula.",
         "Quisque odio tellus, tincidunt",
       ],
+      colors: {
+        font: "#9d5524",
+        background: "#ffa84c",
+        menu: "#ffa84c"
+      }
     },
     {
       route: "/work/otmilti",
@@ -225,6 +237,11 @@
         "vitae, blandit nec quam. Cras",
         "und amet sit dolor Ipsum Lorem",
       ],
+      colors: {
+        font: "#fdf1ce",
+        background: "#de4c3f",
+        menu: "#de4c3f"
+      }
     },
   ];
   const slide: {
@@ -282,7 +299,6 @@
     ): void {
       const tl = gsap.timeline({
         onComplete() {
-          // rdImage.forEach((a) => a.removeAttribute('style'))
           if (cb) cb();
         },
       });
@@ -315,7 +331,37 @@
       mode: "desktop" | "mobile",
       rdWorkSlider: Element,
       cb?: () => void
-    ): void {},
+    ): void {
+      const tl = gsap.timeline({
+        onComplete() {
+          if (cb) cb();
+        },
+      });
+
+      const rdImageContainer: Element[] = gsap.utils.toArray(
+        rdWorkSlider.querySelectorAll(".rd-image-container")
+      );
+      const rdImage: Element[] = gsap.utils.toArray(
+        rdWorkSlider.querySelectorAll(".rd-image")
+      );
+
+      tl.to(rdImageContainer, {
+        y: "100%",
+        duration: 0.5,
+        ease: "power2.out",
+        stagger: mode === "desktop" ? 0.125 : 0,
+      }).to(
+        rdImage,
+        {
+          y: "-100%",
+          scale: 1.25,
+          duration: 0.5,
+          ease: "power2.out",
+          stagger: mode === "desktop" ? 0.125 : 0,
+        },
+        "<0"
+      );
+    },
     initProject(
       rdWorkType: Element,
       rdWorkTitle: Element,
@@ -900,6 +946,18 @@
       activeIndex.value = index;
       if (activeAnim.value && activeIndex.value === prevIndex.value)
         activeAnim.value.kill();
+      document.documentElement.style.setProperty(
+        "--font-color",
+        projects[activeIndex.value].colors.font
+      );
+      document.documentElement.style.setProperty(
+        "--background-color",
+        projects[activeIndex.value].colors.background
+      );
+      document.documentElement.style.setProperty(
+        "--menu-color",
+        projects[activeIndex.value].colors.menu
+      );
       activeAnim.value = animate.initProject(
         rdWorkType.value[index],
         rdWorkTitle.value[index],
@@ -913,7 +971,7 @@
     }
   }
 
-  function exitProject(): void {
+  function exitProject(cb?: () => void): void {
     if (activeIndex.value !== -1) {
       if (baseState.viewMode === "desktop") {
         gsap.to(rdWork.value[activeIndex.value], {
@@ -921,6 +979,14 @@
           rotateY: 0,
         });
         gsap.to(rdWorkAction.value[activeIndex.value], {
+          x: 0,
+          y: 0,
+        });
+        gsap.to(rdWorkTags.value[activeIndex.value], {
+          x: 0,
+          y: 0,
+        });
+        gsap.to(rdWorkCaptions.value[activeIndex.value], {
           x: 0,
           y: 0,
         });
@@ -934,6 +1000,7 @@
         rdWorkCaptions.value[activeIndex.value],
         () => {
           activeAnim.value = null;
+          if (cb) cb()
         }
       );
       prevIndex.value = activeIndex.value;
@@ -961,6 +1028,14 @@
         x: 0.5 * dx,
         y: 0.5 * dy,
       });
+      gsap.to(rdWorkTags.value[activeIndex.value], {
+        x: 0.25 * dx,
+        y: 0.25 * dy,
+      });
+      gsap.to(rdWorkCaptions.value[activeIndex.value], {
+        x: 0.25 * dx,
+        y: 0.25 * dy,
+      });
     }
     gsap.to(rdWorkType.value, {
       x: dx,
@@ -982,12 +1057,34 @@
     });
   }
 
+  function exit(path: string): void {
+    exitProject(() => {
+      animate.exit(baseState.viewMode, rdWorkSlider.value, () => {
+        if (path === '/') {
+          document.documentElement.style.setProperty(
+            "--font-color",
+            "#ede0e6"
+          );
+          document.documentElement.style.setProperty(
+            "--background-color",
+            "#26191f"
+          );
+          document.documentElement.style.setProperty(
+            "--menu-color",
+            "#21161b"
+          );
+        }
+        router.push(path);
+        emit("exit-page");
+      })
+    })
+  }
+
   watch(
     () => props.pageState,
     (val: string) => {
       if (val !== "idle") {
-        // exit(val);
-        console.log(val);
+        exit(val)
       }
     }
   );
@@ -1009,6 +1106,10 @@
       });
     }, 500);
   });
+
+  onBeforeUnmount(() => {
+    emit("unpin-elements")
+  })
 </script>
 
 <style lang="scss" scoped>

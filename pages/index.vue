@@ -242,20 +242,21 @@
   const emit = defineEmits(["pin-elements", "unpin-elements", "exit-page"]);
   const router = useRouter();
 
-  const rdHeaderTitle = ref(null);
-  const rdBarContainer = ref(null);
-  const rdLogo = ref(null);
-  const rdLogoContainer = ref(null);
-  const rdBackground = ref(null);
-  const rdPlaceholder = ref(null);
-  const rdTitle = ref(null);
-  const rdActionButton = ref(null);
-  const rdSocialsContainer = ref(null);
-  const rdWorksContainer = ref(null);
+  const rdHeaderTitle = ref<HTMLDivElement>(null);
+  const rdBarContainer = ref<HTMLDivElement>(null);
+  const rdLogo = ref<SVGAElement>(null);
+  const rdLogoContainer = ref<HTMLDivElement>(null);
+  const rdBackground = ref<HTMLDivElement>(null);
+  const rdPlaceholder = ref<HTMLParagraphElement>(null);
+  const rdTitle = ref<HTMLHeadingElement>(null);
+  const rdActionButton = ref<HTMLDivElement>(null);
+  const rdSocialsContainer = ref<HTMLDivElement>(null);
+  const rdWorksContainer = ref<HTMLDivElement>(null);
+
+  const activeProject = ref<string>("redian");
 
   let projectTimeout: GSAPTween = null;
   let projectChanging: boolean = false;
-  const activeProject = ref("redian");
   const projects = {
     redian: {
       placeholder: "Digital Agency",
@@ -292,7 +293,7 @@
       rdSocialsContainer: Element,
       rdWorksContainer: Element,
       cb?: () => void
-    ) {
+    ): void {
       const tl: GSAPTimeline = gsap.timeline({
         onComplete() {
           if (cb) cb();
@@ -378,7 +379,7 @@
       rdSocialsContainer: Element,
       rdWorksContainer: Element,
       cb?: () => void
-    ) {
+    ): void {
       const tl: GSAPTimeline = gsap.timeline({
         onComplete() {
           if (cb) cb();
@@ -464,7 +465,7 @@
       rdTitle: Element,
       rdActionButton: Element,
       cb?: () => void
-    ) {
+    ): void {
       const tl = gsap.timeline({
         onComplete() {
           if (cb) cb();
@@ -698,7 +699,7 @@
       rdActionButton: Element,
       cb?: () => void,
       nextProject?: string
-    ) {
+    ): GSAPTimeline {
       const rdPlaceholderTextContainer: Element[] = gsap.utils.toArray(
         rdPlaceholder.querySelectorAll(".rd-text-container")
       );
@@ -1218,7 +1219,7 @@
       }
     );
   }
-  function exit(path: string) {
+  function exit(path: string): void {
     projectChanging = true;
     if (baseState.viewMode === "desktop") {
       mouseLeave();
@@ -1599,7 +1600,8 @@
       }
       .rd-footer {
         bottom: 0.5rem;
-        .rd-social-container {
+        .rd-social-container,
+        .rd-works-container {
           display: none;
         }
         .rd-bar-container {
