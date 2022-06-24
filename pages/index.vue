@@ -180,7 +180,7 @@
                 </span>
               </span>
             </span>
-            <span v-if="baseState.viewMode === 'mobile'" class="line"></span>
+            <span v-if="baseState.viewMode === 'mobile'" class="rd-line"></span>
             <svg
               class="rd-circle"
               xmlns="http://www.w3.org/2000/svg"
@@ -220,13 +220,16 @@
         </div>
       </div>
       <div ref="rdWorksContainer" class="rd-works-container">
-        <a class="rd-works rd-caption-text" data-pin="link">
+        <a class="rd-works rd-caption-text" @click="exit('/work')" data-pin="link">
           <span class="rd-word-wrapper">
             <span class="rd-word-container rd-word-container-down">
               <span class="rd-word">Karya Kami</span>
             </span>
           </span>
         </a>
+        <div class="rd-line-container">
+          <div class="rd-line-filled"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -320,6 +323,8 @@
       const rdWorkWord: Element[] = gsap.utils.toArray(
         rdWorksContainer.querySelectorAll(".rd-word")
       );
+      const rdWorkLineContainer: Element = rdWorksContainer.querySelector('.rd-line-container')
+      const rdWorkLine: Element = rdWorksContainer.querySelector('.rd-line-filled')
 
       shuffleArray(rdLettersContainer, rdLetters);
 
@@ -371,7 +376,15 @@
             stagger: 0.125,
           },
           "<0"
-        );
+        ).to(rdWorkLineContainer, {
+          width: '2rem',
+          duration: 0.5,
+          ease: "power2.out",
+        }).to(rdWorkLine, {
+          width: '50%',
+          duration: 0.5,
+          ease: "power2.out",
+        }, '<0.25');
     },
     exit(
       rdHeaderTitle: Element,
@@ -406,6 +419,8 @@
       const rdWorkWord: Element[] = gsap.utils.toArray(
         rdWorksContainer.querySelectorAll(".rd-word")
       );
+      const rdWorkLineContainer: Element = rdWorksContainer.querySelector('.rd-line-container')
+      const rdWorkLine: Element = rdWorksContainer.querySelector('.rd-line-filled')
 
       tl.to(
         rdLettersContainer,
@@ -454,7 +469,15 @@
             stagger: 0.125,
           },
           "<0"
-        );
+        ).to(rdWorkLineContainer, {
+          width: 0,
+          duration: 0.5,
+          ease: "power2.out",
+        }, '<0').to(rdWorkLine, {
+          width: 0,
+          duration: 0.5,
+          ease: "power2.out",
+        }, '<0.25');;
     },
     initProject(
       mode: "desktop" | "mobile",
@@ -1263,6 +1286,18 @@
   );
 
   onMounted(() => {
+    document.documentElement.style.setProperty(
+      "--font-color",
+      "#ede0e6"
+    );
+    document.documentElement.style.setProperty(
+      "--background-color",
+      "#26191f"
+    );
+    document.documentElement.style.setProperty(
+      "--menu-color",
+      "#21161b"
+    );
     setTimeout(() => {
       init(true);
     }, 500);
@@ -1486,7 +1521,46 @@
         .rd-works {
           width: auto;
           height: 1rem;
+          margin-right: 0.5rem;
           justify-content: flex-end;
+        }
+        .rd-line-container {
+          position: absolute;
+          top: calc(50% - 1px);
+          left: 100%;
+          width: 0;
+          height: 2px;
+          overflow: hidden;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          .rd-line-filled {
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--font-color);
+            transition: width 0.25s cubic-bezier(0.75, 0, 0.25, 1);
+
+          }
+          &::before {
+            content: "";
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 1px;
+            background: var(--font-color);
+            opacity: 0.25;
+          }
+        }
+        &:hover {
+          .rd-line-container {
+            .rd-line-filled {
+              width: 100% !important;
+            }
+          }
         }
       }
       .rd-bar-container {
@@ -1581,7 +1655,7 @@
               span.rd-action-name {
                 margin: 0;
               }
-              span.line {
+              span.rd-line {
                 position: relative;
                 width: 1px;
                 height: 1.25rem;

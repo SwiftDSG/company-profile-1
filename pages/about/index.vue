@@ -1,129 +1,45 @@
 <template>
-  <div ref="rdContainer" class="rd-container">
-    <div ref="rdJumbotron" class="rd-jumbotron">
-      <div class="rd-description-container">
-        <span class="rd-description-placeholder rd-caption-text">
-          <span class="rd-text-wrapper">
-            <span class="rd-text-container rd-text-container-down">
-              <span class="rd-text">Karya Kami</span>
-            </span>
+  <div class="rd-container" ref="rdContainer">
+    <div class="rd-jumbotron" ref="rdJumbotron">
+      <span class="rd-description-placeholder rd-caption-text">
+        <span class="rd-text-wrapper">
+          <span class="rd-text-container rd-text-container-down">
+            <span class="rd-text">Tentang kami</span>
           </span>
         </span>
-        <h1 class="rd-description-title rd-headline-1">
-          <span
-            v-for="(n, i) in project.name.split(' ')"
-            :key="i"
-            class="rd-word-wrapper"
-          >
-            <span class="rd-word-container rd-word-container-down">
-              <span class="rd-word">{{ n }}</span>
-            </span>
-          </span>
-        </h1>
-        <div
-          v-if="baseState.viewMode !== 'desktop'"
-          class="rd-attraction-container"
+      </span>
+      <h1 class="rd-description-title rd-headline-1">
+        <span
+          v-for="(n, i) in structure.title.split(' ')"
+          :key="i"
+          class="rd-word-wrapper"
         >
-          <span class="rd-image-wrapper">
-            <span class="rd-image-container rd-image-container-left">
-              <img
-                class="rd-image"
-                :src="project.image"
-                data-scrub="parallax"
-              />
-            </span>
-          </span>
-        </div>
-        <div class="rd-description-details">
-          <span class="rd-description-details-placeholder rd-placeholder-text">
-            <span class="rd-text-wrapper">
-              <span class="rd-text-container rd-text-container-down">
-                <span class="rd-text">Layanan</span>
-              </span>
-            </span>
-          </span>
-          <div class="rd-description-details-divider"></div>
-          <span
-            v-for="(n, i) in project.services"
-            :key="i"
-            class="rd-description-details-value rd-headline-5"
-          >
-            <span class="rd-text-wrapper">
-              <span class="rd-text-container rd-text-container-down">
-                <span class="rd-text">{{ n }}</span>
-              </span>
-            </span>
-          </span>
-        </div>
-        <div class="rd-description-details">
-          <span class="rd-description-details-placeholder rd-placeholder-text">
-            <span class="rd-text-wrapper">
-              <span class="rd-text-container rd-text-container-down">
-                <span class="rd-text">Kategori</span>
-              </span>
-            </span>
-          </span>
-          <div class="rd-description-details-divider"></div>
-          <span
-            v-for="(n, i) in project.tags"
-            :key="i"
-            class="rd-description-details-value rd-headline-5"
-          >
-            <span class="rd-text-wrapper">
-              <span class="rd-text-container rd-text-container-down">
-                <span class="rd-text">{{ n }}</span>
-              </span>
-            </span>
-          </span>
-        </div>
-        <div class="rd-description-details">
-          <span class="rd-description-details-placeholder rd-placeholder-text">
-            <span class="rd-text-wrapper">
-              <span class="rd-text-container rd-text-container-down">
-                <span class="rd-text">Klien</span>
-              </span>
-            </span>
-          </span>
-          <div class="rd-description-details-divider"></div>
-          <span class="rd-description-details-value rd-headline-5">
-            <span class="rd-text-wrapper">
-              <span class="rd-text-container rd-text-container-down">
-                <span class="rd-text">{{ project.client }}</span>
-              </span>
-            </span>
-          </span>
-        </div>
-        <div ref="rdActionButton" class="rd-action-button" data-pin="link">
-          <span class="rd-action-name rd-caption-text">
-            <span class="rd-text-wrapper">
-              <span class="rd-text-container rd-text-container-left">
-                <span class="rd-text">Buka Projek</span>
-              </span>
-            </span>
-          </span>
-          <svg
-            class="rd-circle"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 48 48"
-          >
-            <circle class="rd-circle-1" cx="24" cy="24" r="23" />
-            <circle class="rd-circle-2" cx="24" cy="24" r="3" />
-          </svg>
-        </div>
-      </div>
-      <div
-        v-if="baseState.viewMode === 'desktop'"
-        class="rd-attraction-container"
-      >
-        <span class="rd-image-wrapper">
-          <span class="rd-image-container rd-image-container-left">
-            <img class="rd-image" :src="project.image" data-scrub="parallax" />
+          <span class="rd-word-container rd-word-container-down">
+            <span class="rd-word">{{ n }}</span>
           </span>
         </span>
-      </div>
+      </h1>
+      <p class="rd-description rd-body-text">
+        <span
+          v-for="(n, i) in structure.description.split(' ')"
+          :key="i"
+          class="rd-word-wrapper"
+        >
+          <span class="rd-word-container rd-word-container-down">
+            <span class="rd-word">{{ n }}</span>
+          </span>
+        </span>
+      </p>
+    </div>
+    <div class="rd-image-full-container">
+      <span class="rd-image-wrapper">
+        <span class="rd-image-container rd-image-container-left">
+          <img class="rd-image" :src="structure.image" data-scrub="parallax" />
+        </span>
+      </span>
     </div>
     <div
-      v-for="(content, i) in project.contents"
+      v-for="(content, i) in structure.contents"
       ref="rdContents"
       :data-type="content.type"
       :key="i"
@@ -276,7 +192,7 @@
   import { ScrollTrigger } from "gsap/ScrollTrigger";
   import Scrollbar from "smooth-scrollbar";
 
-  import { baseStore } from "../../../store/base";
+  import { baseStore } from "../../store/base";
 
   const baseState = baseStore.getState();
   const props = defineProps<{ pageState: string }>();
@@ -289,7 +205,7 @@
   const rdJumbotron = ref<HTMLDivElement>(null);
   const rdContents = ref<HTMLDivElement[]>(null);
 
-  interface ProjectContents {
+  interface StructureContents {
     type:
       | "rd-chapter"
       | "rd-picture-full"
@@ -303,43 +219,18 @@
     images?: string[][];
   }
 
-  interface Project {
-    name: string;
-    client: string;
+  interface Structure {
+    title: string;
+    description: string;
     image: string;
-    services: string[];
-    tags: string[];
-    colors: {
-      font: string;
-      background: string;
-      menu: string;
-    };
-    contents: ProjectContents[];
+    contents: StructureContents[];
   }
 
-  const project: Project = {
-    name: "Pezen",
-    client: "PT. Redian Grup Sejahtera",
-    image: "/about-photo-1.jpg",
-    services: ["Web design & development"],
-    tags: ["UX / UI Design", "Ecommerce"],
-    colors: {
-      font: "#9d5524",
-      background: "#ffa84c",
-      menu: "#ffa84c",
-    },
+  const structure: Structure = {
+    title: 'Digitizing the World Through Innovation',
+    description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
+    image: '/about-photo-1.jpg',
     contents: [
-      {
-        type: "rd-chapter",
-        title: "Tim yang berdedikasi untuk memberikan hasil terbaik.",
-        subtitle: "the challenge",
-        description:
-          "Lorem Ipsum dolor sit Amet, tema tis rolod morel muspee tis librue arqic cisseb bosnia roll posca tema tis rolod Lorem Ipsum dolor sit Amet, tema tis rolod morel tis rolod morel muspee tis librue arqic cisseb bosnia roll roll posca tis rolod morel Lorem Ipsum dolor sit Amet, tema tis rolod morel roll posca rame jancok asu udin love karina.",
-      },
-      {
-        type: "rd-picture-full",
-        image: "/about-photo-2.jpg",
-      },
       {
         type: "rd-chapter-alternative",
         title: "A streamlined user experience",
@@ -349,22 +240,12 @@
       {
         type: "rd-gallery",
         images: [
-          ["/about-photo-1.jpg", "/about-photo-2.jpg"],
-          ["/about-photo-3.jpg", "/about-photo-1.jpg"],
+          ["/about-photo-1.jpg"],
+          ["/about-photo-2.jpg"]
         ],
       },
-      {
-        type: "rd-chapter-alternative",
-        title: "A streamlined user experience",
-        description:
-          "One of the key objectives for the Optimal Dynamics website was to educate potential customers with clear and concise messaging. Starting with the homepage landing experience, we collaborated with their marketing team to develop an effective content strategy and streamlined user experience.",
-      },
-      {
-        type: "rd-picture-large",
-        image: "/about-photo-3.jpg",
-      },
-    ],
-  };
+    ]
+  }
 
   const animate = {
     init(rdJumbotron: HTMLElement, cb?: () => void): GSAPTimeline {
@@ -375,19 +256,17 @@
         },
       });
 
-      const rdActionButton: Element =
-        rdJumbotron.querySelector(".rd-action-button");
-      const rdImageContainer: Element[] = gsap.utils.toArray(
-        rdJumbotron.querySelectorAll(".rd-image-container")
+      const rdTitleWordContainer: Element[] = gsap.utils.toArray(
+        rdJumbotron.querySelectorAll("h1.rd-description-title .rd-word-container")
       );
-      const rdImage: Element[] = gsap.utils.toArray(
-        rdJumbotron.querySelectorAll(".rd-image")
+      const rdTitleWord: Element[] = gsap.utils.toArray(
+        rdJumbotron.querySelectorAll("h1.rd-description-title .rd-word")
       );
-      const rdWordContainer: Element[] = gsap.utils.toArray(
-        rdJumbotron.querySelectorAll(".rd-word-container")
+      const rdDescriptionWordContainer: Element[] = gsap.utils.toArray(
+        rdJumbotron.querySelectorAll("p.rd-description .rd-word-container")
       );
-      const rdWord: Element[] = gsap.utils.toArray(
-        rdJumbotron.querySelectorAll(".rd-word")
+      const rdDescriptionWord: Element[] = gsap.utils.toArray(
+        rdJumbotron.querySelectorAll("p.rd-description .rd-word")
       );
       const rdTextContainer: Element[] = gsap.utils.toArray(
         rdJumbotron.querySelectorAll(".rd-text-container")
@@ -395,29 +274,16 @@
       const rdText: Element[] = gsap.utils.toArray(
         rdJumbotron.querySelectorAll(".rd-text")
       );
-      const rdActionTextContainer: Element[] = gsap.utils.toArray(
-        rdActionButton.querySelectorAll(".rd-text-container")
+      const rdImageContainer: Element[] = gsap.utils.toArray(
+        rdJumbotron.nextElementSibling.querySelectorAll(".rd-image-container")
       );
-      const rdActionText: Element[] = gsap.utils.toArray(
-        rdActionButton.querySelectorAll(".rd-text")
+      const rdImage: Element[] = gsap.utils.toArray(
+        rdJumbotron.nextElementSibling.querySelectorAll(".rd-image")
       );
+      
 
-      tl.to(rdImageContainer, {
-        x: 0,
-        duration: 1,
-        ease: "power4.inOut",
-      })
-        .to(
-          rdImage,
-          {
-            x: 0,
-            duration: 1,
-            ease: "power4.inOut",
-          },
-          "<0"
-        )
-        .to(
-          rdWordContainer.reverse(),
+      tl.to(
+          rdTitleWordContainer.reverse(),
           {
             y: 0,
             duration: 0.5,
@@ -427,7 +293,7 @@
           "<0.25"
         )
         .to(
-          rdWord.reverse(),
+          rdTitleWord.reverse(),
           {
             y: 0,
             duration: 0.5,
@@ -455,44 +321,39 @@
             stagger: 0.125,
           },
           "<0"
-        )
-        .to(
-          rdActionTextContainer,
+        ).to(
+          rdDescriptionWordContainer,
           {
-            x: 0,
+            y: 0,
             duration: 0.5,
             ease: "power2.out",
-            stagger: 0.125,
+            stagger: 0.005,
           },
           "<0.25"
         )
         .to(
-          rdActionText,
+          rdDescriptionWord,
           {
-            x: 0,
+            y: 0,
             duration: 0.5,
             ease: "power2.out",
-            stagger: 0.125,
+            stagger: 0.005,
           },
           "<0"
-        )
-        .to(
-          rdActionButton.children[1].children[0],
-          {
-            strokeDashoffset: 0,
-            duration: 0.5,
-            ease: "power2.inOut",
-          },
-          "<0"
-        )
-        .to(
-          rdActionButton.children[1].children[1],
-          {
-            opacity: 0.5,
-            ease: "power2.out",
-          },
-          "<0.25"
-        );
+        ).to(rdImageContainer, {
+          x: 0,
+          duration: 1,
+          ease: "power4.inOut",
+        }, "<0.25")
+          .to(
+            rdImage,
+            {
+              x: 0,
+              duration: 1,
+              ease: "power4.inOut",
+            },
+            "<0"
+          );
 
       return tl;
     },
@@ -708,7 +569,7 @@
         }
       }
     },
-  };
+  }
 
   watch(
     () => props.pageState,
@@ -722,48 +583,40 @@
     }
   );
 
-  watch(
-    () => rdContainer.value,
-    (val: HTMLElement) => {
-      if (val) {
-        const el = rdContainer.value;
-
-        bodyScrollbar.value = Scrollbar.init(el, {
-          damping: 0.05,
-        });
-        bodyScrollbar.value.setPosition(0, 0);
-        bodyScrollbar.value.track.xAxis.element.remove();
-
-        ScrollTrigger.scrollerProxy(el, {
-          scrollTop(value) {
-            if (arguments.length) bodyScrollbar.value.scrollTop = value;
-            return bodyScrollbar.value.scrollTop;
-          },
-        });
-        ScrollTrigger.defaults({
-          scroller: el,
-        });
-
-        bodyScrollbar.value.addListener(ScrollTrigger.update);
-      }
-    },
-    { immediate: true }
-  );
-
   onMounted(() => {
+    const el = rdContainer.value;
+
+    bodyScrollbar.value = Scrollbar.init(el, {
+      damping: 0.05,
+    });
+    bodyScrollbar.value.setPosition(0, 0);
+    bodyScrollbar.value.track.xAxis.element.remove();
+
+    ScrollTrigger.scrollerProxy(el, {
+      scrollTop(value) {
+        if (arguments.length) bodyScrollbar.value.scrollTop = value;
+        return bodyScrollbar.value.scrollTop;
+      },
+    });
+    ScrollTrigger.defaults({
+      scroller: el,
+    });
+
+    bodyScrollbar.value.addListener(ScrollTrigger.update);
+
     document.documentElement.style.setProperty(
       "--font-color",
-      project.colors.font
+      "#ede0e6"
     );
     document.documentElement.style.setProperty(
       "--background-color",
-      project.colors.background
+      "#26191f"
     );
     document.documentElement.style.setProperty(
       "--menu-color",
-      project.colors.menu
+      "#21161b"
     );
-    
+
     setTimeout(() => {
       const animInit = animate.init(rdJumbotron.value, () => {
         emit("pin-elements");
@@ -808,7 +661,7 @@
         animate.reveal(rdContents.value);
       }, 400);
     }, 100);
-  });
+  })
 
   onBeforeUnmount(() => {
     emit("unpin-elements")
@@ -832,94 +685,41 @@
     .rd-jumbotron {
       position: relative;
       width: 100%;
-      height: 37.5vw;
-      margin-top: 7rem;
+      margin: 7rem 0;
+      padding: 1rem 35vw 5vh 15vw;
+      box-sizing: border-box;
       display: flex;
+      flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
-      .rd-description-container {
+      span.rd-description-placeholder {
         position: relative;
-        width: calc(175vw / 4);
-        height: 100%;
-        padding-top: 1rem;
-        padding-left: 15vw;
-        box-sizing: border-box;
+        left: -0.05rem;
+      }
+      h1.rd-description-title {
+        position: relative;
+        left: -0.2rem;
+        margin: 2rem 0;
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
         justify-content: flex-start;
         align-items: flex-start;
-        span.rd-description-placeholder {
-          position: relative;
-          left: -0.05rem;
-        }
-        h1.rd-description-title {
-          position: relative;
-          left: -0.2rem;
-          margin: 2rem 0 3rem 0;
-        }
-        .rd-description-details {
-          position: relative;
-          margin-bottom: 2rem;
-          padding-left: 2rem;
-          box-sizing: border-box;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          align-items: flex-start;
-          .rd-description-details-divider {
-            position: relative;
-            width: 100%;
-            height: 0.5rem;
-          }
-          span.rd-description-details-value {
-            line-height: 1.5;
-            font-family: "Quicksand";
-          }
-        }
-        .rd-action-button {
-          cursor: pointer;
-          position: relative;
-          margin: 2rem 2rem 0 0;
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          span.rd-action-name {
-            position: relative;
-            text-transform: uppercase;
-            transition: 0.25s color;
-            margin-right: 1rem;
-          }
-          svg.rd-circle {
-            position: relative;
-            width: 2rem;
-            height: 2rem;
-            * {
-              pointer-events: none;
-            }
-            .rd-circle-1 {
-              fill: none;
-              stroke: var(--font-color);
-              stroke-width: 2px;
-              stroke-dashoffset: 146.51326206513048px;
-              stroke-dasharray: 146.51326206513048px;
-            }
-            .rd-circle-2 {
-              fill: var(--font-color);
-              opacity: 0;
-            }
-          }
+        span.rd-word-wrapper {
+          margin-right: 2%;
         }
       }
-      .rd-attraction-container {
+      p.rd-description {
         position: relative;
-        width: calc(225vw / 4);
-        height: 100%;
+        width: 100%;
+        padding: 0 25% 0 2rem;
         box-sizing: border-box;
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
         justify-content: flex-start;
         align-items: flex-start;
-        overflow: hidden;
+        span.rd-word-wrapper {
+          margin-right: 1%;
+        }
       }
     }
     .rd-chapter {
@@ -1176,38 +976,18 @@
       .rd-jumbotron {
         width: 100vw;
         height: auto;
+        padding: 0 2rem;
+        margin: 7rem 0 5rem 0;
         flex-direction: column;
-        .rd-description-container {
-          width: 100%;
-          padding: 0 2rem;
-          box-sizing: border-box;
-          .rd-attraction-container {
-            position: relative;
-            left: -2rem;
-            width: 100vw;
-            height: 75vw;
-            margin-bottom: 2rem;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            overflow: hidden;
-          }
-          span.rd-description-placeholder {
-            left: 0;
-          }
-          h1.rd-description-title {
-            left: 0;
-            margin: 1rem 0 2rem 0;
-          }
-          .rd-description-details {
-            width: 100%;
-            padding-left: 0;
-          }
-          .rd-action-button {
-            margin: 1rem 0 2rem 0;
-          }
+        span.rd-description-placeholder {
+          left: 0;
+        }
+        h1.rd-description-title {
+          left: 0;
+          margin: 1rem 0;
+        }
+        p.rd-description {
+          padding: 0;
         }
       }
       .rd-chapter,

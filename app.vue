@@ -147,10 +147,13 @@
 
 <script lang="ts" setup>
   import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
   import { ComputedRef } from "vue";
   import { baseStore } from "./store/base";
+  
   const baseState = baseStore.getState();
   const pageState = ref("idle");
+
   const rdLayout = ref<HTMLDivElement>(null);
   const rdCursor = ref<HTMLDivElement>(null);
   const rdLogo = ref<SVGElement>(null);
@@ -160,15 +163,19 @@
   const rdNavLinks = ref<HTMLAnchorElement[]>(null);
   const rdNavSocials = ref<HTMLAnchorElement[]>(null);
   const rdNavEmail = ref<HTMLAnchorElement>(null);
+
   const rdPinnedButtons = ref([]);
   const rdPinnedLinks = ref([]);
   const rdPinnedTexts = ref([]);
+
   const cursorText = ref<string>("");
   const cursorPinned = ref(false);
   const cursorHover = ref(false);
   const cursorVisible = ref(false);
+
   const navOpened = ref(false);
   const navAnim = ref<GSAPTimeline>(null);
+
   const navSocials = [
     {
       name: "Fb",
@@ -201,12 +208,14 @@
       to: "/contact",
     },
   ];
+
   const route: ComputedRef<string> = computed((): string => useRoute().path);
   const rem: ComputedRef<number> = computed((): number =>
     typeof getComputedStyle === "function"
       ? parseInt(getComputedStyle(document.body).fontSize)
       : 0
   );
+
   const animate = {
     init(rdNavBtn: Element) {
       const tl: GSAPTimeline = gsap.timeline();
@@ -410,6 +419,7 @@
       return tl;
     },
   };
+
   function resizeHandler(e: MediaQueryList | MediaQueryListEvent) {
     if (e.matches) baseStore.setViewMode("mobile");
     else baseStore.setViewMode("desktop");
@@ -479,6 +489,7 @@
         );
     }
   }
+
   function moveCursor({ clientX, clientY }: MouseEvent) {
     if (!cursorVisible.value) cursorVisible.value = true;
     if (!cursorPinned.value && !cursorHover.value) {
@@ -488,6 +499,7 @@
       });
     }
   }
+
   function pinCursorButton() {
     cursorPinned.value = true;
   }
@@ -518,6 +530,7 @@
       });
     }
   }
+
   function pinCursorLink() {
     cursorHover.value = true;
   }
@@ -548,6 +561,7 @@
       });
     }
   }
+
   function pinCursorText({ target }: MouseEvent) {
     if (target instanceof HTMLElement) {
       cursorText.value = target.dataset.text;
@@ -558,6 +572,7 @@
       cursorText.value = "";
     }, 250);
   }
+
   function navHandler(state: "open" | "close") {
     if (!navAnim.value) {
       navAnim.value = animate.navHandler(
@@ -582,6 +597,7 @@
       navAnim.value.reverse();
     }
   }
+
   function pinElements(): void {
     if (baseState.viewMode === "desktop") {
       rdPinnedButtons.value = gsap.utils.toArray(
@@ -612,12 +628,14 @@
   function unpinElements(): void {
     if (baseState.viewMode === "desktop") {
       for (const rdButton of rdPinnedButtons.value) {
+        cursorPinned.value = false;
         rdButton.removeEventListener("mouseenter", pinCursorButton);
         rdButton.removeEventListener("mouseleave", unpinCursorButton);
         rdButton.removeEventListener("mousemove", dragCursorButton);
       }
       rdPinnedButtons.value = [];
       for (const rdLink of rdPinnedLinks.value) {
+        cursorHover.value = false;
         rdLink.removeEventListener("mouseenter", pinCursorLink);
         rdLink.removeEventListener("mouseleave", unpinCursorLink);
         rdLink.removeEventListener("mousemove", dragCursorLink);
@@ -631,6 +649,7 @@
       rdPinnedTexts.value = [];
     }
   }
+
   watch(
     () => baseState.viewMode,
     (val, oldVal) => {
@@ -639,11 +658,16 @@
   );
   watch(
     () => route.value,
-    (val, oldVal) => {
+    (val) => {
       if (val !== "/") logoHandler(rdLogo.value, "show");
       else logoHandler(rdLogo.value, "hide");
     }
   );
+
+  onBeforeMount(async () => {
+    gsap.registerPlugin(ScrollTrigger);
+  });
+
   onMounted(() => {
     const mediaQuery = window.matchMedia("(max-width: 1024px)");
     mediaQuery.addEventListener("change", resizeHandler);
@@ -1246,8 +1270,9 @@
       width: 8px;
       height: 100%;
       border-radius: 4px;
-      backdrop-filter: invert(100%) hue-rotate(180deg);
-      background: rgba(#fff, 0.1);
+      // backdrop-filter: invert(100%) hue-rotate(180deg);
+      // background: rgba(#fff, 0.1);
+      background: var(--font-color);
       opacity: 0.5;
       transition: opacity 0.25s;
     }

@@ -872,7 +872,7 @@
   }
 
   function movementHandler(): void {
-    if (!slide.isSliding) {
+    if (!slide.isSliding && rdWorkSlider.value) {
       const { x } = rdWorkSlider.value.getBoundingClientRect();
       if (slide.totalMovementX) {
         if (slide.snapPos === null) {
@@ -1060,20 +1060,9 @@
   function exit(path: string): void {
     exitProject(() => {
       animate.exit(baseState.viewMode, rdWorkSlider.value, () => {
-        if (path === '/') {
-          document.documentElement.style.setProperty(
-            "--font-color",
-            "#ede0e6"
-          );
-          document.documentElement.style.setProperty(
-            "--background-color",
-            "#26191f"
-          );
-          document.documentElement.style.setProperty(
-            "--menu-color",
-            "#21161b"
-          );
-        }
+        window.removeEventListener("mousemove", mouseMove);
+        window.removeEventListener("mouseleave", mouseLeave);
+        mouseLeave()
         router.push(path);
         emit("exit-page");
       })
