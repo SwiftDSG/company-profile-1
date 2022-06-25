@@ -194,6 +194,10 @@
 
   import { baseStore } from "../../store/base";
 
+  useHead({
+    title: "Tentang Kami"
+  })
+
   const baseState = baseStore.getState();
   const props = defineProps<{ pageState: string }>();
   const emit = defineEmits(["pin-elements", "unpin-elements", "exit-page"]);

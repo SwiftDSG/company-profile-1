@@ -1018,6 +1018,9 @@
     --background-color: #26191f;
     --menu-color: #21161b;
   }
+  ::selection {
+    background: var(--font-color);
+  }
   html,
   body {
     font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -1069,6 +1072,9 @@
         letter-spacing: 0.05rem;
       }
       .rd-body-text {
+        font-size: 0.75rem;
+      }
+      .rd-input-text {
         font-size: 0.75rem;
       }
     }
@@ -1140,6 +1146,12 @@
     letter-spacing: 0.05rem;
     text-transform: uppercase;
     opacity: 0.85;
+  }
+  .rd-input-text {
+    font-family: "Quicksand";
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
   }
   .rd-body-text {
     font-family: "Quicksand";

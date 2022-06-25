@@ -240,6 +240,10 @@
 
   import { baseStore } from "../store/base";
 
+  useHead({
+    title: 'Home'
+  })
+
   const baseState = baseStore.getState();
   const props = defineProps<{ pageState: string }>();
   const emit = defineEmits(["pin-elements", "unpin-elements", "exit-page"]);

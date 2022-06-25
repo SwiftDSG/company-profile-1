@@ -180,6 +180,10 @@
 
   import { baseStore } from "../../store/base";
 
+  useHead({
+    title: 'Karya Kami'
+  })
+
   const baseState = baseStore.getState();
   const props = defineProps<{ pageState: string }>();
   const emit = defineEmits(["pin-elements", "unpin-elements", "exit-page"]);

@@ -278,17 +278,6 @@
 
   import { baseStore } from "../../../store/base";
 
-  const baseState = baseStore.getState();
-  const props = defineProps<{ pageState: string }>();
-  const emit = defineEmits(["pin-elements", "unpin-elements", "exit-page"]);
-  const router = useRouter();
-
-  const bodyScrollbar = ref<Scrollbar>(null);
-
-  const rdContainer = ref<HTMLDivElement>(null);
-  const rdJumbotron = ref<HTMLDivElement>(null);
-  const rdContents = ref<HTMLDivElement[]>(null);
-
   interface ProjectContents {
     type:
       | "rd-chapter"
@@ -365,6 +354,21 @@
       },
     ],
   };
+
+  useHead({
+    title: project.name
+  })
+
+  const baseState = baseStore.getState();
+  const props = defineProps<{ pageState: string }>();
+  const emit = defineEmits(["pin-elements", "unpin-elements", "exit-page"]);
+  const router = useRouter();
+
+  const bodyScrollbar = ref<Scrollbar>(null);
+
+  const rdContainer = ref<HTMLDivElement>(null);
+  const rdJumbotron = ref<HTMLDivElement>(null);
+  const rdContents = ref<HTMLDivElement[]>(null);
 
   const animate = {
     init(rdJumbotron: HTMLElement, cb?: () => void): GSAPTimeline {
