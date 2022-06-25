@@ -171,7 +171,7 @@
           Punya ide bisnis?
         </span>
         <h1 class="rd-footer-title rd-headline-1">Mari bicara bersama kami</h1>
-        <div class="rd-action-button" data-pin="link">
+        <div class="rd-action-button" data-pin="link" @click="exit('/contact')">
           <span class="rd-action-name rd-caption-text">Hubungi Kami</span>
           <svg
             class="rd-circle"
