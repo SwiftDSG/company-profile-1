@@ -574,16 +574,18 @@
       }
     },
   }
+  
+  function exit(path: string): void {
+    animate.exit(rdContainer.value, () => {
+      router.push(path);
+      emit("exit-page");
+    })
+  }
 
   watch(
     () => props.pageState,
     (val: string) => {
-      if (val !== "idle") {
-        animate.exit(rdContainer.value, () => {
-          router.push(val);
-          emit("exit-page");
-        })
-      }
+      if (val !== "idle") exit(val)
     }
   );
 

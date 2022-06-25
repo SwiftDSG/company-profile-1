@@ -714,47 +714,41 @@
     },
   };
 
+  function exit(path: string): void {
+    animate.exit(rdContainer.value, () => {
+      router.push(path);
+      emit("exit-page");
+    })
+  }
+
   watch(
     () => props.pageState,
     (val: string) => {
-      if (val !== "idle") {
-        animate.exit(rdContainer.value, () => {
-          router.push(val);
-          emit("exit-page");
-        })
-      }
+      if (val !== "idle") exit(val)
     }
   );
 
-  watch(
-    () => rdContainer.value,
-    (val: HTMLElement) => {
-      if (val) {
-        const el = rdContainer.value;
-
-        bodyScrollbar.value = Scrollbar.init(el, {
-          damping: 0.05,
-        });
-        bodyScrollbar.value.setPosition(0, 0);
-        bodyScrollbar.value.track.xAxis.element.remove();
-
-        ScrollTrigger.scrollerProxy(el, {
-          scrollTop(value) {
-            if (arguments.length) bodyScrollbar.value.scrollTop = value;
-            return bodyScrollbar.value.scrollTop;
-          },
-        });
-        ScrollTrigger.defaults({
-          scroller: el,
-        });
-
-        bodyScrollbar.value.addListener(ScrollTrigger.update);
-      }
-    },
-    { immediate: true }
-  );
-
   onMounted(() => {
+    const el = rdContainer.value;
+
+    bodyScrollbar.value = Scrollbar.init(el, {
+      damping: 0.05,
+    });
+    bodyScrollbar.value.setPosition(0, 0);
+    bodyScrollbar.value.track.xAxis.element.remove();
+
+    ScrollTrigger.scrollerProxy(el, {
+      scrollTop(value) {
+        if (arguments.length) bodyScrollbar.value.scrollTop = value;
+        return bodyScrollbar.value.scrollTop;
+      },
+    });
+    ScrollTrigger.defaults({
+      scroller: el,
+    });
+
+    bodyScrollbar.value.addListener(ScrollTrigger.update);
+
     document.documentElement.style.setProperty(
       "--font-color",
       project.colors.font
