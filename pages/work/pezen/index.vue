@@ -323,7 +323,7 @@
         title: "Tim yang berdedikasi untuk memberikan hasil terbaik.",
         subtitle: "the challenge",
         description:
-          "Lorem Ipsum dolor sit Amet, tema tis rolod morel muspee tis librue arqic cisseb bosnia roll posca tema tis rolod Lorem Ipsum dolor sit Amet, tema tis rolod morel tis rolod morel muspee tis librue arqic cisseb bosnia roll roll posca tis rolod morel Lorem Ipsum dolor sit Amet, tema tis rolod morel roll posca rame jancok asu udin love karina.",
+          "Lorem Ipsum dolor sit Amet, tema tis rolod morel muspee tis librue arqic cisseb bosnia roll posca tema tis rolod Lorem Ipsum dolor sit Amet, tema tis rolod morel tis rolod morel muspee tis librue arqic cisseb bosnia roll roll posca tis rolod morel Lorem Ipsum dolor sit Amet, tema tis rolod morel roll posca.",
       },
       {
         type: "rd-picture-full",
