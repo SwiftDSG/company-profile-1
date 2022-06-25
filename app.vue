@@ -7,12 +7,15 @@
     <div class="rd-header">
       <div class="rd-home-button">
         <svg
+          data-default-pin="button"
           ref="rdLogo"
+          href="/"
           class="rd-home-button-logo"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 351.86 494.13"
           width="351.8599853515625"
           height="494.1300048828125"
+          @click.prevent="changePage"
         >
           <defs>
             <clipPath id="rd-home-button-logo-path-1">
@@ -106,6 +109,7 @@
             v-for="(social, i) in navSocials"
             ref="rdNavSocials"
             :key="i"
+            :href="social.to"
             class="rd-navigation-social rd-caption-text"
             data-default-pin="button"
           >
@@ -179,15 +183,15 @@
   const navSocials = [
     {
       name: "Fb",
-      to: "",
+      to: "/",
     },
     {
       name: "Ig",
-      to: "",
+      to: "/",
     },
     {
       name: "Tw",
-      to: "",
+      to: "/",
     },
   ];
   const navLinks = [
@@ -440,7 +444,10 @@
     const pathTwo: Element = rdLogo.children[2];
     const pathThree: Element = rdLogo.children[3];
     if (state === "show") {
-      tl.to(pathOne, {
+      tl.to(rdLogo, {
+        pointerEvents: 'all',
+        duration: 0
+      }).to(pathOne, {
         strokeDashoffset: 543.9750366210938,
         duration: 0.5,
         ease: "power2.out",
@@ -464,7 +471,10 @@
           "<0.25"
         );
     } else {
-      tl.to(pathOne, {
+      tl.to(rdLogo, {
+        pointerEvents: 'none',
+        duration: 0
+      }).to(pathOne, {
         strokeDashoffset: 271.9875183105469,
         duration: 0.5,
         ease: "power2.inOut",
@@ -742,6 +752,7 @@
         justify-content: flex-start;
         align-items: center;
         svg.rd-home-button-logo {
+          pointer-events: none;
           cursor: pointer;
           position: absolute;
           top: 0.5rem;
