@@ -155,7 +155,7 @@
   import { ScrollTrigger } from "gsap/ScrollTrigger";
   import { ComputedRef } from "vue";
   import { baseStore } from "./store/base";
-  
+
   const baseState = baseStore.getState();
   const pageState = ref("idle");
 
@@ -446,13 +446,14 @@
     const pathThree: Element = rdLogo.children[3];
     if (state === "show") {
       tl.to(rdLogo, {
-        pointerEvents: 'all',
-        duration: 0
-      }).to(pathOne, {
-        strokeDashoffset: 543.9750366210938,
-        duration: 0.5,
-        ease: "power2.out",
+        pointerEvents: "all",
+        duration: 0,
       })
+        .to(pathOne, {
+          strokeDashoffset: 543.9750366210938,
+          duration: 0.5,
+          ease: "power2.out",
+        })
         .to(
           pathTwo,
           {
@@ -473,13 +474,14 @@
         );
     } else {
       tl.to(rdLogo, {
-        pointerEvents: 'none',
-        duration: 0
-      }).to(pathOne, {
-        strokeDashoffset: 271.9875183105469,
-        duration: 0.5,
-        ease: "power2.inOut",
+        pointerEvents: "none",
+        duration: 0,
       })
+        .to(pathOne, {
+          strokeDashoffset: 271.9875183105469,
+          duration: 0.5,
+          ease: "power2.inOut",
+        })
         .to(
           pathTwo,
           {
@@ -893,7 +895,7 @@
           flex-direction: column;
           justify-content: flex-start;
           align-items: center;
-          .rd-navigation-social {
+          a.rd-navigation-social {
             cursor: pointer;
             position: relative;
             opacity: 0;
@@ -1103,9 +1105,12 @@
   h4,
   h5,
   h5,
-  p {
+  p,
+  a {
     margin: 0;
     padding: 0;
+    text-decoration: none;
+    color: var(--font-color);
   }
   .rd-headline-1 {
     font-family: "Exo";
