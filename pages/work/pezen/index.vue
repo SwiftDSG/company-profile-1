@@ -356,8 +356,8 @@
   };
 
   useHead({
-    title: project.name
-  })
+    title: project.name,
+  });
 
   const baseState = baseStore.getState();
   const props = defineProps<{ pageState: string }>();
@@ -510,8 +510,8 @@
       tl.to(rdContainer, {
         opacity: 0,
         duration: 0.5,
-        ease: 'power1.out'
-      })
+        ease: "power1.out",
+      });
     },
     reveal(rdContents: HTMLElement[]): void {
       for (const rdContent of rdContents) {
@@ -718,13 +718,13 @@
     animate.exit(rdContainer.value, () => {
       router.push(path);
       emit("exit-page");
-    })
+    });
   }
 
   watch(
     () => props.pageState,
     (val: string) => {
-      if (val !== "idle") exit(val)
+      if (val !== "idle") exit(val);
     }
   );
 
@@ -761,14 +761,14 @@
       "--menu-color",
       project.colors.menu
     );
-    
+
     setTimeout(() => {
       const animInit = animate.init(rdJumbotron.value, () => {
         emit("pin-elements");
       });
       setTimeout(() => {
         gsap.utils.toArray("[data-scrub]").forEach((el: HTMLElement, i) => {
-          el.removeAttribute('style')
+          el.removeAttribute("style");
           if (el.dataset.scrub === "parallax") {
             gsap.to(el, {
               yPercent: i !== 0 ? -20 : 0,
@@ -809,8 +809,8 @@
   });
 
   onBeforeUnmount(() => {
-    emit("unpin-elements")
-  })
+    emit("unpin-elements");
+  });
 </script>
 
 <style lang="scss" scoped>
@@ -1106,6 +1106,7 @@
       position: relative;
       width: 100vw;
       height: 100vh;
+      height: calc((var(--vh, 1vh) * 100));
       margin-top: 5rem;
       background: var(--font-color);
       overflow: hidden;

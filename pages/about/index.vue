@@ -195,8 +195,8 @@
   import { baseStore } from "../../store/base";
 
   useHead({
-    title: "Tentang Kami"
-  })
+    title: "Tentang Kami",
+  });
 
   const baseState = baseStore.getState();
   const props = defineProps<{ pageState: string }>();
@@ -231,9 +231,10 @@
   }
 
   const structure: Structure = {
-    title: 'Digitizing the World Through Innovation',
-    description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
-    image: '/about-photo-1.jpg',
+    title: "Digitizing the World Through Innovation",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.",
+    image: "/about-photo-1.jpg",
     contents: [
       {
         type: "rd-chapter-alternative",
@@ -243,13 +244,10 @@
       },
       {
         type: "rd-gallery",
-        images: [
-          ["/about-photo-1.jpg"],
-          ["/about-photo-2.jpg"]
-        ],
+        images: [["/about-photo-1.jpg"], ["/about-photo-2.jpg"]],
       },
-    ]
-  }
+    ],
+  };
 
   const animate = {
     init(rdJumbotron: HTMLElement, cb?: () => void): GSAPTimeline {
@@ -261,7 +259,9 @@
       });
 
       const rdTitleWordContainer: Element[] = gsap.utils.toArray(
-        rdJumbotron.querySelectorAll("h1.rd-description-title .rd-word-container")
+        rdJumbotron.querySelectorAll(
+          "h1.rd-description-title .rd-word-container"
+        )
       );
       const rdTitleWord: Element[] = gsap.utils.toArray(
         rdJumbotron.querySelectorAll("h1.rd-description-title .rd-word")
@@ -284,18 +284,17 @@
       const rdImage: Element[] = gsap.utils.toArray(
         rdJumbotron.nextElementSibling.querySelectorAll(".rd-image")
       );
-      
 
       tl.to(
-          rdTitleWordContainer.reverse(),
-          {
-            y: 0,
-            duration: 0.5,
-            ease: "power2.out",
-            stagger: 0.125,
-          },
-          "<0.25"
-        )
+        rdTitleWordContainer.reverse(),
+        {
+          y: 0,
+          duration: 0.5,
+          ease: "power2.out",
+          stagger: 0.125,
+        },
+        "<0.25"
+      )
         .to(
           rdTitleWord.reverse(),
           {
@@ -325,7 +324,8 @@
             stagger: 0.125,
           },
           "<0"
-        ).to(
+        )
+        .to(
           rdDescriptionWordContainer,
           {
             y: 0,
@@ -344,20 +344,25 @@
             stagger: 0.005,
           },
           "<0"
-        ).to(rdImageContainer, {
-          x: 0,
-          duration: 1,
-          ease: "power4.inOut",
-        }, "<0.25")
-          .to(
-            rdImage,
-            {
-              x: 0,
-              duration: 1,
-              ease: "power4.inOut",
-            },
-            "<0"
-          );
+        )
+        .to(
+          rdImageContainer,
+          {
+            x: 0,
+            duration: 1,
+            ease: "power4.inOut",
+          },
+          "<0.25"
+        )
+        .to(
+          rdImage,
+          {
+            x: 0,
+            duration: 1,
+            ease: "power4.inOut",
+          },
+          "<0"
+        );
 
       return tl;
     },
@@ -371,8 +376,8 @@
       tl.to(rdContainer, {
         opacity: 0,
         duration: 0.5,
-        ease: 'power1.out'
-      })
+        ease: "power1.out",
+      });
     },
     reveal(rdContents: HTMLElement[]): void {
       for (const rdContent of rdContents) {
@@ -573,19 +578,19 @@
         }
       }
     },
-  }
-  
+  };
+
   function exit(path: string): void {
     animate.exit(rdContainer.value, () => {
       router.push(path);
       emit("exit-page");
-    })
+    });
   }
 
   watch(
     () => props.pageState,
     (val: string) => {
-      if (val !== "idle") exit(val)
+      if (val !== "idle") exit(val);
     }
   );
 
@@ -610,18 +615,9 @@
 
     bodyScrollbar.value.addListener(ScrollTrigger.update);
 
-    document.documentElement.style.setProperty(
-      "--font-color",
-      "#ede0e6"
-    );
-    document.documentElement.style.setProperty(
-      "--background-color",
-      "#26191f"
-    );
-    document.documentElement.style.setProperty(
-      "--menu-color",
-      "#21161b"
-    );
+    document.documentElement.style.setProperty("--font-color", "#ede0e6");
+    document.documentElement.style.setProperty("--background-color", "#26191f");
+    document.documentElement.style.setProperty("--menu-color", "#21161b");
 
     setTimeout(() => {
       const animInit = animate.init(rdJumbotron.value, () => {
@@ -629,7 +625,7 @@
       });
       setTimeout(() => {
         gsap.utils.toArray("[data-scrub]").forEach((el: HTMLElement, i) => {
-          el.removeAttribute('style')
+          el.removeAttribute("style");
           if (el.dataset.scrub === "parallax") {
             gsap.to(el, {
               yPercent: i !== 0 ? -20 : 0,
@@ -667,11 +663,11 @@
         animate.reveal(rdContents.value);
       }, 400);
     }, 100);
-  })
+  });
 
   onBeforeUnmount(() => {
-    emit("unpin-elements")
-  })
+    emit("unpin-elements");
+  });
 </script>
 
 <style lang="scss" scoped>
@@ -914,6 +910,7 @@
       position: relative;
       width: 100vw;
       height: 100vh;
+      height: calc((var(--vh, 1vh) * 100));
       margin-top: 5rem;
       background: var(--font-color);
       overflow: hidden;
