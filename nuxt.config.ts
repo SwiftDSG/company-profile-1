@@ -4,6 +4,9 @@ import { defineNuxtConfig } from 'nuxt'
 export default defineNuxtConfig({
   app: {
     head: {
+      htmlAttrs: {
+        lang: 'id'
+      },
       titleTemplate: '%s — Redian Grup',
       title: 'Redian Grup',
       meta: [
