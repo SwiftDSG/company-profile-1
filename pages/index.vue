@@ -243,7 +243,7 @@
   import { baseStore } from "../store/base";
 
   useHead({
-    title: 'Home'
+    title: 'Digital Agency Terbaik di Indonesia'
   })
 
   const baseState = baseStore.getState();
