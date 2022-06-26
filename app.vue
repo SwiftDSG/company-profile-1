@@ -110,6 +110,7 @@
             ref="rdNavSocials"
             :key="i"
             :href="social.to"
+            target="_blank"
             class="rd-navigation-social rd-caption-text"
             data-default-pin="button"
           >

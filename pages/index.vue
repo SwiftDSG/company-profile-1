@@ -198,6 +198,8 @@
         <a
           v-for="(social, i) in socials"
           :key="i"
+          :href="social.to"
+          target="_blank"
           class="rd-social rd-caption-text"
           data-pin="button"
         >
@@ -220,7 +222,7 @@
         </div>
       </div>
       <div ref="rdWorksContainer" class="rd-works-container">
-        <a class="rd-works rd-caption-text" @click="exit('/work')" data-pin="link">
+        <a class="rd-works rd-caption-text" @click.prevent="exit('/work')" data-pin="link" href="/work">
           <span class="rd-word-wrapper">
             <span class="rd-word-container rd-word-container-down">
               <span class="rd-word">Karya Kami</span>
@@ -281,15 +283,15 @@
   const socials = [
     {
       name: "Fb",
-      to: "",
+      to: "/",
     },
     {
       name: "Ig",
-      to: "",
+      to: "/",
     },
     {
       name: "Tw",
-      to: "",
+      to: "/",
     },
   ];
 
