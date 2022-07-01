@@ -43,14 +43,16 @@
         data-pin="text"
         data-text="drag"
       >
-        <div v-for="(n, i) in projects" :key="i" class="rd-work" ref="rdWork">
+        <div
+          v-for="(project, i) in projects"
+          :key="i"
+          class="rd-work"
+          :class="i === activeIndex ? 'rd-work-active' : ''"
+          ref="rdWork"
+        >
           <span class="rd-image-wrapper">
             <span class="rd-image-container rd-image-container-down">
-              <img
-                class="rd-image"
-                :src="`/about-photo-${i + 1}.jpg`"
-                :class="i === activeIndex ? 'rd-image-active' : ''"
-              />
+              <img class="rd-image" :src="project.image" />
             </span>
           </span>
         </div>
@@ -181,8 +183,8 @@
   import { baseStore } from "../../store/base";
 
   useHead({
-    title: 'Karya Kami'
-  })
+    title: "Karya Kami",
+  });
 
   const baseState = baseStore.getState();
   const props = defineProps<{ pageState: string }>();
@@ -207,6 +209,7 @@
       title: "Redian",
       type: "Branding",
       tags: ["branding", "website", "advertising"],
+      image: "/redian-background.webp",
       caption: [
         "Lorem ipsum dolor sit amet",
         "adipiscing elit. Proin gravida ac dui",
@@ -214,14 +217,15 @@
       colors: {
         font: "#ede0e6",
         background: "#26191f",
-        menu: "#21161b"
-      }
+        menu: "#21161b",
+      },
     },
     {
       route: "/work/pezen",
       title: "Pezen",
       type: "Application",
       tags: ["branding", "website", "application", "advertising"],
+      image: "/pezen-background.webp",
       caption: [
         "ut congue. Donec a tellus ligula.",
         "Quisque odio tellus, tincidunt",
@@ -229,23 +233,24 @@
       colors: {
         font: "#9d5524",
         background: "#ffa84c",
-        menu: "#ffa84c"
-      }
+        menu: "#ffa84c",
+      },
     },
     {
-      route: "/work/otmilti",
-      title: "Otmilti",
+      route: "/work/icoen",
+      title: "ICOEN",
       type: "Website",
       tags: ["website"],
+      image: "/icoen-background.webp",
       caption: [
         "vitae, blandit nec quam. Cras",
         "und amet sit dolor Ipsum Lorem",
       ],
       colors: {
-        font: "#fdf1ce",
-        background: "#de4c3f",
-        menu: "#de4c3f"
-      }
+        font: "#282b34",
+        background: "#38c577",
+        menu: "#38c577",
+      },
     },
   ];
   const slide: {
@@ -1004,7 +1009,7 @@
         rdWorkCaptions.value[activeIndex.value],
         () => {
           activeAnim.value = null;
-          if (cb) cb()
+          if (cb) cb();
         }
       );
       prevIndex.value = activeIndex.value;
@@ -1066,18 +1071,18 @@
       animate.exit(baseState.viewMode, rdWorkSlider.value, () => {
         window.removeEventListener("mousemove", mouseMove);
         window.removeEventListener("mouseleave", mouseLeave);
-        mouseLeave()
+        mouseLeave();
         router.push(path);
         emit("exit-page");
-      })
-    })
+      });
+    });
   }
 
   watch(
     () => props.pageState,
     (val: string) => {
       if (val !== "idle") {
-        exit(val)
+        exit(val);
       }
     }
   );
@@ -1101,8 +1106,8 @@
   });
 
   onBeforeUnmount(() => {
-    emit("unpin-elements")
-  })
+    emit("unpin-elements");
+  });
 </script>
 
 <style lang="scss" scoped>
@@ -1188,8 +1193,9 @@
           justify-content: flex-start;
           align-items: flex-start;
           overflow: hidden;
-          transition: 0.05s transform ease-out;
+          transition: 0.05s transform ease-out, 0.25s filter ease;
           transform: perspective(1000px);
+          filter: grayscale(1);
           // img.rd-image {
           //   transform: scale(1.25);
           //   transition: transform 0.75s cubic-bezier(0.77, 0, 0.175, 1);
@@ -1198,6 +1204,9 @@
           //     transform: scale(1);
           //   }
           // }
+          &.rd-work-active {
+            filter: grayscale(0);
+          }
         }
         &:active {
           cursor: grabbing;
