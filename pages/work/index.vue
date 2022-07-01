@@ -209,7 +209,7 @@
       title: "Redian",
       type: "Branding",
       tags: ["branding", "website", "advertising"],
-      image: "/redian-background.webp",
+      image: "/image-redian-background.webp",
       caption: [
         "Lorem ipsum dolor sit amet",
         "adipiscing elit. Proin gravida ac dui",
@@ -225,7 +225,7 @@
       title: "Pezen",
       type: "Application",
       tags: ["branding", "website", "application", "advertising"],
-      image: "/pezen-background.webp",
+      image: "/image-pezen-background.webp",
       caption: [
         "ut congue. Donec a tellus ligula.",
         "Quisque odio tellus, tincidunt",
@@ -241,7 +241,7 @@
       title: "ICOEN",
       type: "Website",
       tags: ["website"],
-      image: "/icoen-background.webp",
+      image: "/image-icoen-background.webp",
       caption: [
         "vitae, blandit nec quam. Cras",
         "und amet sit dolor Ipsum Lorem",
